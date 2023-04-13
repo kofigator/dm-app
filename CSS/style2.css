@@ -1,0 +1,126 @@
+/* Default styles for all devices */
+header {
+	background-color: #333;
+	color: #fff;
+	text-align: center;
+	padding: 20px;
+}
+#container{
+	display: flex;
+}
+nav {
+	background-color: #eee;
+	padding: 20px;
+}
+nav ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+nav li {
+	float: left;
+}
+nav li a {
+	display: block;
+	color: #333;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+nav li a.active {
+	background-color: #333;
+	color: #fff;
+}
+.tabcontent {
+	display: none;
+	padding: 20px;
+}
+
+/* Styles for devices with a maximum width of 768px (phones and tablets) */
+@media only screen and (max-width: 768px) {
+	header {
+		padding: 10px;
+		font-size: 18px;
+	}
+	nav {
+		padding: 10px;
+	}
+	nav li {
+		float: none;
+		display: inline-block;
+	}
+	nav li a {
+		display: inline-block;
+		padding: 10px;
+	}
+	.tabcontent {
+		padding: 10px;
+	}
+}
+
+/* Styles for devices with a minimum width of 768px and a maximum width of 1024px (small laptops and tablets in landscape mode) */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+	header {
+		padding: 20px;
+		font-size: 24px;
+	}
+	nav {
+		padding: 20px;
+	}
+	nav li a {
+		padding: 12px 14px;
+	}
+	.tabcontent {
+		padding: 30px;
+	}
+}
+
+/* Styles for devices with a minimum width of 1024px and a maximum width of 1440px (medium-sized laptops and desktops) */
+@media only screen and (min-width: 1024px) and (max-width: 1440px) {
+	header {
+		padding: 30px;
+		font-size: 30px;
+	}
+	nav {
+		padding: 30px;
+	}
+	nav li a {
+		padding: 16px 18px;
+	}
+	.tabcontent {
+		padding: 40px;
+	}
+}
+
+/* Styles for devices with a minimum width of 1440px and a maximum width of 2560px (large desktops and some 4K devices) */
+@media only screen and (min-width: 1440px) and (max-width: 2560px) {
+	header {
+		padding: 40px;
+		font-size: 36px;
+	}
+	nav {
+		padding: 40px;
+	}
+	nav li a {
+		padding: 20px 22px;
+	}
+	.tabcontent {
+		padding: 50px;
+	}
+}
+
+/* Styles for devices with a minimum width of 2560px (larger 4K devices) */
+@media only screen and (min-width: 2560px) {
+	header {
+		padding: 50px;
+		font-size: 42px;
+	}
+	nav {
+		padding: 50px;
+	}
+	nav li a {
+		padding: 24px 26px;
+	}
+	.tabcontent {
+		padding: 60px

@@ -1,0 +1,78 @@
+/* Reset default browser styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    padding-top: 5px;
+  }
+  /* Basic styling for the container */
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0px 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  }
+  .container h1{
+    display: flex;
+    justify-content: center;
+  }
+  /* Styling for the form controls */
+  .form-control {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .form-control label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-control input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  /* Styling for the submit button */
+  button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #428bca;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #3071a9;
+  }
+  
+  /* Media queries for responsive design */
+  @media screen and (max-width: 600px) {
+    .container {
+      max-width: 100%;
+      padding: 10px;
+    }
+  
+    body {
+        padding-top: 0px;
+      }
+
+    .form-control input {
+      font-size: 14px;
+    }
+  }
+  
