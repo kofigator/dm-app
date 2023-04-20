@@ -6,14 +6,15 @@ USE debt;
  
  CREATE TABLE users(
      phone_number VARCHAR(20) PRIMARY KEY NOT NULL,
-     name VARCHAR(150) NOT NULL,
+     firstName VARCHAR(50) NOT NULL,
+     lastName VARCHAR(50) NOT NULL,
      gender CHAR(1) NOT NULL,
      email VARCHAR(50) NOT NULL,
      photo VARCHAR(20)
      );
 
  CREATE TABLE logins(
-     log_id INT(10) PRIMARY KEY NOT NULL,
+     log_id INT(10) PRIMARY KEY AUTO AUTO_INCREMENT,
      u_id VARCHAR(20),
      CONSTRAINT FK_u_id FOREIGN KEY (u_id) REFERENCES users(phone_number) ON UPDATE CASCADE,
      username VARCHAR(50) NOT NULL,
@@ -41,7 +42,7 @@ USE debt;
      );
 
 CREATE TABLE sales(
-     sales_id INT(10) PRIMARY KEY NOT NULL,
+     sales_id INT(10) PRIMARY KEY AUTO_INCREMENT,
      item_id INT(10) NOT NULL,
      CONSTRAINT FK_item_id1 FOREIGN KEY (item_id) REFERENCES items (item_id) ON UPDATE CASCADE,
      cust_id INT(10) NOT NULL,
@@ -53,7 +54,7 @@ CREATE TABLE sales(
      );
 
 CREATE TABLE payments(
-     pay_id INT(10) PRIMARY KEY NOT NULL,
+     pay_id INT(10) PRIMARY KEY AUTO_INCREMENT,
      cust_id INT(10) NOT NULL,
      CONSTRAINT FK_cust_id FOREIGN KEY (cust_id) REFERENCES customers (cust_id) ON UPDATE CASCADE,
      amount DECIMAL(6,2) NOT NULL,
