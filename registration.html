@@ -1,45 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Form</title>
-    <link rel="stylesheet" href="../CSS/regStyle.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
     <div class="container">
-      <h1>Registration Form</h1>
-      <form>
-        <div class="form-control">
-          <label for="first-name">First Name</label>
-          <input type="text" id="first-name" placeholder="Enter your first name" />
-        </div>
-        <div class="form-control">
-          <label for="last-name">Last Name</label>
-          <input type="text" id="last-name" placeholder="Enter your last name" />
-        </div>
-        <div class="form-control">
-          <label for="other-name">Other Name</label>
-          <input type="text" id="other-name" placeholder="Enter your other name" />
-        </div>
-        <div class="form-control">
-          <label for="phone-number">Phone Number</label>
-          <input type="tel" id="phone-number" placeholder="Enter your phone number" />
-        </div>
-        <div class="form-control">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Enter your email" />
-        </div>
-        <div class="form-control">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Enter your password" />
-        </div>
-        <div class="form-control">
-          <label for="confirm-password">Confirm Password</label>
-          <input type="password" id="confirm-password" placeholder="Confirm your password" />
-        </div>
-        <button type="submit">Register</button>
-      </form>
+        <h1 class="text-center">Registration Form</h1>
+        <form>
+            <div class="form-group">
+                <label for="first-name">First Name</label>
+                <input type="text" class="form-control" id="first-name" placeholder="Enter your first name">
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name</label>
+                <input type="text" class="form-control" id="last-name" placeholder="Enter your last name">
+            </div>
+            <div class="form-group">
+                <label for="other-name">Other Name</label>
+                <input type="text" class="form-control" id="other-name" placeholder="Enter your other name">
+            </div>
+            <div class="form-group">
+                <label for="phone-number">Phone Number</label>
+                <input type="tel" class="form-control" id="phone-number" placeholder="Enter your phone number">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter your password">
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm-password" placeholder="Confirm your password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
     </div>
-  </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>
