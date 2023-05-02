@@ -53,17 +53,17 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 	if ($_GET["url"] == "register") {
 
-		if (!isset($_POST["firstName"])) die(json_encode(array("success" => false, "message" => "First name is required!")));
-		if (!isset($_POST["lastName"])) die(json_encode(array("success" => false, "message" => "Last name is required")));
+		if (!isset($_POST["first-name"])) die(json_encode(array("success" => false, "message" => "First name is required!")));
+		if (!isset($_POST["last-name"])) die(json_encode(array("success" => false, "message" => "Last name is required")));
 		if (!isset($_POST["gender"])) die(json_encode(array("success" => false, "message" => "Gender is required")));
-		if (!isset($_POST["emailAddr"])) die(json_encode(array("success" => false, "message" => "Email address is required")));
-		if (!isset($_POST["phoneNum"])) die(json_encode(array("success" => false, "message" => "Phone number is required")));
+		if (!isset($_POST["email-addr"])) die(json_encode(array("success" => false, "message" => "Email address is required")));
+		if (!isset($_POST["phone-num"])) die(json_encode(array("success" => false, "message" => "Phone number is required")));
 		if (!isset($_POST["password"])) die(json_encode(array("success" => false, "message" => "Password number is required")));
 
-		$firstName = $dc->validateText($_POST["firstName"]);
-		$lastName = $dc->validateText($_POST["lastName"]);
-		$emailAddr = $dc->validateEmail($_POST["emailAddr"]);
-		$phoneNum = $dc->validateNumber($_POST["phoneNum"]);
+		$firstName = $dc->validateText($_POST["first-name"]);
+		$lastName = $dc->validateText($_POST["last-name"]);
+		$emailAddr = $dc->validateEmail($_POST["email-nddr"]);
+		$phoneNum = $dc->validateNumber($_POST["phone-num"]);
 		$gender = $dc->validateText($_POST["gender"]);
 		$password = $dc->validatePassword($_POST["password"]);
 
