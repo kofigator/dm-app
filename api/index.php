@@ -5,6 +5,7 @@ session_start();
 * @Author: Francis A. Anlimah
 */
 
+require_once('../classes/User.php');
 require_once('../classes/Customer.php');
 require_once('../classes/Inventory.php');
 require_once('../classes/Report.php');
@@ -17,6 +18,7 @@ header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+$User = new User();
 $Customer = new Customer();
 $Inventory = new Inventory();
 $Report = new Report();
@@ -39,7 +41,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 		$email = $dc->validateEmail($_POST["email"]);
 		$password = $dc->validatePassword($_POST["password"]);
 
-		$result = $Customer->verifyUserLogin($email, $password);
+		$result = $User->verifyUserLogin($email, $password);
 
 		if (!$result) die(json_encode(array("success" => false, "message" => "Invalid email or password!")));
 
@@ -65,7 +67,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 		$gender = $dc->validateText($_POST["gender"]);
 		$password = $dc->validatePassword($_POST["password"]);
 
-		$result = $Customer->registerUser($firstName, $lastName, $gender, $emailAddr, $phoneNum, $password);
+		$result = $User->registerUser($firstName, $lastName, $gender, $emailAddr, $phoneNum, $password);
 
 		if (!$result) die(json_encode(array("success" => false, "message" => "User registration failed!")));
 
