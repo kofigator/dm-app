@@ -9,30 +9,67 @@ class Customer
         $this->db = new DatabaseMethods();
     }
 
-    public function verifyUserLogin($email, $password)
+    /**
+     * 
+     */
+    public function addCustomer($customerData, int $userID)
     {
-        $query = "SELECT `u_id`, `password` FROM `logins` WHERE `username` = :u";
-        $params = array(":u" => $email);
-        $result = $this->db->getData($query, $params);
-        if (!$result) return $result;
-
-        if (password_verify($password, $result[0]["password"])) {
-            return array("id" => $result[0]["u_id"]);
-        } else {
-            return 0;
-        }
+        $query = "INSERT INTO customers (name, number, gender, address) VALUES (:nm, :nb, :gd, :ad, :ui)";
+        $param = array(
+            ":nm" => $customerData["name"], ":nb" => $customerData["number"],
+            ":gd" => $customerData["gender"], ":ad" => $customerData["address"],
+            ":ui" => $userID
+        );
+        return $this->db->inputData($query, $param);
     }
 
-    public function registerUser($firstName, $lastName, $gender, $emailAddr, $phoneNum, $password)
+    /**
+     * 
+     */
+    public function updateCustomer($customerData, int $customerID, int $userID)
     {
-        $query = "INSERT INTO `users`(`fisrt_name`, `last_name`, `gender`, `email`, `phone_number`) VALUES(:f, :l, :g, :e, :p)";
-        $params = array(":f" => $firstName, ":l" => $lastName, ":g" => $gender, ":e" => $emailAddr, ":p" => $phoneNum);
-        $result = $this->db->inputData($query, $params);
-        if (!$result) return $result;
+        $query = "UPDATE customers SET `name` = :nm, `number` = :nb, gender = :gd, address = :ad 
+                update_at = CURRENT_TIMESTAMP() WHERE cust_id = :ci AND u_id = :ui";
+        $param = array(
+            ":nm" => $customerData["name"], ":nb" => $customerData["number"],
+            ":gd" => $customerData["gender"], ":ad" => $customerData["address"],
+            ":ci" => $customerID, ":ui" => $userID
+        );
+        return $this->db->inputData($query, $param);
+    }
 
-        $hashedPassw = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO `logins`(`u_id`, `username`, `password`) VALUES(:u, :e, :p)";
-        $params = array(":u" => $phoneNum, ":e" => $emailAddr, ":p" => $hashedPassw);
-        return $this->db->inputData($query, $params);
+    /**
+     * @param int $customerID
+     * @param int $userID
+     * @return mixed
+     */
+    public function deleteCustomer(int $customerID, int $userID)
+    {
+        $query = "DELETE FROM customers WHERE cust_id = :ci AND u_id = :ui";
+        $param = array(":ci" => $customerID, ":ui" => $userID);
+        return $this->db->inputData($query, $param);
+    }
+
+    /**
+     * @param int $customerID
+     * @param int $userID
+     * @return mixed
+     */
+    public function getOneCustomer(int $customerID, int $userID)
+    {
+        $query = "SELECT * FROM customers WHERE cust_id = :ci AND u_id = :ui";
+        $param = array(":ci" => $customerID, ":ui" => $userID);
+        return $this->db->getData($query, $param);
+    }
+
+    /**
+     * @param int $userID - id of the user
+     * @return mixed - returns either an array or 0
+     */
+    public function getAllCustomers(int $userID)
+    {
+        $query = "SELECT * FROM customers WHERE u_id = :ui ORDER BY added_at DESC";
+        $param = array(":ui" => $userID);
+        return $this->db->getData($query, $param);
     }
 }
