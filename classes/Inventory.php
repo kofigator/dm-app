@@ -8,4 +8,5 @@ class Inventory
     {
         $this->db = new DatabaseMethods();
     }
+    
 }

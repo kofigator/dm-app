@@ -3,75 +3,83 @@ CREATE DATABASE IF NOT EXISTS debt;
 
 USE debt;
 
- 
- CREATE TABLE users(
-     phone_number VARCHAR(20) PRIMARY KEY NOT NULL,
-     name VARCHAR(150) NOT NULL,
-     gender CHAR(1) NOT NULL,
-     email VARCHAR(50) NOT NULL,
-     photo VARCHAR(20)
-     );
 
- CREATE TABLE logins(
-     log_id INT(10) PRIMARY KEY NOT NULL,
-     u_id VARCHAR(20),
-     CONSTRAINT FK_u_id FOREIGN KEY (u_id) REFERENCES users(phone_number) ON UPDATE CASCADE,
-     username VARCHAR(50) NOT NULL,
-     password VARCHAR(50) NOT NULL
-     );
+CREATE TABLE users(
+    phone_number VARCHAR(20) PRIMARY KEY NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    full_name VARCHAR(100) GENERATED ALWAYS AS (CONCAT(first_name, ' ', last_name)) STORED,
+    gender CHAR(1) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    photo VARCHAR(20),
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    updated_at DATETIME
+);
 
- CREATE TABLE customers(
-     cust_id INT(10) PRIMARY KEY AUTO_INCREMENT,
-     u_id VARCHAR(20),
-     name VARCHAR(150) NOT NULL,
-     number VARCHAR (20) NOT NULL,
-     gender CHAR(1) NOT NULL,
-     address VARCHAR(200),
-     CONSTRAINT FK_u_id1 FOREIGN KEY (u_id) REFERENCES users(phone_number) ON UPDATE CASCADE
-     );
+CREATE TABLE logins(
+    log_id INT(10) PRIMARY KEY NOT NULL,
+    u_id VARCHAR(20),
+    CONSTRAINT FK_u_id FOREIGN KEY (u_id) REFERENCES users(phone_number) ON UPDATE CASCADE,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL
+);
 
- CREATE TABLE items(
-     item_id INT(10) PRIMARY KEY AUTO_INCREMENT,
-     u_id VARCHAR(20),
-     item_name VARCHAR(150) NOT NULL,
-     description VARCHAR(300),
-     unit_price DECIMAL(6,2) NOT NULL,
-     quantity INT(10) NOT NULL,
-     CONSTRAINT FK_u_id2 FOREIGN KEY (u_id) REFERENCES users(phone_number) ON UPDATE CASCADE
-     );
+CREATE TABLE customers(
+    cust_id INT(10) PRIMARY KEY AUTO_INCREMENT,
+    u_id VARCHAR(20) NOT NULL,
+    name VARCHAR(150) NOT NULL,
+    number VARCHAR (20) NOT NULL,
+    gender CHAR(1) NOT NULL,
+    address VARCHAR(200),
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    updated_at DATETIME,
+    CONSTRAINT FK_u_id1 FOREIGN KEY (u_id) REFERENCES users(phone_number) ON UPDATE CASCADE
+);
+
+CREATE TABLE items(
+    item_id INT(10) PRIMARY KEY AUTO_INCREMENT,
+    u_id VARCHAR(20),
+    CONSTRAINT FK_u_id2 FOREIGN KEY (u_id) REFERENCES users(phone_number) ON UPDATE CASCADE,
+    item_name VARCHAR(150) NOT NULL,
+    description VARCHAR(300),
+    unit_price DECIMAL(6,2) NOT NULL,
+    quantity INT(10) NOT NULL,
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    updated_at DATETIME
+);
 
 CREATE TABLE sales(
-     sales_id INT(10) PRIMARY KEY NOT NULL,
-     item_id INT(10) NOT NULL,
-     CONSTRAINT FK_item_id1 FOREIGN KEY (item_id) REFERENCES items (item_id) ON UPDATE CASCADE,
-     cust_id INT(10) NOT NULL,
-     CONSTRAINT FK_cust_id1 FOREIGN KEY (cust_id) REFERENCES customers (cust_id) ON UPDATE CASCADE,
-     quantity INT(20) NOT NULL,
-     date DATE NOT NULL,
-     unit_price DECIMAL(6,2) NOT NULL,
-     total decimal(6,2) GENERATED ALWAYS AS(quantity * unit_price) stored
-     );
+    sales_id INT(10) PRIMARY KEY NOT NULL,
+    item_id INT(10) NOT NULL,
+    CONSTRAINT FK_item_id1 FOREIGN KEY (item_id) REFERENCES items (item_id) ON UPDATE CASCADE,
+    cust_id INT(10) NOT NULL,
+    CONSTRAINT FK_cust_id1 FOREIGN KEY (cust_id) REFERENCES customers (cust_id) ON UPDATE CASCADE,
+    quantity INT(20) NOT NULL,
+    unit_price DECIMAL(6,2) NOT NULL,
+    total decimal(6,2) GENERATED ALWAYS AS (quantity * unit_price) stored,
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP()
+);
 
 CREATE TABLE payments(
-     pay_id INT(10) PRIMARY KEY NOT NULL,
-     cust_id INT(10) NOT NULL,
-     CONSTRAINT FK_cust_id FOREIGN KEY (cust_id) REFERENCES customers (cust_id) ON UPDATE CASCADE,
-     amount DECIMAL(6,2) NOT NULL,
-     mode VARCHAR(20) NOT NULL,
-     date DATE NOT NULL
-     );
+    pay_id INT(10) PRIMARY KEY NOT NULL,
+    cust_id INT(10) NOT NULL,
+    CONSTRAINT FK_cust_id FOREIGN KEY (cust_id) REFERENCES customers (cust_id) ON UPDATE CASCADE,
+    amount DECIMAL(6,2) NOT NULL,
+    mode VARCHAR(20) NOT NULL,
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP()
+);
 
 CREATE TABLE ordered_items(
-     order_id INT(10) PRIMARY KEY NOT NULL,
-     cust_id INT(10) NOT NULL,
-     CONSTRAINT FK_cust_id2 FOREIGN KEY (cust_id) REFERENCES customers (cust_id) ON UPDATE CASCADE,
-     user_id VARCHAR(20),
-     CONSTRAINT FK_u_id3 FOREIGN KEY (user_id) REFERENCES users(phone_number) ON UPDATE CASCADE,
-     item_name VARCHAR(150) NOT NULL,
-     description VARCHAR(250),
-     quantity INT(10) NOT NULL,
-     date DATE NOT NULL
-     );
+    order_id INT(10) PRIMARY KEY NOT NULL,
+    cust_id INT(10) NOT NULL,
+    CONSTRAINT FK_cust_id2 FOREIGN KEY (cust_id) REFERENCES customers (cust_id) ON UPDATE CASCADE,
+    user_id VARCHAR(20),
+    CONSTRAINT FK_u_id3 FOREIGN KEY (user_id) REFERENCES users(phone_number) ON UPDATE CASCADE,
+    item_name VARCHAR(150) NOT NULL,
+    description VARCHAR(250),
+    quantity INT(10) NOT NULL,
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP()
+);
 
 
 -- CRUD for adding a user

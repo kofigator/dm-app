@@ -31,12 +31,9 @@ class DatabaseMethods
     {
         try {
             $result = $this->query($query, $params);
-            if (!empty($result)) {
-                return $result;
-            } else {
-                return 0;
-            }
-        } catch (\Exception $e) {
+            if (!empty($result)) return $result;
+            return 0;
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
@@ -50,12 +47,9 @@ class DatabaseMethods
     {
         try {
             $result = $this->query($query, $params);
-            if (!empty($result)) {
-                return $result;
-            } else {
-                return 0;
-            }
-        } catch (\Exception $e) {
+            if (!empty($result)) return $result;
+            return 0;
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }

@@ -40,6 +40,7 @@
 
             $("#Login-Form").on("submit", function(e) {
                 e.preventDefault();
+
                 $.ajax({
                     type: "POST",
                     url: "api/login",
@@ -49,14 +50,8 @@
                     processData: false,
                 }).done(function(data) {
                     console.log(data);
-
-                    if (!data.success) {
-                        alert(data.message);
-                        return;
-                    }
-
-
-
+                    alert(data.message);
+                    return;
                 }).fail(function(error) {
                     console.log(error);
                 })
