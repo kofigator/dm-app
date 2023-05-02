@@ -15,14 +15,13 @@ class User
         $params = array(":u" => $email);
         $result = $this->db->getData($query, $params);
         if (!$result) return $result;
-
         if (password_verify($password, $result[0]["password"])) return array("id" => $result[0]["u_id"]);
         return 0;
     }
 
     public function registerUser($firstName, $lastName, $gender, $emailAddr, $phoneNum, $password)
     {
-        $query = "INSERT INTO `users`(`fisrt_name`, `last_name`, `gender`, `email`, `phone_number`) VALUES(:f, :l, :g, :e, :p)";
+        $query = "INSERT INTO `users`(`first_name`, `last_name`, `gender`, `email`, `phone_number`) VALUES(:f, :l, :g, :e, :p)";
         $params = array(":f" => $firstName, ":l" => $lastName, ":g" => $gender, ":e" => $emailAddr, ":p" => $phoneNum);
         $result = $this->db->inputData($query, $params);
         if (!$result) return $result;

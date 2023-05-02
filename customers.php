@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--<link rel="stylesheet" href="../CSS/main_style.css">-->
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
@@ -38,44 +38,32 @@
 
 <body class="fluid-container">
 
-    <!--log in fields-->
-    <form method="post" id="Login-Form">
-        <!-- Email input -->
-        <div class="form-outline mb-4">
-            <input type="email" id="email" name="email" class="form-control" />
-            <label class="form-label" for="email">Email address</label>
-        </div>
-
-        <!-- Password input -->
-        <div class="form-outline mb-4">
-            <input type="password" id="password" name="password" class="form-control" />
-            <label class="form-label" for="password">Password</label>
-        </div>
-
-        <!-- 2 column grid layout for inline styling -->
-        <div class="row mb-4">
-            <div class="col d-flex justify-content-center">
-                <!-- Checkbox -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="remember-me" name="remember-me" checked />
-                    <label class="form-check-label" for="remember-me"> Remember me </label>
-                </div>
+    <ul class="list-group list-group-light">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <div class="fw-bold">John Doe</div>
+                <div class="text-muted">0244123456</div>
             </div>
-
-            <div class="col">
-                <!-- Simple link -->
-                <a href="forgetpass.php">Forgot password?</a>
+            <span class="bi bi-pencil-square text-info"></span>
+            <span class="bi bi-pencil-square text-info"></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <div class="fw-bold">Alex Ray</div>
+                <div class="text-muted">0244123456</div>
             </div>
-        </div>
-
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-
-        <!-- Register buttons -->
-        <div class="text-center">
-            <p>Not a member? <a href="registration.php">Register</a></p>
-        </div>
-    </form>
+            <span class="bi bi-pencil-square text-info"></span>
+            <span class="bi bi-pencil-square text-info"></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <div class="fw-bold">Kate Hunington</div>
+                <div class="text-muted">0244123456</div>
+            </div>
+            <span class="bi bi-pencil-square text-info"></span>
+            <span class="bi bi-pencil-square text-info"></span>
+        </li>
+    </ul>
 
     <script src="js/jquery-3.6.0.min.js"></script>
     <!-- MDB -->

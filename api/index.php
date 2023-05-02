@@ -62,7 +62,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 		$firstName = $dc->validateText($_POST["first-name"]);
 		$lastName = $dc->validateText($_POST["last-name"]);
-		$emailAddr = $dc->validateEmail($_POST["email-nddr"]);
+		$emailAddr = $dc->validateEmail($_POST["email-addr"]);
 		$phoneNum = $dc->validateNumber($_POST["phone-num"]);
 		$gender = $dc->validateText($_POST["gender"]);
 		$password = $dc->validatePassword($_POST["password"]);

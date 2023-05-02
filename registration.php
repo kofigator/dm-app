@@ -38,22 +38,40 @@
 
 <body class="fluid-container">
 
-  <form>
+  <form id="register-form" method="post">
     <fieldset>
       <legend>Register</legend>
       <div class="form-outline mb-4">
         <input type="text" id="first-name" name="first-name" class="form-control" />
-        <label class="form-label" for="first-name">Your First Name</label>
+        <label class="form-label" for="first-name">First Name</label>
       </div>
 
       <div class="form-outline mb-4">
         <input type="text" id="last-name" name="last-name" class="form-control" />
-        <label class="form-label" for="last-name">Your Last Name</label>
+        <label class="form-label" for="last-name">Last Name</label>
+      </div>
+
+      <div class="mb-4">
+        <label class="me-2">Gender</label>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gender" id="female" value="F" />
+          <label class="form-check-label" for="female">Female</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gender" id="male" value="M" />
+          <label class="form-check-label" for="male">Male</label>
+        </div>
+      </div>
+
+      <div class="form-outline mb-4">
+        <input type="text" id="phone-num" name="phone-num" class="form-control" />
+        <label class="form-label" for="phone-num">Phone Number</label>
       </div>
 
       <div class="form-outline mb-4">
         <input type="email" id="email-addr" name="email-addr" class="form-control" />
-        <label class="form-label" for="email-addr">Your Email</label>
+        <label class="form-label" for="email-addr">Email Address</label>
       </div>
 
       <div class="form-outline mb-4">
@@ -63,7 +81,7 @@
 
       <div class="form-outline flex-fill mb-4">
         <input type="password" id="repeat-password" name="repeat-password" class="form-control" />
-        <label class="form-label" for="repeat-password">Repeat your password</label>
+        <label class="form-label" for="repeat-password">Repeat password</label>
       </div>
 
       <div class="form-check d-flex justify-content-center mb-5">
@@ -83,8 +101,36 @@
     </fieldset>
   </form>
 
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <!-- MDB -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+  <script>
+    $(document).ready(function() {
 
+      $("#register-form").on("submit", function(e) {
+        e.preventDefault();
+
+        $.ajax({
+          type: "POST",
+          url: "api/register",
+          data: new FormData(this),
+          contentType: false,
+          cache: false,
+          processData: false,
+        }).done(function(data) {
+          console.log(data);
+          if (data.success) {
+            window.location.href = "index.php";
+          }
+          alert(data.message);
+          return;
+        }).fail(function(error) {
+          console.log(error);
+        })
+      });
+
+    });
+  </script>
 </body>
 
 </html>
