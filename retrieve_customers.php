@@ -13,19 +13,19 @@ if (!$conn) {
 }
 
 // Fetch customer records
-$sql = "SELECT cust_id, name, number FROM customers";
+$sql = "SELECT * FROM customers WHERE u_id = '{$_SESSION["id"]}'";
 $result = mysqli_query($conn, $sql);
 
 // Output customer records in table format
 if (mysqli_num_rows($result) > 0) {
-    while($row = mysqli_fetch_assoc($result)) {
+    while ($row = mysqli_fetch_assoc($result)) {
         $id = $row['cust_id'];
         echo "<tr>";
-            echo "<td>" . $row["name"] . "</td>";
-            echo "<td>" . $row["number"] . "</td>";
-            echo "<td>
-                    <a href='update_customers.php?updateid=".$id."'><img src='edit.png' alt='Edit'></a>
-                    <a href='delete_customer.php?deleteid=".$id."'><img src='dele.png' alt='Delete'></a>
+        echo "<td>" . $row["name"] . "</td>";
+        echo "<td>" . $row["number"] . "</td>";
+        echo "<td>
+                    <a href='update_customers.php?updateid=" . $id . "'><img src='edit.png' alt='Edit'></a>
+                    <a href='delete_customer.php?deleteid=" . $id . "'><img src='dele.png' alt='Delete'></a>
                   </td>";
 
         echo "</tr>";
@@ -36,5 +36,3 @@ if (mysqli_num_rows($result) > 0) {
 
 // Close database connection
 mysqli_close($conn);
-
-?>
