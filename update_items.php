@@ -1,13 +1,55 @@
+<?php
+ // Connect to database
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $dbname = "debt";
+
+ $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+ $id = $_GET['updateid'];
+
+ $sql = "select * from items where item_id = $id";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+
+    $itemName = $row['item_name'];
+    $description = $row['description'];
+    $unitPrice = $row['unit_price'];
+    $quantity = $row['quantity'];
+
+ $id = mysqli_real_escape_string($conn, $id);
+ 
+ if (isset($_POST['submit'])) {
+     // Rest of the code...
+ 
+    $itemName = $_POST['item_name'];
+    $description = $_POST['description'];
+    $unitPrice = $_POST['unit_price'];
+    $quantity = $_POST['quantity'];
+
+    $sql = "UPDATE `items` SET item_name = '$itemName', description = '$description', unit_price = '$unitPrice', quantity = '$quantity' WHERE item_id = $id";
+
+
+    $result = mysqli_query($conn, $sql);
+    if($result){
+        echo "updated successfully";
+        header('location: items.php');
+    }else{
+        die(mysqli_error($conn));
+    }
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Item</title>
-    <link rel="stylesheet" href="../CSS/newStyle.css">
+    <title>Update Item</title>
 
-    <!--
     <style>
         body {
           font-family: Arial, sans-serif;
@@ -63,24 +105,24 @@
           font-weight: bold;
         }
       </style>
-    -->
 </head>
 <body>
     <h1>Add An Item</h1>
-    <form action="insert_item.php" method="post">
+    <form id="addItem-form" method="post">
         <label for="item_name">Item Name:</label>
-        <input type="text" id="item_name" name="item_name" required>
+        <input type="text" id="item_name" name="item_name" value="<?php echo $itemName; ?>" required>
 
         <label for="description">Description:</label>
-        <input type="text" id="description" name="description" required>
+        <input type="text" id="description" name="description" value="<?php echo $description; ?>" required>
 
         <label for="unit_price">Unit Price:</label>
-        <input type="text" id="unit_price" name="unit_price" required>
+        <input type="text" id="unit_price" name="unit_price" value="<?php echo $unitPrice; ?>" required>
 
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" required>
+        <input type="number" id="quantity" name="quantity" value="<?php echo $quantity; ?>" required>
 
-        <input type="submit" value="Add Item">
+        <input type="submit" value="Update Item" name="submit">
     </form>
+
 </body>
 </html>

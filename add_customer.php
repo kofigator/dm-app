@@ -5,8 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Customer</title>
-    <link rel="stylesheet" href="../CSS/newStyle.css">
-    <!-- 
+    
       <style>
         body {
           font-family: Arial, sans-serif;
@@ -67,18 +66,15 @@
           font-weight: bold;
         }
       </style>
-    -->
+    
 </head>
 <body>
-    <form action="insert_customers.php" method="post">
+    <form id="addCustomer-form" method="post">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
 
         <label for="phone">Phone:</label>
         <input type="text" id="phone" name="phone" required>
-
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" required>
 
         <label for="gender">Gender</label>
         <select name="gender" id="">
@@ -87,7 +83,39 @@
             <option value="Female">Female</option>
         </select>
 
-        <input type="submit" value="Register">
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required>
+
+        <input type="submit" value="Add Customer">
     </form>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+
+      $("#addCustomer-form").on("submit", function(e) {
+        e.preventDefault();
+
+        $.ajax({
+          type: "POST",
+          url: "api/add_customer",
+          data: new FormData(this),
+          contentType: false,
+          cache: false,
+          processData: false,
+        }).done(function(data) {
+          console.log(data);
+          if (data.success) {
+            window.location.href = "customers.php";
+          }
+          alert(data.message);
+          return;
+        }).fail(function(error) {
+          console.log(error);
+        })
+      });
+
+    });
+  </script>
 </body>
 </html>

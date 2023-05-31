@@ -5,6 +5,7 @@ session_start();
 * @Author: Francis A. Anlimah
 */
 
+require_once('../classes/User.php');
 require_once('../classes/Customer.php');
 require_once('../classes/Inventory.php');
 require_once('../classes/Report.php');
@@ -17,6 +18,7 @@ header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+$User = new User();
 $Customer = new Customer();
 $Inventory = new Inventory();
 $Report = new Report();
@@ -39,7 +41,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 		$email = $dc->validateEmail($_POST["email"]);
 		$password = $dc->validatePassword($_POST["password"]);
 
-		$result = $Customer->verifyUserLogin($email, $password);
+		$result = $User->verifyUserLogin($email, $password);
 
 		if (!$result) die(json_encode(array("success" => false, "message" => "Invalid email or password!")));
 
@@ -51,27 +53,70 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 	if ($_GET["url"] == "register") {
 
-		if (!isset($_POST["firstName"])) die(json_encode(array("success" => false, "message" => "First name is required!")));
-		if (!isset($_POST["lastName"])) die(json_encode(array("success" => false, "message" => "Last name is required")));
+		if (!isset($_POST["first-name"])) die(json_encode(array("success" => false, "message" => "First name is required!")));
+		if (!isset($_POST["last-name"])) die(json_encode(array("success" => false, "message" => "Last name is required")));
 		if (!isset($_POST["gender"])) die(json_encode(array("success" => false, "message" => "Gender is required")));
-		if (!isset($_POST["emailAddr"])) die(json_encode(array("success" => false, "message" => "Email address is required")));
-		if (!isset($_POST["phoneNum"])) die(json_encode(array("success" => false, "message" => "Phone number is required")));
+		if (!isset($_POST["email-addr"])) die(json_encode(array("success" => false, "message" => "Email address is required")));
+		if (!isset($_POST["phone"])) die(json_encode(array("success" => false, "message" => "Phone number is required")));
 		if (!isset($_POST["password"])) die(json_encode(array("success" => false, "message" => "Password number is required")));
 
-		$firstName = $dc->validateText($_POST["firstName"]);
-		$lastName = $dc->validateText($_POST["lastName"]);
-		$emailAddr = $dc->validateEmail($_POST["emailAddr"]);
-		$phoneNum = $dc->validateNumber($_POST["phoneNum"]);
+		$Name = $dc->validateText($_POST["first-name"]);
+		$lastName = $dc->validateText($_POST["last-name"]);
+		$emailAddr = $dc->validateEmail($_POST["email-addr"]);
+		$phoneNum = $dc->validateNumber($_POST["phone"]);
 		$gender = $dc->validateText($_POST["gender"]);
 		$password = $dc->validatePassword($_POST["password"]);
 
-		$result = $Customer->registerUser($firstName, $lastName, $gender, $emailAddr, $phoneNum, $password);
+		$result = $User->registerUser($Name, $lastName, $gender, $emailAddr, $phoneNum, $password);
 
 		if (!$result) die(json_encode(array("success" => false, "message" => "User registration failed!")));
 
 		die(json_encode(array("success" => true, "message" => "Registration successful!")));
 	}
+
+	//Adding New Customer
+	if ($_GET["url"] == "add_customer") {
+
+		if (!isset($_POST["name"])) die(json_encode(array("success" => false, "message" => "Name is required!")));
+		if (!isset($_POST["phone"])) die(json_encode(array("success" => false, "message" => "Phone number is required")));
+		if (!isset($_POST["gender"])) die(json_encode(array("success" => false, "message" => "Gender is required")));
+		if (!isset($_POST["address"])) die(json_encode(array("success" => false, "message" => "Name is required!")));
+		
+
+		$Name = $dc->validateText($_POST["name"]);
+		$PhoneNum = $dc->validateNumber($_POST["phone"]);
+		$Gender = $dc->validateText($_POST["gender"]);
+		$Address = $dc->validateText($_POST["address"]);
+
+		$result = $User->addCustomer($Name, $PhoneNum, $Gender, $Address);
+
+		if ($result) die(json_encode(array("success" => false, "message" => "Registration successful!")));
+
+		die(json_encode(array("success" => true, "message" => "Adding Customer Failed!")));
+	}
+
+	//Adding an Item
+	if ($_GET["url"] == "add_item") {
+
+		if (!isset($_POST["item_name"])) die(json_encode(array("success" => false, "message" => "Item-name is required!")));
+		if (!isset($_POST["description"])) die(json_encode(array("success" => false, "message" => "Description is required")));
+		if (!isset($_POST["unit_price"])) die(json_encode(array("success" => false, "message" => "Unit-price is required")));
+		if (!isset($_POST["quantity"])) die(json_encode(array("success" => false, "message" => "Quantity address is required")));
+		
+		$Name = $dc->validateText($_POST["item_name"]);
+		$Description = $dc->validateText($_POST["description"]);
+		$unit_Price = $dc->validateNumber($_POST["unit_price"]);
+		$Quantity = $dc->validateNumber($_POST["quantity"]);
+
+		$result = $User->addItem ($Name, $Description, $unit_Price, $Quantity);
+
+		if ($result) die(json_encode(array("success" => false, "message" => "User registration failed!")));
+
+		die(json_encode(array("success" => true, "message" => "Registration successful!")));
+	}
 }
+	
+
 
 // PUT/UPDATE
 else if ($_SERVER['REQUEST_METHOD'] == "PUT") {
