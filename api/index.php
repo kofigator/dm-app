@@ -114,6 +114,45 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         die(json_encode(array("success" => true, "message" => "Registration successful!")));
     }
+
+    if ($_GET["url"] == "edit-customer") {
+        if (!isset($_POST["customer-id"])) die(json_encode(array("success" => false, "message" => "Invalid customer id!")));
+        if (empty($_POST["customer-id"])) die(json_encode(array("success" => false, "message" => "Customer id required!")));
+
+        if (!isset($_POST["customer-name"])) die(json_encode(array("success" => false, "message" => "Invalid customer name!")));
+        if (empty($_POST["customer-name"])) die(json_encode(array("success" => false, "message" => "Customer name required!")));
+
+        if (!isset($_POST["customer-phone"])) die(json_encode(array("success" => false, "message" => "Invalid customer phone number!")));
+        if (empty($_POST["customer-phone"])) die(json_encode(array("success" => false, "message" => "Customer phone number required!")));
+
+        if (!isset($_POST["customer-gender"])) die(json_encode(array("success" => false, "message" => "Invalid customer gender!")));
+        if (empty($_POST["customer-gender"])) die(json_encode(array("success" => false, "message" => "Customer gender required!")));
+
+        if (!isset($_POST["customer-address"])) die(json_encode(array("success" => false, "message" => "Invalid customer address!")));
+        if (empty($_POST["customer-address"])) die(json_encode(array("success" => false, "message" => "Customer address required!")));
+
+        if ($Customer->updateCustomer($_POST, $_SESSION["user"]))
+            die(json_encode(array("success" => true, "message" => "Customer data updated!")));
+        die(json_encode(array("success" => false, "message" => "Failed to update customer data!")));
+    }
+
+    if ($_GET["url"] == "delete-customer") {
+        if (!isset($_POST["customer_id"])) die(json_encode(array("success" => false, "message" => "Invalid customer id!")));
+        if (empty($_POST["customer_id"])) die(json_encode(array("success" => false, "message" => "Customer id required!")));
+
+        if ($Customer->deleteCustomer($_POST["customer_id"], $_SESSION["user"]))
+            die(json_encode(array("success" => true, "message" => "Customer successfully removed!")));
+        die(json_encode(array("success" => false, "message" => "Failed to removed customer!")));
+    }
+
+    if ($_GET["url"] == "fetch-customer-data") {
+        if (!isset($_POST["customer_id"])) die(json_encode(array("success" => false, "message" => "Invalid customer id!")));
+        if (empty($_POST["customer_id"])) die(json_encode(array("success" => false, "message" => "Customer id required!")));
+
+        $data = $Customer->getOneCustomer($_POST["customer_id"], $_SESSION["user"]);
+        if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
+        die(json_encode(array("success" => false, "message" => "Failed to retrieve customer data!")));
+    }
 }
 
 

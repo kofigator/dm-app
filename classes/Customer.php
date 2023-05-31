@@ -26,14 +26,14 @@ class Customer
     /**
      * 
      */
-    public function updateCustomer($customerData, int $customerID, int $userID)
+    public function updateCustomer($customerData, $userID)
     {
-        $query = "UPDATE customers SET `name` = :nm, `number` = :nb, gender = :gd, address = :ad 
-                update_at = CURRENT_TIMESTAMP() WHERE cust_id = :ci AND u_id = :ui";
+        $query = "UPDATE customers SET `name` = :nm, `number` = :nb, gender = :gd, `address` = :ad 
+                WHERE cust_id = :ci AND u_id = :ui";
         $param = array(
-            ":nm" => $customerData["name"], ":nb" => $customerData["number"],
-            ":gd" => $customerData["gender"], ":ad" => $customerData["address"],
-            ":ci" => $customerID, ":ui" => $userID
+            ":nm" => $customerData["customer-name"], ":nb" => $customerData["customer-phone"],
+            ":gd" => $customerData["customer-gender"], ":ad" => $customerData["customer-address"],
+            ":ci" => $customerData["customer-id"], ":ui" => $userID
         );
         return $this->db->inputData($query, $param);
     }
@@ -43,7 +43,7 @@ class Customer
      * @param int $userID
      * @return mixed
      */
-    public function deleteCustomer(int $customerID, int $userID)
+    public function deleteCustomer($customerID, $userID)
     {
         $query = "DELETE FROM customers WHERE cust_id = :ci AND u_id = :ui";
         $param = array(":ci" => $customerID, ":ui" => $userID);
@@ -55,9 +55,10 @@ class Customer
      * @param int $userID
      * @return mixed
      */
-    public function getOneCustomer(int $customerID, int $userID)
+    public function getOneCustomer($customerID, $userID)
     {
-        $query = "SELECT * FROM customers WHERE cust_id = :ci AND u_id = :ui";
+        $query = "SELECT `cust_id`, `gender`, `name`, `number`, `address` 
+                    FROM customers WHERE cust_id = :ci AND u_id = :ui";
         $param = array(":ci" => $customerID, ":ui" => $userID);
         return $this->db->getData($query, $param);
     }
@@ -66,10 +67,9 @@ class Customer
      * @param int $userID - id of the user
      * @return mixed - returns either an array or 0
      */
-    public function getAllCustomers(int $userID)
+    public function getAllCustomers($userID)
     {
         $query = "SELECT * FROM customers WHERE u_id = :ui ORDER BY added_at DESC";
-        $param = array(":ui" => $userID);
-        return $this->db->getData($query, $param);
+        return $this->db->getData($query, array(":ui" => $userID));
     }
 }
