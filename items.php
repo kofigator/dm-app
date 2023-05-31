@@ -12,7 +12,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
-    <title>Login Page</title>
+    <title>Items Page</title>
+
     <style>
       
       .body>form {
@@ -80,22 +81,24 @@
       display: block;
       }
 
-      #customer_header{
-      margin: 5px 10px;
+      #item_header{
+      margin: 15px 50px;
       color: #fff;
       
       }
-    </style>
+  </style> 
 </head>
 
-<body class="fluid-container">
+<body>
     <nav>
         <ul>
-        <li class="dropdown">
-              <a href="add_customer.php" class="dropbtn"><img src="add.jpg" alt="" width="35px" height="35px"></a>
-              
+            <li class="dropdown">
+              <a href="add_item.php" class="dropbtn"><img src="add.jpg" alt="" width="30px" height="30px"></a>
+              <div class="dropdown-content">
+                <a href="add_item.php">Add New Items</a>
+              </div>
             </li>
-            <li id="customer_header"><h1>CUSTOMERS</h1></li>
+            <li id="item_header">ITEMS</li>
         </ul>
     </nav>
 
@@ -103,14 +106,16 @@
         <table>
             <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Phone No.</th>
-                </tr>   
+                    <th>Name</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>  
+                    <th></th>
+                </tr>
             </thead>
             <tbody id="tableBody">
-            <?php 
-                include 'retrieve_customers.php'; 
-            ?>
+              <?php 
+                include 'retrieve_items.php'; 
+              ?>
             </tbody>
         </table>
     </div>
@@ -146,5 +151,4 @@
         });
     </script>
 </body>
-
 </html>
