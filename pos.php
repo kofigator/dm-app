@@ -1,39 +1,44 @@
+<?php
+session_start();
+if (!isset($_SESSION["user"])) header("Location: index.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Point of Service</title>
     <style>
-        *{
+        * {
             padding: 0%;
             margin: 0%;
         }
 
         ul {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          background-color: #ddc7c7;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #ddc7c7;
         }
-        
+
         li {
-          display: flex;
-          justify-content: center;
+            display: flex;
+            justify-content: center;
         }
-        
-        .header-inputs{
+
+        .header-inputs {
             display: flex;
             flex-direction: column;
         }
 
-        input[type="text"]{
+        input[type="text"] {
             display: flex;
             justify-content: center;
             width: 90%;
-            margin: 5px ;
+            margin: 5px;
             padding: 10px 5px;
             border-radius: 10px;
             margin-left: 10px;
@@ -60,7 +65,7 @@
 
         input[type="submit"] {
             padding: 10px 20px;
-            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
         }
 
         .checkout {
@@ -72,22 +77,25 @@
         th {
             text-decoration: none;
             padding-right: 50px;
-            
+
         }
 
         .quantity {
             width: 50px;
         }
-        
+
         td {
             padding: 3px 10px;
         }
     </style>
 </head>
+
 <body>
     <nav>
         <ul>
-            <li id="customer_header"><h1>Point Of Service</h1></li>
+            <li id="customer_header">
+                <h1>Point Of Service</h1>
+            </li>
         </ul>
     </nav>
     <div class="header-inputs">
@@ -105,7 +113,7 @@
             </thead>
             <tbody>
                 <tr>
-                    
+
                 </tr>
             </tbody>
         </table>
@@ -121,4 +129,5 @@
 
     <div class="checkout"><input type="submit" value="CHECKOUT"></div>
 </body>
+
 </html>

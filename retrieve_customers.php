@@ -13,7 +13,7 @@ if (!$conn) {
 }
 
 // Fetch customer records
-$sql = "SELECT * FROM customers WHERE u_id = '{$_SESSION["id"]}'";
+$sql = "SELECT * FROM customers WHERE u_id = '{$_SESSION["user"]}'";
 $result = mysqli_query($conn, $sql);
 
 // Output customer records in table format

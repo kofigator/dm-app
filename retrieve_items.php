@@ -18,15 +18,15 @@ $result = mysqli_query($conn, $sql);
 
 // Output customer records in table format
 if (mysqli_num_rows($result) > 0) {
-    while($row = mysqli_fetch_assoc($result)) {
+    while ($row = mysqli_fetch_assoc($result)) {
         $id = $row['item_id'];
         echo "<tr>";
         echo "<td>" . $row["item_name"] . "</td>";
         echo "<td>" . $row["unit_price"] . "</td>";
         echo "<td>" . $row["quantity"] . "</td>";
         echo "<td>
-                <a href='update_items.php?updateid=".$id."'><img src='edit.png' alt='Edit'></a>
-                <a href='delete_item.php?deleteid=".$id."'><img src='dele.png' alt='Delete'></a>
+                <a href='update_items.php?updateid=" . $id . "'><img src='edit.png' alt='Edit'></a>
+                <a href='delete_item.php?deleteid=" . $id . "'><img src='dele.png' alt='Delete'></a>
             </td>";
         echo "</tr>";
     }
@@ -36,5 +36,3 @@ if (mysqli_num_rows($result) > 0) {
 
 // Close database connection
 mysqli_close($conn);
-
-?>
