@@ -31,26 +31,6 @@ class User
         $params = array(":u" => $phoneNum, ":e" => $emailAddr, ":p" => $hashedPassw);
         return $this->db->inputData($query, $params);
     }
-
-    public function addCustomer($Name, $Phone, $Gender, $Address)
-        {
-            $u_id = '3322114455';
-            $query = "INSERT INTO `customers`(`u_id`, `name`, `number`, `gender`, `address`) VALUES (:x , :m, :n, :o, :q)";
-            $params = array(":x" => $u_id, ":m" => $Name, ":n" => $Phone, ":o" => $Gender, ":q" => $Address, );
-            $result = $this->db->inputData($query, $params);
-           
-            if (!$result) return $result;
-        }
-
-    public function addItem($Name, $Description, $unit_Price, $Quantity)
-    {
-        $u_id = '3322114455';
-        $query = "INSERT INTO `items`(`u_id`, `item_name`, `description`, `unit_price`, `quantity`) VALUES (:x , :m, :n, :o, :q)";
-        $params = array(":x" => $u_id, ":m" => $Name, ":n" => $Description, ":o" => $unit_Price, ":q" => $Quantity, );
-        $result = $this->db->inputData($query, $params);
-        
-        if (!$result) return $result;
-    }
        
 }
 

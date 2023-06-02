@@ -35,11 +35,11 @@
 
 <body class="fluid-container">
 
-    <header style="position: fixed !important; width: 100% !important; height: 80px !important">
+    <header style="position: relative !important; width: 100% !important; height: 60px !important;">
         <h1>Dashboard</h1>
     </header>
 
-    <main class="container" style="position: absolute !important; margin-top: 120px !important">
+    <div style="position: relative !important; margin-top: 0px !important">
         <div class="row">
             <a href="customers.php" class="col-md-4 m-3 bg-success dashboard-item">
                 <div style="padding: 35px">
@@ -62,7 +62,7 @@
                 </div>
             </a>
         </div>
-    </main>
+    </div>
 
     <script src="js/jquery-3.6.0.min.js"></script>
     <!-- MDB -->

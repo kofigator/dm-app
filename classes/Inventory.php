@@ -21,12 +21,14 @@ class Inventory
     }
     
     /**
-     * 
+     * @param int $itemID
+     * @param int $userID
+     * @return mixed
      */
     public function updateItem($itemData, $userID)
     {
         $query = "UPDATE items SET `item_name` = :nm, `description` = :nb, unit_price = :gd, `quantity` = :ad 
-                WHERE cust_id = :ci AND u_id = :ui";
+                WHERE item_id = :ci AND u_id = :ui";
         $param = array(
             ":nm" => $itemData["itm-name"], ":nb" => $itemData["itm-description"],
             ":gd" => $itemData["itm-unitprice"], ":ad" => $itemData["itm-quantity"],

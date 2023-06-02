@@ -95,23 +95,52 @@ $Inventory = new Inventory();
             color: #fff;
 
         }
+        
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        header>h1 {
+            text-align: center !important;
+        }
+
+        .dashboard-item {
+            border-radius: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .back {
+            cursor: pointer;
+        }
+
+        .add-new-element {
+            cursor:pointer;
+            position:absolute; 
+            right: 15px; 
+            font-size: 50px; 
+            border-radius: 50px; 
+            color: green;
+            bottom: 0px;
+        }
     </style>
 </head>
 
-<body>
-    <nav>
-        <ul>
-            <li class="dropdown">
-                <span class="dropbtn" data-mdb-toggle="modal" data-mdb-target="#addItem"><img src="add.jpg" alt="" width="35px" height="35px"></span>
-            </li>
-            <li id="item_header">
-                <h1>ITEMS</h1>
-            </li>
-        </ul>
-    </nav>
+<body class="fluid-container">
 
-    <div class="alert" id="alert" role="alert"></div>
-    <div>
+    <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
+        <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
+        <h1 style="flex-grow: 8">Inventory</h1>
+    </header>
+
+    
+    <!--<li class="dropdown">
+                <span class="dropbtn" data-mdb-toggle="modal" data-mdb-target="#addItem"><img src="add.jpg" alt="" width="35px" height="35px"></span>
+            </li>-->
+    
+    <div style="position: relative !important; margin-top: 0px !important">
         <?php
         $user_items = $Inventory->getAllItems($_SESSION["user"]);
 
@@ -175,6 +204,9 @@ $Inventory = new Inventory();
         }
         ?>
     </div>
+
+    <span class="bi bi-plus-circle-fill add-new-element" data-mdb-toggle="modal" data-mdb-target="#addItem"></span>
+
 
     <!-- Add Item Modal -->
     <div class="modal fade" id="addItem" data-mdb-backdrop="static" data-mdb-keyboard="false" tabindex="-1" aria-labelledby="addItemLabel" aria-hidden="true">
@@ -246,7 +278,7 @@ $Inventory = new Inventory();
                             <label class="form-label" for="itm-quantity">Quantity</label>
                         </div>
                         
-                        <input type="hidden" name="itm-id" id="customer-id" value="">
+                        <input type="hidden" name="itm-id" id="itm-id" value="">
 
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">Save</button>
@@ -261,6 +293,9 @@ $Inventory = new Inventory();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <script>
         $(document).ready(function() {
+            $(".back").click(function(){
+                window.location.href = "dashboard.php";
+            });
 
             $("#add-item-form").on("submit", function(e) {
                 e.preventDefault();
@@ -330,7 +365,7 @@ $Inventory = new Inventory();
                     }
                     $.ajax({
                         type: "POST",
-                        url: "api/delete-customer",
+                        url: "api/delete-item",
                         data: data,
                     }).done(function(data) {
                         console.log(data);
