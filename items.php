@@ -1,6 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
+require_once('classes/Inventory.php');
+$Inventory = new Inventory();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,31 +102,158 @@ if (!isset($_SESSION["user"])) header("Location: index.php");
     <nav>
         <ul>
             <li class="dropdown">
-                <a href="add_item.php" class="dropbtn"><img src="add.jpg" alt="" width="30px" height="30px"></a>
-                <div class="dropdown-content">
-                    <a href="add_item.php">Add New Items</a>
-                </div>
+                <span class="dropbtn" data-mdb-toggle="modal" data-mdb-target="#addItem"><img src="add.jpg" alt="" width="35px" height="35px"></span>
             </li>
-            <li id="item_header">ITEMS</li>
+            <li id="item_header">
+                <h1>ITEMS</h1>
+            </li>
         </ul>
     </nav>
 
+    <div class="alert" id="alert" role="alert"></div>
     <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <?php
-                include 'retrieve_items.php';
-                ?>
-            </tbody>
-        </table>
+        <?php
+        $user_items = $Inventory->getAllItems($_SESSION["user"]);
+
+        if (!empty($user_items)) {
+        ?>
+            <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                    <tr>
+                        <th>SN.</th>
+                        <th>Item Names and description</th>
+                        <th>Quantity</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $i = 1;
+                    foreach ($user_items as $Inventory) {
+                    ?>
+                        <tr>
+                            <td>
+                                <?= $i ?>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="assets/images/icons8-user-96.png" class="rounded-circle" alt="" style="width: 45px; height: 45px" />
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1"><?= $Inventory["item_name"] ?></p>
+                                        <p class="text-muted mb-0"><?= $Inventory["description"] ?></p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                <p class="fw-bold mb-1"><?= $Inventory["quantity"] ?></p>
+                                </div>
+                            </td>
+                            <td>
+                                <button type="button" id="<?= $Inventory["item_id"] ?>" class="edit-item btn btn-link btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" data-mdb-toggle="modal" data-mdb-target="#editItem">
+                                    <span class="bi bi-pencil-fill" style="font-size: 18px !important;"></span>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" id="<?= $Inventory["item_id"] ?>" class="delete-customer btn btn-link btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
+                                    <span class="bi bi-trash-fill text-danger" style="font-size: 18px !important;"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php
+                        $i++;
+                    }
+                    ?>
+                </tbody>
+            </table>
+        <?php
+        } else {
+        ?>
+            <div>No Items Found</div>
+        <?php
+        }
+        ?>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div class="modal fade" id="addItem" data-mdb-backdrop="static" data-mdb-keyboard="false" tabindex="-1" aria-labelledby="addItemLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemLabel">Add new Item</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!--log in fields-->
+                    <form method="post" id="add-item-form">
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <input type="text" id="item-name" name="item-name" class="form-control" />
+                            <label class="form-label" for="item-name">Item Name</label>
+                        </div>
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <input type="text" id="item-description" name="item-description" class="form-control" />
+                            <label class="form-label" for="item-description">Item Description</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" id="item-unitprice" name="item-unitprice" class="form-control" />
+                            <label class="form-label" for="item-unitprice">Item Unit_price</label>
+                        </div>
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <input type="number" id="item-quantity" name="item-quantity" class="form-control" />
+                            <label class="form-label" for="item-quantity">Quantity</label>
+                        </div>
+
+                        <!-- Submit button -->
+                        <button type="submit" class="btn btn-primary btn-block mb-4">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div class="modal fade" id="editItem" data-mdb-backdrop="static" data-mdb-keyboard="false" tabindex="-1" aria-labelledby="editItemLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editItemLabel">Edit Item Details</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!--log in fields-->
+                    <form method="post" id="edit-item-form">
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <input type="text" id="itm-name" name="itm-name" class="form-control" />
+                            <label class="form-label" for="itm-name">Item Name</label>
+                        </div>
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <input type="text" id="itm-description" name="itm-description" class="form-control" />
+                            <label class="form-label" for="itm-description">Item Description</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" id="itm-unitprice" name="itm-unitprice" class="form-control" />
+                            <label class="form-label" for="itm-unitprice">Item Unit_price</label>
+                        </div>
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <input type="number" id="itm-quantity" name="itm-quantity" class="form-control" />
+                            <label class="form-label" for="itm-quantity">Quantity</label>
+                        </div>
+                        
+                        <input type="hidden" name="itm-id" id="customer-id" value="">
+
+                        <!-- Submit button -->
+                        <button type="submit" class="btn btn-primary btn-block mb-4">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="js/jquery-3.6.0.min.js"></script>
@@ -133,27 +262,89 @@ if (!isset($_SESSION["user"])) header("Location: index.php");
     <script>
         $(document).ready(function() {
 
-            $("#Login-Form").on("submit", function(e) {
+            $("#add-item-form").on("submit", function(e) {
                 e.preventDefault();
 
                 $.ajax({
                     type: "POST",
-                    url: "api/login",
+                    url: "api/add-item", 
                     data: new FormData(this),
                     contentType: false,
                     cache: false,
                     processData: false,
                 }).done(function(data) {
                     console.log(data);
-                    if (data.success) {
-                        window.location.href = "dashboard.php";
+                    alert(data["message"]);
+                    window.location.reload();
+                }).fail(function(error) {
+                    console.log(error);
+                });
+            });
+
+
+            $(".edit-item").on("click", function(e) {
+                data = {
+                    item_id: $(this).attr("id")
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "api/fetch-item-data",
+                    data: data,
+                }).done(function(data) {
+                    console.log(data);
+                    if (data["success"]) {
+                        $("#itm-name").val(data["message"][0]["item_name"]);
+                        $("#itm-description").val(data["message"][0]["description"]);
+                        $("#itm-unitprice").val(data["message"][0]["unit_price"]);
+                        $("#itm-quantity").val(data["message"][0]["quantity"]);
+                        $("#itm-id").val(data["message"][0]["item_id"])
                     }
-                    alert(data.message);
-                    return;
                 }).fail(function(error) {
                     console.log(error);
                 })
             });
+
+            $("#edit-item-form").on("submit", function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/edit-item",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                }).done(function(data) {
+                    console.log(data);
+                    alert(data["message"]);
+                }).fail(function(error) {
+                    console.log(error);
+                })
+            });
+
+            $(".delete-customer").on("click", function(e) {
+
+                if (confirm("Are you sure you want to delete this customer data")) {
+                    data = {
+                        item_id: $(this).attr("id")
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "api/delete-customer",
+                        data: data,
+                    }).done(function(data) {
+                        console.log(data);
+                        alert(data["message"]);
+                        window.location.reload();
+                    }).fail(function(error) {
+                        console.log(error);
+                    })
+                }
+            });
+
+            $(".btn-close").click(function() {
+                window.location.reload();
+            })
 
         });
     </script>

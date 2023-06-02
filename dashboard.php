@@ -46,7 +46,7 @@
                     Customers
                 </div>
             </a>
-            <a href="Inventory.php" class="col-md-4 m-3 bg-success dashboard-item">
+            <a href="items.php" class="col-md-4 m-3 bg-success dashboard-item">
                 <div style="padding: 35px">
                     Inventory
                 </div>

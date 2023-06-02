@@ -12,9 +12,9 @@ class Customer
     /**
      * 
      */
-    public function addCustomer($customerData, int $userID)
+    public function addCustomer($customerData, $userID)
     {
-        $query = "INSERT INTO customers (name, number, gender, address) VALUES (:nm, :nb, :gd, :ad, :ui)";
+        $query = "INSERT INTO customers (name, number, gender, address, u_id) VALUES (:nm, :nb, :gd, :ad, :ui)";
         $param = array(
             ":nm" => $customerData["name"], ":nb" => $customerData["number"],
             ":gd" => $customerData["gender"], ":ad" => $customerData["address"],

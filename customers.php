@@ -19,7 +19,7 @@ $customer = new Customer();
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
-    <title>Login Page</title>
+    <title>Customers Page</title>
     <style>
         .body>form {
             height: 100% !important;
@@ -269,6 +269,26 @@ $customer = new Customer();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <script>
         $(document).ready(function() {
+
+            $("#add-customer-form").on("submit", function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/add-customer", 
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                }).done(function(data) {
+                    console.log(data);
+                    alert(data["message"]);
+                    window.location.reload();
+                }).fail(function(error) {
+                    console.log(error);
+                });
+            });
+
 
             $(".edit-customer").on("click", function(e) {
                 data = {

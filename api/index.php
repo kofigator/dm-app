@@ -74,45 +74,25 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         die(json_encode(array("success" => true, "message" => "Registration successful!")));
     }
 
-    //Adding New Customer
-    if ($_GET["url"] == "add_customer") {
-
-        if (!isset($_POST["name"])) die(json_encode(array("success" => false, "message" => "Name is required!")));
-        if (!isset($_POST["phone"])) die(json_encode(array("success" => false, "message" => "Phone number is required")));
-        if (!isset($_POST["gender"])) die(json_encode(array("success" => false, "message" => "Gender is required")));
-        if (!isset($_POST["address"])) die(json_encode(array("success" => false, "message" => "Name is required!")));
-
-
-        $Name = $dc->validateText($_POST["name"]);
-        $PhoneNum = $dc->validateNumber($_POST["phone"]);
-        $Gender = $dc->validateText($_POST["gender"]);
-        $Address = $dc->validateText($_POST["address"]);
-
-        $result = $User->addCustomer($Name, $PhoneNum, $Gender, $Address);
-
-        if ($result) die(json_encode(array("success" => false, "message" => "Registration successful!")));
-
-        die(json_encode(array("success" => true, "message" => "Adding Customer Failed!")));
-    }
-
-    //Adding an Item
-    if ($_GET["url"] == "add_item") {
-
-        if (!isset($_POST["item_name"])) die(json_encode(array("success" => false, "message" => "Item-name is required!")));
-        if (!isset($_POST["description"])) die(json_encode(array("success" => false, "message" => "Description is required")));
-        if (!isset($_POST["unit_price"])) die(json_encode(array("success" => false, "message" => "Unit-price is required")));
-        if (!isset($_POST["quantity"])) die(json_encode(array("success" => false, "message" => "Quantity address is required")));
-
-        $Name = $dc->validateText($_POST["item_name"]);
-        $Description = $dc->validateText($_POST["description"]);
-        $unit_Price = $dc->validateNumber($_POST["unit_price"]);
-        $Quantity = $dc->validateNumber($_POST["quantity"]);
-
-        $result = $User->addItem($Name, $Description, $unit_Price, $Quantity);
-
-        if ($result) die(json_encode(array("success" => false, "message" => "User registration failed!")));
-
-        die(json_encode(array("success" => true, "message" => "Registration successful!")));
+    if ($_GET["url"] == "add-customer") {
+        
+        if (!isset($_POST["cust-name"]) || empty($_POST["cust-name"])) die(json_encode(array("success" => false, "message" => "Invalid customer name!")));
+        if (!isset($_POST["cust-phone"]) || empty($_POST["cust-phone"])) die(json_encode(array("success" => false, "message" => "Invalid customer phone number!")));
+        if (!isset($_POST["cust-gender"]) || empty($_POST["cust-gender"])) die(json_encode(array("success" => false, "message" => "Invalid customer gender!")));
+        if (!isset($_POST["cust-address"]) || empty($_POST["cust-address"])) die(json_encode(array("success" => false, "message" => "Invalid customer address!")));
+    
+        $customerData = array(
+            "name" => $_POST["cust-name"],
+            "number" => $_POST["cust-phone"],
+            "gender" => $_POST["cust-gender"],
+            "address" => $_POST["cust-address"]
+        );
+    
+        if ($Customer->addCustomer($customerData, $_SESSION["user"])) {
+            die(json_encode(array("success" => true, "message" => "Customer added successfully!")));
+        } else {
+            die(json_encode(array("success" => false, "message" => "Failed to add customer data!")));
+        }
     }
 
     if ($_GET["url"] == "edit-customer") {
@@ -152,6 +132,67 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         $data = $Customer->getOneCustomer($_POST["customer_id"], $_SESSION["user"]);
         if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
         die(json_encode(array("success" => false, "message" => "Failed to retrieve customer data!")));
+    }
+
+
+    if ($_GET["url"] == "add-item") {
+        
+        if (!isset($_POST["item-name"]) || empty($_POST["item-name"])) die(json_encode(array("success" => false, "message" => "Invalid item-name!")));
+        if (!isset($_POST["item-description"]) || empty($_POST["item-description"])) die(json_encode(array("success" => false, "message" => "Invalid item-description!")));
+        if (!isset($_POST["item-unitprice"]) || empty($_POST["item-unitprice"])) die(json_encode(array("success" => false, "message" => "Invalid item-unitprice!")));
+        if (!isset($_POST["item-quantity"]) || empty($_POST["item-quantity"])) die(json_encode(array("success" => false, "message" => "Invalid item-quantity!")));
+    
+        $itemData = array(
+            "item_name" => $_POST["item-name"],
+            "description" => $_POST["item-description"],
+            "unit_price" => $_POST["item-unitprice"],
+            "quantity" => $_POST["item-quantity"]
+        );
+    
+        if ($Inventory->addItem($itemData, $_SESSION["user"])) {
+            die(json_encode(array("success" => true, "message" => "Item added successfully!")));
+        } else {
+            die(json_encode(array("success" => false, "message" => "Failed to add item data!")));
+        }
+    }
+
+    if ($_GET["url"] == "edit-item") {
+        if (!isset($_POST["itm-id"])) die(json_encode(array("success" => false, "message" => "Invalid item-id!")));
+        if (empty($_POST["itm-id"])) die(json_encode(array("success" => false, "message" => "item-id required!")));
+
+        if (!isset($_POST["itm-name"])) die(json_encode(array("success" => false, "message" => "Invalid item-name!")));
+        if (empty($_POST["itm-name"])) die(json_encode(array("success" => false, "message" => "item-name required!")));
+
+        if (!isset($_POST["itm-description"])) die(json_encode(array("success" => false, "message" => "Invalid item-description!")));
+        if (empty($_POST["itm-description"])) die(json_encode(array("success" => false, "message" => "itm-description required!")));
+
+        if (!isset($_POST["itm-unitprice"])) die(json_encode(array("success" => false, "message" => "Invalid item-unitprice!")));
+        if (empty($_POST["itm-unitprice"])) die(json_encode(array("success" => false, "message" => "itm-unitprice required!")));
+
+        if (!isset($_POST["itm-quantity"])) die(json_encode(array("success" => false, "message" => "Invalid item-quantity!")));
+        if (empty($_POST["itm-quantity"])) die(json_encode(array("success" => false, "message" => "item-quantity required!")));
+
+        if ($Inventory->updateItem($_POST, $_SESSION["user"]))
+            die(json_encode(array("success" => true, "message" => "Item data updated!")));
+        die(json_encode(array("success" => false, "message" => "Failed to update item data!")));
+    }
+
+    if ($_GET["url"] == "fetch-item-data") {
+        if (!isset($_POST["item_id"])) die(json_encode(array("success" => false, "message" => "Invalid item id!")));
+        if (empty($_POST["item_id"])) die(json_encode(array("success" => false, "message" => "item id required!")));
+
+        $data = $Inventory->getOneItem($_POST["item_id"], $_SESSION["user"]);
+        if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
+        die(json_encode(array("success" => false, "message" => "Failed to retrieve item data!")));
+    }
+
+    if ($_GET["url"] == "delete-item") {
+        if (!isset($_POST["item_id"])) die(json_encode(array("success" => false, "message" => "Invalid item id!")));
+        if (empty($_POST["item_id"])) die(json_encode(array("success" => false, "message" => "item id required!")));
+
+        if ($Inventory->deleteitem($_POST["item_id"], $_SESSION["user"]))
+            die(json_encode(array("success" => true, "message" => "Item successfully removed!")));
+        die(json_encode(array("success" => false, "message" => "Failed to removed item!")));
     }
 }
 
