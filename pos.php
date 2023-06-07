@@ -95,7 +95,7 @@ $Inventory = new Inventory();
             color: #fff;
 
         }
-        
+
         header {
             background-color: #333;
             color: #fff;
@@ -112,18 +112,23 @@ $Inventory = new Inventory();
             text-align: center;
             font-size: 18px;
         }
+
         .back {
             cursor: pointer;
         }
 
         .add-new-element {
-            cursor:pointer;
-            position:absolute; 
-            right: 15px; 
-            font-size: 50px; 
-            border-radius: 50px; 
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            font-size: 50px;
+            border-radius: 50px;
             color: green;
             bottom: 0px;
+        }
+
+        .search-list .list-item {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -132,12 +137,29 @@ $Inventory = new Inventory();
 
     <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
         <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
-        <h1 style="flex-grow: 8">Point Of Service</h1>
+        <h1 style="flex-grow: 8">POS</h1>
         <span style="flex-grow: 1" class="bi bi-clock-history" title="Sales history"></span>
     </header>
 
-    <input type="text" class="form-control-lg" style="width: 100%; border: none !important; border-radius: 0px !important" name="search" placeholder="Search to add item">
-        
+    <input type="text" class="form-control-lg" style="width: 100%; border: none !important; border-radius: 0px !important" name="search-item" id="search-item" placeholder="Search to add item">
+
+    <div>
+        <table class="table align-middle mb-0 bg-white">
+            <tbody class="search-list">
+                <tr class="list-item" id="1" data-itemName="Shirt" data-unitPrice="9.00">
+                    <td>1</td>
+                    <td class="sli-name">jgfhgdfhghkjlkjghfgh</td>
+                    <td class="sli-price">9.00</td>
+                </tr>
+                <tr class="list-item" id="2" data-itemName="Shoe" data-unitPrice="10.00">
+                    <td>1</td>
+                    <td class="sli-name">jgfhgdfhghkjlkjghfgh</td>
+                    <td class="sli-price">10.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div style="position: relative !important; margin-top: 0px !important;">
         <table class="table align-middle mb-0 bg-white">
             <thead class="bg-light">
@@ -150,7 +172,7 @@ $Inventory = new Inventory();
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="purchase-item-list">
                 <tr>
                     <td>1</td>
                     <td>jgfhgdfhghkjlkjghfgh</td>
@@ -166,13 +188,13 @@ $Inventory = new Inventory();
             </tbody>
         </table>
     </div>
-    
-    <div style="background-color: #fff; position: fixed; z-index: 99; bottom: 0px; height: 60px; width: 100%; display: flex; justify-content: space-between; align-items: center">
-        <div style=" display: flex; justify-content: space-between; align-items: center; margin-left: 15px">
+
+    <div style="background-color: #333; color: #fff; position: fixed; z-index: 99; bottom: 0px; height: 60px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 50px 15px">
+        <div style=" display: flex; justify-content: space-between; align-items: center;">
             <h1>GHc </h1>
             <h1>108.00</h1>
         </div>
-        <button class="btn btn-success" style="padding: 20px"  data-mdb-toggle="modal" data-mdb-target="#checkoutItems">Checkout</button>
+        <button class="btn btn-success" style="padding: 20px; max-width: 200px; min-width: 150px; font-size: 18px" data-mdb-toggle="modal" data-mdb-target="#checkoutItems">Checkout</button>
     </div>
 
     <!-- Add Item Modal -->
@@ -217,22 +239,89 @@ $Inventory = new Inventory();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <script>
         $(document).ready(function() {
-            $(".back").click(function(){
+            var purchase_item_list = {};
+
+            $(".back").click(function() {
                 window.location.href = "dashboard.php";
             });
 
             $(".item-qty").on("keyup", function() {
-                alert("JS: "+ this.value)
-                alert("JQ: "+ $(this).val())
-                    alert("NUMERIC " + $(this).siblings('.unit-price').text())
+                alert("JS: " + this.value)
+                alert("JQ: " + $(this).val())
+                alert("NUMERIC " + $(this).siblings('.unit-price').text())
                 if (!isNaN($(this).val())) {
                     var siblingText = parseFloat($(this).siblings('.unit-price').text());
                     var qty = parseInt($(this).val());
                     var total = qty * siblingText;
                     $(this).siblings('.total-price').text(total);
-                }   else {
+                } else {
                     alert("NON")
                 }
+            });
+
+            $("#search-item").on("keyup", (data) => {
+                if (data.target.value.length < 1) return;
+
+                let formData = {
+                    _data: data.target.value
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/fetch-item-list",
+                    data: formData,
+                }).done(function(data) {
+                    console.log(data);
+                    if (data["success"]) {
+                        $("#itm-name").val(data["message"][0]["item_name"]);
+                        $("#itm-description").val(data["message"][0]["description"]);
+                        $("#itm-unitprice").val(data["message"][0]["unit_price"]);
+                        $("#itm-quantity").val(data["message"][0]["quantity"]);
+                        $("#itm-id").val(data["message"][0]["item_id"])
+                    }
+                }).fail(function(error) {
+                    console.log(error);
+                })
+            });
+
+            $(".list-item").on("click", function() {
+                let dataT = {
+                    _data: $(this).attr('id')
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/fetch-item-for-purchase",
+                    data: dataT,
+                }).done(function(res) {
+                    console.log(res);
+                    if (res["success"]) {
+
+                        let itemObj = {
+                            item_name: res["message"][0]["item_name"],
+                            unit_price: res["message"][0]["unit_price"]
+                        }
+
+                        purchase_item_list[res["message"][0]["item_id"]] = itemObj;
+
+                        let tr = '<tr>' +
+                            '<td>1</td>' +
+                            '<td>' + itemObj.item_name + '</td>' +
+                            '<td class="unit-price">' + itemObj.unit_price + '</td>' +
+                            '<td><input type="number" id="" class="form-control item-qty" style="width: 80px" pattern="[0-9]+"></td>' +
+                            '<td class="total-price">54.00</td>' +
+                            '<td>' +
+                            '<button type="button" id="" class="delete-customer btn btn-link btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">' +
+                            '<span class="bi bi-trash-fill text-danger" style="font-size: 16px !important;"></span>' +
+                            '</button>' +
+                            '</td>' +
+                            '</tr>';
+
+                        $("#purchase-item-list").append(tr)
+                    }
+                }).fail(function(error) {
+                    console.log(error);
+                })
             })
         });
     </script>

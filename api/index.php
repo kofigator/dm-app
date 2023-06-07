@@ -75,19 +75,19 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 
     if ($_GET["url"] == "add-customer") {
-        
+
         if (!isset($_POST["cust-name"]) || empty($_POST["cust-name"])) die(json_encode(array("success" => false, "message" => "Invalid customer name!")));
         if (!isset($_POST["cust-phone"]) || empty($_POST["cust-phone"])) die(json_encode(array("success" => false, "message" => "Invalid customer phone number!")));
         if (!isset($_POST["cust-gender"]) || empty($_POST["cust-gender"])) die(json_encode(array("success" => false, "message" => "Invalid customer gender!")));
         if (!isset($_POST["cust-address"]) || empty($_POST["cust-address"])) die(json_encode(array("success" => false, "message" => "Invalid customer address!")));
-    
+
         $customerData = array(
             "name" => $_POST["cust-name"],
             "number" => $_POST["cust-phone"],
             "gender" => $_POST["cust-gender"],
             "address" => $_POST["cust-address"]
         );
-    
+
         if ($Customer->addCustomer($customerData, $_SESSION["user"])) {
             die(json_encode(array("success" => true, "message" => "Customer added successfully!")));
         } else {
@@ -136,19 +136,19 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
     if ($_GET["url"] == "add-item") {
-        
+
         if (!isset($_POST["item-name"]) || empty($_POST["item-name"])) die(json_encode(array("success" => false, "message" => "Invalid item-name!")));
         if (!isset($_POST["item-description"]) || empty($_POST["item-description"])) die(json_encode(array("success" => false, "message" => "Invalid item-description!")));
         if (!isset($_POST["item-unitprice"]) || empty($_POST["item-unitprice"])) die(json_encode(array("success" => false, "message" => "Invalid item-unitprice!")));
         if (!isset($_POST["item-quantity"]) || empty($_POST["item-quantity"])) die(json_encode(array("success" => false, "message" => "Invalid item-quantity!")));
-    
+
         $itemData = array(
             "item_name" => $_POST["item-name"],
             "description" => $_POST["item-description"],
             "unit_price" => $_POST["item-unitprice"],
             "quantity" => $_POST["item-quantity"]
         );
-    
+
         if ($Inventory->addItem($itemData, $_SESSION["user"])) {
             die(json_encode(array("success" => true, "message" => "Item added successfully!")));
         } else {
@@ -193,6 +193,18 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         if ($Inventory->deleteitem($_POST["item_id"], $_SESSION["user"]))
             die(json_encode(array("success" => true, "message" => "Item successfully removed!")));
         die(json_encode(array("success" => false, "message" => "Failed to removed item!")));
+    }
+
+    //POS
+    if ($_GET["url"] == "fetch-item-list") {
+        $data = $Sale->getListOfItemsByTextInput($_POST["_data"], $_SESSION["user"]);
+        if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
+        die(json_encode(array("success" => false, "message" => "No match found!")));
+    }
+    if ($_GET["url"] == "fetch-item-for-purchase") {
+        $data = $Sale->getListOfItemsByID($_POST["_data"], $_SESSION["user"]);
+        if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
+        die(json_encode(array("success" => false, "message" => "No match found!")));
     }
 }
 
