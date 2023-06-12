@@ -173,18 +173,23 @@ $Inventory = new Inventory();
                 </tr>
             </thead>
             <tbody id="purchase-item-list">
-                <tr>
-                    <td>1</td>
-                    <td>jgfhgdfhghkjlkjghfgh</td>
-                    <td class="unit-price">9.00</td>
-                    <td><input type="number" id="" class="form-control item-qty" style="width: 80px" pattern="[0-9]+"></td>
-                    <td class="total-price">54.00</td>
-                    <td>
-                        <button type="button" id="" class="delete-customer btn btn-link btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
-                            <span class="bi bi-trash-fill text-danger" style="font-size: 16px !important;"></span>
-                        </button>
-                    </td>
-                </tr>
+                <?php
+                $items = $Inventory->getAllItems($_SESSION["user"]);
+                $index = 1;
+                foreach ($items as $item) {
+                ?>
+                    <tr>
+                        <td><?= $index ?></td>
+                        <td><?= $item["item_name"] ?></td>
+                        <td class="unit-price"><?= $item["unit_price"] ?></td>
+                        <td><input type="number" id="" class="form-control item-qty" style="width: 80px" pattern="[0-9]+"></td>
+                        <td>
+                            <input type="checkbox" name="item" id="item">
+                        </td>
+                    </tr>
+                <?php
+                }
+                ?>
             </tbody>
         </table>
     </div>
