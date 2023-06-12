@@ -141,25 +141,6 @@ $Inventory = new Inventory();
         <span style="flex-grow: 1" class="bi bi-clock-history" title="Sales history"></span>
     </header>
 
-    <input type="text" class="form-control-lg" style="width: 100%; border: none !important; border-radius: 0px !important" name="search-item" id="search-item" placeholder="Search to add item">
-
-    <div>
-        <table class="table align-middle mb-0 bg-white">
-            <tbody class="search-list">
-                <tr class="list-item" id="1" data-itemName="Shirt" data-unitPrice="9.00">
-                    <td>1</td>
-                    <td class="sli-name">jgfhgdfhghkjlkjghfgh</td>
-                    <td class="sli-price">9.00</td>
-                </tr>
-                <tr class="list-item" id="2" data-itemName="Shoe" data-unitPrice="10.00">
-                    <td>1</td>
-                    <td class="sli-name">jgfhgdfhghkjlkjghfgh</td>
-                    <td class="sli-price">10.00</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
     <div style="position: relative !important; margin-top: 0px !important;">
         <table class="table align-middle mb-0 bg-white">
             <thead class="bg-light">
@@ -168,7 +149,6 @@ $Inventory = new Inventory();
                     <th>Item</th>
                     <th>Unit Price</th>
                     <th>Quantity</th>
-                    <th>Total (GHc)</th>
                     <th></th>
                 </tr>
             </thead>
@@ -181,10 +161,10 @@ $Inventory = new Inventory();
                     <tr>
                         <td><?= $index ?></td>
                         <td><?= $item["item_name"] ?></td>
-                        <td class="unit-price"><?= $item["unit_price"] ?></td>
-                        <td><input type="number" id="" class="form-control item-qty" style="width: 80px" pattern="[0-9]+"></td>
+                        <td class="unit-price" id="up<?= $item["item_id"]?>"><?= $item["unit_price"] ?></td>
+                        <td><input type="number" id="qty<?= $item["item_id"]?>" class="form-control item-qty" style="width: 80px" pattern="[0-9]+" value="0"></td>
                         <td>
-                            <input type="checkbox" name="item" id="item">
+                            <input type="checkbox" name="item[]" id="<?= $item["item_id"]?>" class="item">
                         </td>
                     </tr>
                 <?php
@@ -197,7 +177,7 @@ $Inventory = new Inventory();
     <div style="background-color: #333; color: #fff; position: fixed; z-index: 99; bottom: 0px; height: 60px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 50px 15px">
         <div style=" display: flex; justify-content: space-between; align-items: center;">
             <h1>GHc </h1>
-            <h1>108.00</h1>
+            <h1 id="total-price-display">0.00</h1>
         </div>
         <button class="btn btn-success" style="padding: 20px; max-width: 200px; min-width: 150px; font-size: 18px" data-mdb-toggle="modal" data-mdb-target="#checkoutItems">Checkout</button>
     </div>
@@ -244,6 +224,35 @@ $Inventory = new Inventory();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <script>
         $(document).ready(function() {
+
+            var totalProductPrice = 0;
+
+            var listOfProducts = {};
+
+            function productTotalPrice() {
+                total = 0;
+                for(let item in listOfProducts) {
+                    if (listOfProducts.hasOwnProperty(item)) {
+                        total += listOfProducts[item];
+                    }
+                }
+                totalProductPrice = total;
+                $('#total-price-display').html(totalProductPrice);
+            }
+
+            $(".item").on("change", function() {
+                    var item_id = $(this).attr("id");
+                if ($(this).is(":checked")) {
+                    var qty = parseInt($("#qty"+item_id).val());
+                    var unit_p = parseFloat($("#up"+item_id).text()).toFixed(2);
+                    var total = qty * unit_p;
+                    listOfProducts[item_id] = total;
+                } else {
+                    delete listOfProducts[item_id];
+                }
+                productTotalPrice();
+            })
+
             var purchase_item_list = {};
 
             $(".back").click(function() {
