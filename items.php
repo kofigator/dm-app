@@ -1,6 +1,11 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
+if (isset($_GET["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+}
 require_once('classes/Inventory.php');
 $Inventory = new Inventory();
 ?>
@@ -95,7 +100,7 @@ $Inventory = new Inventory();
             color: #fff;
 
         }
-        
+
         header {
             background-color: #333;
             color: #fff;
@@ -112,16 +117,17 @@ $Inventory = new Inventory();
             text-align: center;
             font-size: 18px;
         }
+
         .back {
             cursor: pointer;
         }
 
         .add-new-element {
-            cursor:pointer;
-            position:absolute; 
-            right: 15px; 
-            font-size: 50px; 
-            border-radius: 50px; 
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            font-size: 50px;
+            border-radius: 50px;
             color: green;
             bottom: 0px;
         }
@@ -133,13 +139,14 @@ $Inventory = new Inventory();
     <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
         <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
         <h1 style="flex-grow: 8">Inventory</h1>
+        <?php require_once('inc/header.php') ?>
     </header>
 
-    
+
     <!--<li class="dropdown">
                 <span class="dropbtn" data-mdb-toggle="modal" data-mdb-target="#addItem"><img src="add.jpg" alt="" width="35px" height="35px"></span>
             </li>-->
-    
+
     <div style="position: relative !important; margin-top: 0px !important">
         <?php
         $user_items = $Inventory->getAllItems($_SESSION["user"]);
@@ -176,7 +183,7 @@ $Inventory = new Inventory();
                             </td>
                             <td>
                                 <div>
-                                <p class="fw-bold mb-1"><?= $Inventory["quantity"] ?></p>
+                                    <p class="fw-bold mb-1"><?= $Inventory["quantity"] ?></p>
                                 </div>
                             </td>
                             <td>
@@ -277,7 +284,7 @@ $Inventory = new Inventory();
                             <input type="number" id="itm-quantity" name="itm-quantity" class="form-control" />
                             <label class="form-label" for="itm-quantity">Quantity</label>
                         </div>
-                        
+
                         <input type="hidden" name="itm-id" id="itm-id" value="">
 
                         <!-- Submit button -->
@@ -293,7 +300,7 @@ $Inventory = new Inventory();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <script>
         $(document).ready(function() {
-            $(".back").click(function(){
+            $(".back").click(function() {
                 window.location.href = "dashboard.php";
             });
 
@@ -302,7 +309,7 @@ $Inventory = new Inventory();
 
                 $.ajax({
                     type: "POST",
-                    url: "api/add-item", 
+                    url: "api/add-item",
                     data: new FormData(this),
                     contentType: false,
                     cache: false,

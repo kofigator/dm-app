@@ -1,6 +1,11 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
+if (isset($_GET["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+}
 require_once('classes/Customer.php');
 $customer = new Customer();
 ?>
@@ -95,7 +100,7 @@ $customer = new Customer();
             color: #fff;
 
         }
-        
+
         header {
             background-color: #333;
             color: #fff;
@@ -106,16 +111,17 @@ $customer = new Customer();
         header>h1 {
             text-align: center !important;
         }
+
         .back {
             cursor: pointer;
         }
 
         .add-new-element {
-            cursor:pointer;
-            position:absolute; 
-            right: 15px; 
-            font-size: 50px; 
-            border-radius: 50px; 
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            font-size: 50px;
+            border-radius: 50px;
             color: green;
             bottom: 0px;
         }
@@ -127,6 +133,7 @@ $customer = new Customer();
     <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
         <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
         <h1 style="flex-grow: 8">Customers</h1>
+        <?php require_once('inc/header.php') ?>
     </header>
 
     <!--
@@ -296,7 +303,7 @@ $customer = new Customer();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <script>
         $(document).ready(function() {
-            $(".back").click(function(){
+            $(".back").click(function() {
                 window.location.href = "dashboard.php";
             });
 
@@ -305,7 +312,7 @@ $customer = new Customer();
 
                 $.ajax({
                     type: "POST",
-                    url: "api/add-customer", 
+                    url: "api/add-customer",
                     data: new FormData(this),
                     contentType: false,
                     cache: false,

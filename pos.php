@@ -1,8 +1,15 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
+if (isset($_GET["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+}
 require_once('classes/Inventory.php');
+require_once('classes/Customer.php');
 $Inventory = new Inventory();
+$Customer = new Customer();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -138,7 +145,7 @@ $Inventory = new Inventory();
     <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
         <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
         <h1 style="flex-grow: 8">POS</h1>
-        <span style="flex-grow: 1" class="bi bi-clock-history" title="Sales history"></span>
+        <?php require_once('inc/header.php') ?>
     </header>
 
     <div style="position: relative !important; margin-top: 0px !important;">
@@ -155,20 +162,23 @@ $Inventory = new Inventory();
             <tbody id="purchase-item-list">
                 <?php
                 $items = $Inventory->getAllItems($_SESSION["user"]);
-                $index = 1;
-                foreach ($items as $item) {
+
+                if (!empty($items)) {
+                    $index = 1;
+                    foreach ($items as $item) {
                 ?>
-                    <tr>
-                        <td><?= $index ?></td>
-                        <td><?= $item["item_name"] ?></td>
-                        <td class="unit-price" id="up<?= $item["item_id"]?>"><?= $item["unit_price"] ?></td>
-                        <td><input type="number" id="qty<?= $item["item_id"]?>" class="form-control item-qty" style="width: 80px" pattern="[0-9]+" value="0"></td>
-                        <td>
-                            <input type="checkbox" name="item[]" id="<?= $item["item_id"]?>" class="item">
-                        </td>
-                    </tr>
+                        <tr>
+                            <td><?= $index ?></td>
+                            <td><?= $item["item_name"] ?></td>
+                            <td class="unit-price" id="up<?= $item["item_id"] ?>"><?= $item["unit_price"] ?></td>
+                            <td><input type="number" id="qty<?= $item["item_id"] ?>" class="form-control item-qty" style="width: 80px" pattern="[0-9]+" value="0"></td>
+                            <td>
+                                <input type="checkbox" name="item[]" id="<?= $item["item_id"] ?>" class="item">
+                            </td>
+                        </tr>
                 <?php
-                $index++;
+                        $index++;
+                    }
                 }
                 ?>
             </tbody>
@@ -193,11 +203,24 @@ $Inventory = new Inventory();
                 </div>
                 <div class="modal-body">
                     <!--log in fields-->
-                    <form method="post" id="add-item-form">
+                    <form method="post" id="sell-product-form">
                         <!-- Email input -->
                         <div class="mb-4">
                             <label class="form-label" for="item-name">Customer</label>
-                            <input type="text" id="item-name" name="item-name" class="form-control" />
+                            <select name="customer-list" id="customer-list">
+                                <option value="" hidden>Choose a customer</option>
+                                <?php
+                                $customers = $Customer->getAllCustomers($_SESSION["user"]);
+                                if (!empty($customers)) {
+                                    foreach ($customers as $customer) {
+                                ?>
+                                        <option value="<?= $customer["cust_id"] ?>"><?= $customer["name"] . " - " . $customer["address"] ?></option>
+                                <?php
+                                    }
+                                }
+                                ?>
+                                <option value="non">Non customer</option>
+                            </select>
                         </div>
                         <!-- Email input -->
                         <div class="mb-4">
@@ -208,9 +231,9 @@ $Inventory = new Inventory();
                                 <option value="CASH">CASH</option>
                             </select>
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label" for="item-unitprice">How much is customer paying? (GHc)</label>
-                            <input type="text" id="item-unitprice" name="item-unitprice" class="form-control" />
+                        <div class="mb-4 row">
+                            <label class="form-label" for="customer-deposit">How much is customer paying? (GHc)</label>
+                            <input type="text" id="customer-deposit" name="customer-deposit" class="form-control" />
                         </div>
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">Save</button>
@@ -225,40 +248,63 @@ $Inventory = new Inventory();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <script>
         $(document).ready(function() {
-
-            var totalProductPrice = 0;
+            $(".back").click(function() {
+                window.location.href = "dashboard.php";
+            });
 
             var listOfProducts = {};
 
             function productTotalPrice() {
                 total = 0;
-                for(let item in listOfProducts) {
+                for (let item in listOfProducts) {
                     if (listOfProducts.hasOwnProperty(item)) {
-                        total += listOfProducts[item];
+                        total += listOfProducts[item]["total"];
                     }
                 }
-                totalProductPrice = total;
-                $('#total-price-display').html(totalProductPrice);
+                $('#total-price-display').html(total);
             }
 
             $(".item").on("change", function() {
-                    var item_id = $(this).attr("id");
+                var item_id = $(this).attr("id");
+                var qty = parseInt($("#qty" + item_id).val());
+                var unit_p = parseFloat($("#up" + item_id).text()).toFixed(2);
+                if (qty < 1) {
+                    alert("Quantity of this product must not be 0");
+                    $(this).prop("checked", "")
+                }
                 if ($(this).is(":checked")) {
-                    var qty = parseInt($("#qty"+item_id).val());
-                    var unit_p = parseFloat($("#up"+item_id).text()).toFixed(2);
                     var total = qty * unit_p;
-                    listOfProducts[item_id] = total;
+                    listOfProducts[item_id] = {
+                        "quantity": qty,
+                        "unit_price": unit_p,
+                        "total": total
+                    }
+                    $("#qty" + item_id).prop("disabled", "true")
                 } else {
                     delete listOfProducts[item_id];
+                    $("#qty" + item_id).prop("disabled", "")
                 }
                 productTotalPrice();
-            })
+            });
+
+            $("#sell-product-form").on("submit", function(e) {
+                e.preventDefault();
+                formData = new FormData(this);
+                formData.append("items", JSON.stringify(listOfProducts));
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/sell-products",
+                    data: formData,
+                }).done(function(data) {
+                    console.log(data);
+                    alert(data["message"]);
+                }).fail(function(error) {
+                    console.log(error);
+                });
+            });
 
             var purchase_item_list = {};
-
-            $(".back").click(function() {
-                window.location.href = "dashboard.php";
-            });
 
             $(".item-qty").on("keyup", function() {
                 alert("JS: " + this.value)

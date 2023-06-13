@@ -1,3 +1,14 @@
+<?php
+session_start();
+if (!isset($_SESSION["user"])) header("Location: index.php");
+if (isset($_GET["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+}
+require_once('classes/Inventory.php');
+$Inventory = new Inventory();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
@@ -36,8 +47,9 @@
 
 <body class="fluid-container">
 
-    <header style="position: relative !important; width: 100% !important; height: 60px !important;">
-        <h1>Dashboard</h1>
+    <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
+        <h1 style="flex-grow: 8">Dashboard</h1>
+        <?php require_once('inc/header.php') ?>
     </header>
 
     <div style="position: relative !important; margin-top: 0px !important">
@@ -68,7 +80,14 @@
     <script src="js/jquery-3.6.0.min.js"></script>
     <!-- MDB -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+    <script>
+        $(document).ready(function() {
 
+            $(".back").click(function() {
+                window.location.href = "dashboard.php";
+            });
+        })
+    </script>
 </body>
 
 </html>

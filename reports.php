@@ -1,6 +1,11 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
+if (isset($_GET["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+}
 require_once('classes/Inventory.php');
 $Inventory = new Inventory();
 ?>
@@ -137,6 +142,7 @@ $Inventory = new Inventory();
     <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
         <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
         <h1 style="flex-grow: 8">REPORTS</h1>
+        <?php require_once('inc/header.php') ?>
     </header>
 
     <div class="payment-type">
@@ -153,7 +159,7 @@ $Inventory = new Inventory();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <script>
         $(document).ready(function() {
-           
+
             $(".back").click(function() {
                 window.location.href = "dashboard.php";
             });

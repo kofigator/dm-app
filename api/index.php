@@ -206,6 +206,22 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
         die(json_encode(array("success" => false, "message" => "No match found!")));
     }
+
+    //Selling products
+    if ($_GET["url"] == "sell-products") {
+        if (!isset($_POST["customer-list"]) || empty($_POST["customer-list"]))
+            die(json_encode(array("success" => false, "message" => "Customer is required!")));
+        if (empty($_POST["payment-method"]) || empty($_POST["payment-method"]))
+            die(json_encode(array("success" => false, "message" => "Payment method is required!")));
+        if (empty($_POST["customer-deposit"]) || empty($_POST["customer-deposit"]))
+            die(json_encode(array("success" => false, "message" => "Deposit amount is required!")));
+        if (empty($_POST["items"]) || empty($_POST["items"]))
+            die(json_encode(array("success" => false, "message" => "Deposit amount is required!")));
+        
+        $data = $Sale->getListOfItemsByID($_POST["_data"], $_SESSION["user"]);
+        if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
+        die(json_encode(array("success" => false, "message" => "No match found!")));
+    }
 }
 
 
