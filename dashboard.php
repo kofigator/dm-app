@@ -31,6 +31,12 @@
             font-size: 18px;
             color: #fff;
         }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            padding: 100px 0px;
+        }
     </style>
 </head>
 
@@ -38,6 +44,9 @@
 
     <header style="position: relative !important; width: 100% !important; height: 60px !important;">
         <h1>Dashboard</h1>
+        <a href="logout.php" style="position: absolute; top: 10px; right: 10px; color: #fff; text-decoration: none;">
+            Logout
+        </a>
     </header>
 
     <div style="position: relative !important; margin-top: 0px !important">
