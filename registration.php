@@ -91,7 +91,7 @@ if (isset($_SESSION["user"])) header("Location: dashboard.php");
             <div class="form-check d-flex justify-content-center mb-5">
                 <input class="form-check-input me-2" type="checkbox" value="" id="agree-tnc" />
                 <label class="form-check-label" for="agree-tnc">
-                    I agree all statements in <a href="#!">Terms of service</a>
+                    I agree all statements in <a href="term_of_service.html">Terms of service</a>
                 </label>
             </div>
 
