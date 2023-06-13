@@ -168,6 +168,7 @@ $Inventory = new Inventory();
                         </td>
                     </tr>
                 <?php
+                $index++;
                 }
                 ?>
             </tbody>

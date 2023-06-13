@@ -29,6 +29,7 @@
             border-radius: 15px;
             text-align: center;
             font-size: 18px;
+            color: #fff;
         }
     </style>
 </head>
@@ -41,7 +42,7 @@
 
     <div style="position: relative !important; margin-top: 0px !important">
         <div class="row">
-            <a href="customers.php" class="col-md-4 m-3 bg-success dashboard-item">
+            <a href="customers.php" class="col-md-4 m-3 bg-success  dashboard-item">
                 <div style="padding: 35px">
                     Customers
                 </div>
