@@ -1,6 +1,11 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
+if (isset($_GET["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+}
 require_once('classes/Inventory.php');
 $Inventory = new Inventory();
 ?>
@@ -11,74 +16,67 @@ $Inventory = new Inventory();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports</title>
+    <title>Dashboard</title>
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
+
+    <style>
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        header>h1 {
+            text-align: center !important;
+        }
+
+        .dashboard-item {
+            border-radius: 15px;
+            text-align: center;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            padding: 100px 0px;
+        }
+    </style>
 </head>
 
 <body class="fluid-container">
 
-    <div class="container mt-4">
-    <header style="position: relative !important; width: 100% !important; height: 60px !important;">
-        <h1>Reports</h1>
-        <a href="logout.php" style="position: absolute; top: 10px; right: 10px; color: #fff; text-decoration: none;">
-            Logout
-        </a>
+    <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
+        <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
+        <h1 style="flex-grow: 8">Inventory</h1>
+        <?php require_once('inc/header.php') ?>
     </header>
 
-        <!-- Filter Form -->
-        <form id="reports-form" method="post">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="reportType">Report Type</label>
-                    <select class="form-select" id="reportType" name="reportType">
-                        <option value="inventory">Inventory</option>
-                    </select>
+
+    <div style="position: relative !important; margin-top: 0px !important">
+        <div class="row">
+            <a href="customers_reports.php" class="col-md-4 m-3 bg-success  dashboard-item">
+                <div style="padding: 35px">
+                    Customers
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label for="startDate">Start Date</label>
-                    <input type="date" class="form-control" id="startDate" name="startDate">
+            </a>
+            <a href="inventory_reports.php" class="col-md-4 m-3 bg-success dashboard-item">
+                <div style="padding: 35px">
+                    Inventory
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label for="endDate">End Date</label>
-                    <input type="date" class="form-control" id="endDate" name="endDate">
+            </a>
+            <a href="pos.php" class="col-md-4 m-3 bg-success dashboard-item">
+                <div style="padding: 35px">
+                    POS
                 </div>
-            </div>
-
-
-            <button type="submit" class="btn btn-primary">Generate Report</button>
-        </form>
-
-        <!-- Report Results Table -->
-        <div class="mt-4">
-            <h2>Report Results</h2>
-
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Report Type</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Table rows with report data will be generated dynamically -->
-                    <tr>
-                        <td>1</td>
-                        <td>John Doe</td>
-                        <td>Inventory</td>
-                        <td>2023-05-01</td>
-                        <td>$500</td>
-                    </tr>
-                    
-                </tbody>
-            </table>
+            </a>
         </div>
     </div>
 
@@ -88,29 +86,10 @@ $Inventory = new Inventory();
     <script>
         $(document).ready(function() {
 
-            $("#reports-form").on("submit", function(e) {
-                e.preventDefault();
-
-                $.ajax({
-                    type: "POST",
-                    url: "api/generate-report",
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                }).done(function(data) {
-                    console.log(data);
-                    if (data.success) {
-                        window.location.href = "reports.php";
-                    }
-                    alert(data.message);
-                    return;
-                }).fail(function(error) {
-                    console.log(error);
-                })
+            $(".back").click(function() {
+                window.location.href = "dashboard.php";
             });
-
-        });
+        })
     </script>
 </body>
 
