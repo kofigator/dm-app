@@ -217,10 +217,11 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
             die(json_encode(array("success" => false, "message" => "Deposit amount is required!")));
         if (empty($_POST["items"]) || empty($_POST["items"]))
             die(json_encode(array("success" => false, "message" => "Deposit amount is required!")));
-        
-        $data = $Sale->getListOfItemsByID($_POST["_data"], $_SESSION["user"]);
-        if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
-        die(json_encode(array("success" => false, "message" => "No match found!")));
+
+        $data = $Sale->sellProducts($_POST, $_SESSION["user"]);
+        die(json_encode($data));
+        if ($data) die(json_encode(array("success" => true, "message" => "Completed!")));
+        die(json_encode(array("success" => false, "message" => "Failed to sell to customer!")));
     }
 }
 

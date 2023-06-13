@@ -275,6 +275,7 @@ $Customer = new Customer();
                 if ($(this).is(":checked")) {
                     var total = qty * unit_p;
                     listOfProducts[item_id] = {
+                        "id": item_id,
                         "quantity": qty,
                         "unit_price": unit_p,
                         "total": total
@@ -296,6 +297,9 @@ $Customer = new Customer();
                     type: "POST",
                     url: "api/sell-products",
                     data: formData,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
                 }).done(function(data) {
                     console.log(data);
                     alert(data["message"]);

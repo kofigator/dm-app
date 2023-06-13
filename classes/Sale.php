@@ -22,4 +22,26 @@ class Sale
                     FROM items WHERE u_id = :ui AND item_id = :it";
         return $this->db->getData($query, array("it" => $itemID, ":ui" => $user_id));
     }
+
+    public function sellProducts($data, $user_id)
+    {
+        /*
+        INSERT INTO `customers`(`cust_id`, `u_id`, `name`, `number`, `gender`, `address`) 
+VALUES (1, 1, 'Non customer', '0123456789', 'none', 'none')
+        */
+        $totalAdded = 0;
+        foreach ($data["items"] as $item) {
+            $query = "INSERT INTO `sales`(`item_id`, `cust_id`, `user_id`, `quantity`, `unit_price`) 
+                    VALUES(:ii, :ci, :ui, :qt, :up)";
+            return $item;
+            $totalAdded += $this->db->inputData($query, array(
+                ":ii" => $item["id"],
+                ":ii" => $data["customer-list"],
+                ":ui" => $user_id,
+                ":qt" => $item["quantity"],
+                ":up" => $item["unit_price"]
+            ));
+        }
+        return $totalAdded;
+    }
 }
