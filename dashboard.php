@@ -42,6 +42,12 @@ $Inventory = new Inventory();
             font-size: 18px;
             color: #fff;
         }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            padding: 100px 0px;
+        }
     </style>
 </head>
 
