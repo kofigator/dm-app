@@ -1,12 +1,6 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
-<<<<<<< HEAD
-require_once('classes/Inventory.php');
-require_once('classes/Customer.php');
-$Inventory = new Inventory();
-$Customer = new Customer();
-=======
 if (isset($_GET["logout"])) {
     session_unset();
     session_destroy();
@@ -14,7 +8,6 @@ if (isset($_GET["logout"])) {
 }
 require_once('classes/Customer.php');
 $customer = new Customer();
->>>>>>> main
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,23 +73,6 @@ $customer = new Customer();
             <div class="row mb-3">
                 <div class="col-md-2">
                     <div class="form-group">
-<<<<<<< HEAD
-                        <label for="reportType" class="form-label">Report Type</label>
-                        <select name="customer-list" id="customer-list">
-                                <option value="" hidden>Choose a customer</option>
-                                <?php
-                                $customers = $Customer->getAllCustomers($_SESSION["user"]);
-                                if (!empty($customers)) {
-                                    foreach ($customers as $customer) {
-                                ?>
-                                        <option value="<?= $customer["cust_id"] ?>"><?= $customer["name"] . " - " . $customer["address"] ?></option>
-                                <?php
-                                    }
-                                }
-                                ?>
-                                <option value="non">Non customer</option>
-                            </select>
-=======
                         <label for="reportType" class="form-label">Filter By City/Location</label>
                         <select class="form-select" id="reportCity" name="reportCity">
                             <option value="">Choose</option>
@@ -111,7 +87,6 @@ $customer = new Customer();
                             }
                             ?>
                         </select>
->>>>>>> main
                     </div>
                 </div>
                 <div class="col-md-3">
