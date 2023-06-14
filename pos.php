@@ -28,81 +28,6 @@ $Customer = new Customer();
     <title>Items Page</title>
 
     <style>
-        .body>form {
-            height: 100% !important;
-            width: 100% !important;
-        }
-
-        form {
-            max-width: 500px;
-        }
-
-        #tableBody td {
-            padding-right: 40px;
-            padding-bottom: 20px;
-        }
-
-        .act_btn td {
-            padding: 20px;
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
-        }
-
-        li {
-            float: left;
-        }
-
-        li a,
-        .dropbtn {
-            display: inline-block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        li a:hover,
-        .dropdown:hover .dropbtn {
-            background-color: rgb(236, 195, 195);
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        #item_header {
-            margin: 15px 50px;
-            color: #fff;
-
-        }
-
         header {
             background-color: #333;
             color: #fff;
@@ -121,20 +46,6 @@ $Customer = new Customer();
         }
 
         .back {
-            cursor: pointer;
-        }
-
-        .add-new-element {
-            cursor: pointer;
-            position: absolute;
-            right: 15px;
-            font-size: 50px;
-            border-radius: 50px;
-            color: green;
-            bottom: 0px;
-        }
-
-        .search-list .list-item {
             cursor: pointer;
         }
     </style>
@@ -185,12 +96,14 @@ $Customer = new Customer();
         </table>
     </div>
 
-    <div style="background-color: #333; color: #fff; position: fixed; z-index: 99; bottom: 0px; height: 60px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 50px 15px">
-        <div style=" display: flex; justify-content: space-between; align-items: center;">
-            <h1>GHc </h1>
-            <h1 id="total-price-display">0.00</h1>
+    <div id="checkout-div" style="display: none;">
+        <div style="background-color: #333; color: #fff; position: fixed; z-index: 99; bottom: 0px; height: 60px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 50px 15px">
+            <div style=" display: flex; justify-content: space-between; align-items: center;">
+                <h1>GHS </h1>
+                <h1 id="total-price-display">0.00</h1>
+            </div>
+            <button id="checkoutBtn" class="btn btn-success" style="padding: 20px; max-width: 200px; min-width: 150px; font-size: 18px" data-mdb-toggle="modal" data-mdb-target="#checkoutItems">Checkout</button>
         </div>
-        <button class="btn btn-success" style="padding: 20px; max-width: 200px; min-width: 150px; font-size: 18px" data-mdb-toggle="modal" data-mdb-target="#checkoutItems">Checkout</button>
     </div>
 
     <!-- Add Item Modal -->
@@ -204,10 +117,30 @@ $Customer = new Customer();
                 <div class="modal-body">
                     <!--log in fields-->
                     <form method="post" id="sell-product-form">
+                        <div class="mb-4" style="border: 1px solid #eee; background-color: #eee">
+                            <label class="form-label" for="total-price" style="color: #000; font-size: larger;">Total Purchase Amount</label>
+                            <input type="text" disabled name="total-price" id="total-price" style="color: #000; width: 100%; font-size: 42px; border: none; background-color: #eee" />
+                        </div>
+
                         <!-- Email input -->
                         <div class="mb-4">
+                            <div>
+                                <label for="buyer-type">Buyer is a </label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input is-buyer" required type="radio" name="buyer-type" id="is-customer" value="option1" />
+                                    <label class="form-check-label" for="is-customer">Customer</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input is-buyer" required type="radio" name="buyer-type" id="is-not-customer" value="option2" />
+                                    <label class="form-check-label" for="is-not-customer">Not a customer</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4" id="c-is-customer" style="display: none">
                             <label class="form-label" for="item-name">Customer</label>
-                            <select name="customer-list" id="customer-list">
+                            <select name="customer-list" id="customer-list" class="form-select">
                                 <option value="" hidden>Choose a customer</option>
                                 <?php
                                 $customers = $Customer->getAllCustomers($_SESSION["user"]);
@@ -219,23 +152,73 @@ $Customer = new Customer();
                                     }
                                 }
                                 ?>
-                                <option value="non">Non customer</option>
                             </select>
                         </div>
+
+                        <div class="mb-4" id="c-is-not-customer" style="display: none">
+                            <div class="form-outline mb-4">
+                                <input type="text" id="buyer-name" name="buyer-name" class="form-control" />
+                                <label class="form-label" for="buyer-name">Buyer Name</label>
+                            </div>
+
+                            <!-- Email input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="buyer-phone" name="buyer-phone" class="form-control" />
+                                <label class="form-label" for="buyer-phone">Buyer Phone Number</label>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="me-2">Buyer Sex</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="buyer-gender" id="female" value="F" />
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="buyer-gender" id="male" value="M" />
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+                            </div>
+
+                            <!-- Email input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="buyer-city" name="buyer-city" class="form-control" />
+                                <label class="form-label" for="buyer-city">Buyer City/Location</label>
+                            </div>
+
+                            <!-- Email input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="buyer-address" name="buyer-address" class="form-control" />
+                                <label class="form-label" for="buyer-address">Buyer Address</label>
+                            </div>
+                        </div>
+
                         <!-- Email input -->
                         <div class="mb-4">
                             <label class="form-label" for="payment-method">Payment Method</label>
-                            <select name="payment-method" id="" class="form-select">
+                            <select name="payment-method" id="payment-method" class="form-select" required>
                                 <option value="" hidden>Choose</option>
                                 <option value="MOMO">MOMO</option>
                                 <option value="CASH">CASH</option>
                             </select>
                         </div>
+<<<<<<< HEAD
                         <div class="mb-4 row">
                             <label class="form-label" for="customer-deposit">How much is customer paying? (GH¢)</label>
                             <input type="text" id="customer-deposit" name="customer-deposit" class="form-control" />
+=======
+
+                        <div class="mb-4">
+                            <label class="form-label" for="customer-deposit">Amount paid? (GHS)</label>
+                            <input type="text" id="customer-deposit" required name="customer-deposit" class="form-control" />
+>>>>>>> main
                         </div>
-                        <!-- Submit button -->
+
+                        <div class="mb-4" style="border: 1px solid #eee; background-color: #eee">
+                            <label class="form-label" for="amount-owing" style="color: #000; font-size: larger;">Amount owing</label>
+                            <input type="text" class="col-10" disabled name="amount-owing" id="amount-owing" style="color: #000; width: 100%; font-size: 32px; border: none; background-color: #eee" value="GHS 0.00" />
+                        </div>
+
                         <button type="submit" class="btn btn-primary btn-block mb-4">Save</button>
                     </form>
                 </div>
@@ -253,6 +236,7 @@ $Customer = new Customer();
             });
 
             var listOfProducts = {};
+            var totalPrice = 0;
 
             function productTotalPrice() {
                 total = 0;
@@ -261,17 +245,24 @@ $Customer = new Customer();
                         total += listOfProducts[item]["total"];
                     }
                 }
-                $('#total-price-display').html(total);
+                totalPrice = total.toFixed(2);
+                $('#total-price-display').html(total.toFixed(2));
+
+                if (total) $("#checkout-div").slideDown();
+                else $("#checkout-div").slideUp();
             }
 
             $(".item").on("change", function() {
                 var item_id = $(this).attr("id");
                 var qty = parseInt($("#qty" + item_id).val());
                 var unit_p = parseFloat($("#up" + item_id).text()).toFixed(2);
+
                 if (qty < 1) {
                     alert("Quantity of this product must not be 0");
                     $(this).prop("checked", "")
+                    return;
                 }
+
                 if ($(this).is(":checked")) {
                     var total = qty * unit_p;
                     listOfProducts[item_id] = {
@@ -280,7 +271,7 @@ $Customer = new Customer();
                         "unit_price": unit_p,
                         "total": total
                     }
-                    $("#qty" + item_id).prop("disabled", "true")
+                    $("#qty" + item_id).prop("disabled", "true");
                 } else {
                     delete listOfProducts[item_id];
                     $("#qty" + item_id).prop("disabled", "")
@@ -303,91 +294,40 @@ $Customer = new Customer();
                 }).done(function(data) {
                     console.log(data);
                     alert(data["message"]);
+                    if (data["success"]) window.location.reload();
                 }).fail(function(error) {
                     console.log(error);
                 });
             });
 
-            var purchase_item_list = {};
+            $("#checkoutBtn").on("click", function() {
+                $("#total-price").val("GHS " + totalPrice)
+            });
 
-            $(".item-qty").on("keyup", function() {
-                alert("JS: " + this.value)
-                alert("JQ: " + $(this).val())
-                alert("NUMERIC " + $(this).siblings('.unit-price').text())
+            $("#customer-deposit").on("keyup", function() {
+                let deposit = $(this).val();
+                if (deposit == "") return;
                 if (!isNaN($(this).val())) {
-                    var siblingText = parseFloat($(this).siblings('.unit-price').text());
-                    var qty = parseInt($(this).val());
-                    var total = qty * siblingText;
-                    $(this).siblings('.total-price').text(total);
-                } else {
-                    alert("NON")
+                    setTimeout(function() {
+                        console.log($(this).val())
+                    }, 2000)
                 }
             });
 
-            $("#search-item").on("keyup", (data) => {
-                if (data.target.value.length < 1) return;
-
-                let formData = {
-                    _data: data.target.value
-                }
-
-                $.ajax({
-                    type: "POST",
-                    url: "api/fetch-item-list",
-                    data: formData,
-                }).done(function(data) {
-                    console.log(data);
-                    if (data["success"]) {
-                        $("#itm-name").val(data["message"][0]["item_name"]);
-                        $("#itm-description").val(data["message"][0]["description"]);
-                        $("#itm-unitprice").val(data["message"][0]["unit_price"]);
-                        $("#itm-quantity").val(data["message"][0]["quantity"]);
-                        $("#itm-id").val(data["message"][0]["item_id"])
+            $(".is-buyer").on("change", function() {
+                if ($(this).is(":checked")) {
+                    let id = $(this).attr("id");
+                    if (id == "is-customer") {
+                        $("#c-is-customer").slideDown();
+                        $("#c-is-not-customer").slideUp();
                     }
-                }).fail(function(error) {
-                    console.log(error);
-                })
-            });
-
-            $(".list-item").on("click", function() {
-                let dataT = {
-                    _data: $(this).attr('id')
-                }
-
-                $.ajax({
-                    type: "POST",
-                    url: "api/fetch-item-for-purchase",
-                    data: dataT,
-                }).done(function(res) {
-                    console.log(res);
-                    if (res["success"]) {
-
-                        let itemObj = {
-                            item_name: res["message"][0]["item_name"],
-                            unit_price: res["message"][0]["unit_price"]
-                        }
-
-                        purchase_item_list[res["message"][0]["item_id"]] = itemObj;
-
-                        let tr = '<tr>' +
-                            '<td>1</td>' +
-                            '<td>' + itemObj.item_name + '</td>' +
-                            '<td class="unit-price">' + itemObj.unit_price + '</td>' +
-                            '<td><input type="number" id="" class="form-control item-qty" style="width: 80px" pattern="[0-9]+"></td>' +
-                            '<td class="total-price">54.00</td>' +
-                            '<td>' +
-                            '<button type="button" id="" class="delete-customer btn btn-link btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">' +
-                            '<span class="bi bi-trash-fill text-danger" style="font-size: 16px !important;"></span>' +
-                            '</button>' +
-                            '</td>' +
-                            '</tr>';
-
-                        $("#purchase-item-list").append(tr)
+                    if (id == "is-not-customer") {
+                        $("#c-is-customer").slideUp();
+                        $("#c-is-not-customer").slideDown();
                     }
-                }).fail(function(error) {
-                    console.log(error);
-                })
+                }
             })
+
         });
     </script>
 </body>

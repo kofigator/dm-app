@@ -37,6 +37,8 @@ CREATE TABLE `customers` (
   `added_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+ALTER TABLE customers 
+ADD CONSTRAINT `uniq_cust_user` UNIQUE (`number`);
 
 --
 -- Dumping data for table `customers`
@@ -61,7 +63,7 @@ INSERT INTO `customers` (`cust_id`, `u_id`, `name`, `number`, `gender`, `address
 (30, '0541236547', 'Abigail Osei', '0576767621', 'F', 'Madina', '2023-06-03 19:36:51', NULL),
 (31, '0000000000', 'kaklo shi', '0212325241', 'F', 'Yah', '2023-06-08 09:50:53', NULL),
 (32, '0541236547', 'Francis Arthur', '0214521452', 'M', 'mamprobi', '2023-06-12 22:16:08', NULL);
-ALTER TABLE customers ADD COLUMN city VARCHAR(50) NOT NULL AFTER gender; 
+ALTER TABLE customers ADD COLUMN city VARCHAR(50) AFTER gender; 
 -- --------------------------------------------------------
 
 --
@@ -79,6 +81,9 @@ CREATE TABLE `items` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+ALTER TABLE `items` 
+ADD COLUMN `cost_price` DECIMAL(10, 2) DEFAULT 0.00 AFTER `description`, 
+ADD COLUMN `profit` DECIMAL(10, 2) DEFAULT 0.00 GENERATED ALWAYS AS (`unit_price` - `cost_price`) STORED;
 --
 -- Dumping data for table `items`
 --
@@ -157,6 +162,8 @@ CREATE TABLE `payments` (
   `mode` varchar(20) NOT NULL,
   `added_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+ALTER TABLE payments ADD COLUMN user_id VARCHAR(20) NOT NULL AFTER pay_id,
+ADD CONSTRAINT fk_payments_user FOREIGN KEY (user_id) REFERENCES users(phone_number);
 
 -- --------------------------------------------------------
 
@@ -349,3 +356,5 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+SELECT city FROM customers WHERE u_id = '0555555555' GROUP BY city;

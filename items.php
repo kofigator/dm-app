@@ -158,6 +158,7 @@ $Inventory = new Inventory();
                     <tr>
                         <th>SN.</th>
                         <th>Item Names and description</th>
+                        <th>Selling Price</th>
                         <th>Quantity</th>
                         <th></th>
                         <th></th>
@@ -179,6 +180,11 @@ $Inventory = new Inventory();
                                         <p class="fw-bold mb-1"><?= $Inventory["item_name"] ?></p>
                                         <p class="text-muted mb-0"><?= $Inventory["description"] ?></p>
                                     </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p class="fw-bold mb-1"><?= $Inventory["unit_price"] ?></p>
                                 </div>
                             </td>
                             <td>
@@ -228,21 +234,25 @@ $Inventory = new Inventory();
                     <form method="post" id="add-item-form">
                         <!-- Email input -->
                         <div class="form-outline mb-4">
-                            <input type="text" id="item-name" name="item-name" class="form-control" />
-                            <label class="form-label" for="item-name">Item Name</label>
+                            <input required type="text" id="item-name" name="item-name" class="form-control" />
+                            <label class="form-label" for="item-name">Name</label>
                         </div>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <input type="text" id="item-description" name="item-description" class="form-control" />
-                            <label class="form-label" for="item-description">Item Description</label>
+                            <label class="form-label" for="item-description">Description</label>
                         </div>
                         <div class="form-outline mb-4">
-                            <input type="text" id="item-unitprice" name="item-unitprice" class="form-control" />
-                            <label class="form-label" for="item-unitprice">Item Unit_price</label>
+                            <input required type="text" id="item-costprice" name="item-costprice" class="form-control" />
+                            <label class="form-label" for="item-costprice">Cost Price</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input required type="text" id="item-unitprice" name="item-unitprice" class="form-control" />
+                            <label class="form-label" for="item-unitprice">Unit Price</label>
                         </div>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
-                            <input type="number" id="item-quantity" name="item-quantity" class="form-control" />
+                            <input required type="number" id="item-quantity" name="item-quantity" min="1" pattern="[0-9]" class="form-control" />
                             <label class="form-label" for="item-quantity">Quantity</label>
                         </div>
 
@@ -268,16 +278,23 @@ $Inventory = new Inventory();
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <input type="text" id="itm-name" name="itm-name" class="form-control" />
-                            <label class="form-label" for="itm-name">Item Name</label>
+                            <label class="form-label" for="itm-name">Name</label>
                         </div>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <input type="text" id="itm-description" name="itm-description" class="form-control" />
-                            <label class="form-label" for="itm-description">Item Description</label>
+                            <label class="form-label" for="itm-description">Description</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" id="itm-costprice" name="itm-costprice" class="form-control" />
+                            <label class="form-label" for="itm-costprice">Cost Price</label>
                         </div>
                         <div class="form-outline mb-4">
                             <input type="text" id="itm-unitprice" name="itm-unitprice" class="form-control" />
-                            <label class="form-label" for="itm-unitprice">Item Unit_price</label>
+                            <label class="form-label" for="itm-unitprice">Unit Price</label>
+                        </div>
+                        <div class="mb-4" id="profit-div">
+                            <input disabled type="text" id="profit-field" style="border: none !important" class="form-control" />
                         </div>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
@@ -302,6 +319,18 @@ $Inventory = new Inventory();
         $(document).ready(function() {
             $(".back").click(function() {
                 window.location.href = "dashboard.php";
+            });
+
+            $("#itm-unitprice").on("keyup", function() {
+                var cost_p = parseFloat($("#itm-costprice").val());
+                var unit_p = parseFloat($(this).val());
+
+                if ($(this).val() != "" && $("#itm-costprice").val() != "") {
+                    setTimeout(function() {
+                        let profit = unit_p - cost_p;
+                        $("#profit-field").val("PROFIT: " + profit.toFixed(2))
+                    }, 2000);
+                }
             });
 
             $("#add-item-form").on("submit", function(e) {
@@ -337,9 +366,19 @@ $Inventory = new Inventory();
                     if (data["success"]) {
                         $("#itm-name").val(data["message"][0]["item_name"]);
                         $("#itm-description").val(data["message"][0]["description"]);
+                        $("#itm-costprice").val(data["message"][0]["cost_price"]);
                         $("#itm-unitprice").val(data["message"][0]["unit_price"]);
                         $("#itm-quantity").val(data["message"][0]["quantity"]);
-                        $("#itm-id").val(data["message"][0]["item_id"])
+                        $("#itm-id").val(data["message"][0]["item_id"]);
+
+                        var cost_p = parseFloat($("#itm-costprice").val());
+                        var unit_p = parseFloat($("#itm-unitprice").val());
+
+                        setTimeout(function() {
+                            let profit = unit_p - cost_p;
+                            $("#profit-field").val("PROFIT: " + profit.toFixed(2))
+                        }, 2000);
+
                     }
                 }).fail(function(error) {
                     console.log(error);

@@ -40,13 +40,10 @@ $Inventory = new Inventory();
             border-radius: 15px;
             text-align: center;
             font-size: 18px;
-            color: #fff;
         }
 
-        .row {
-            display: flex;
-            justify-content: center;
-            padding: 100px 0px;
+        .back {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -55,7 +52,11 @@ $Inventory = new Inventory();
 
     <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
         <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
+<<<<<<< HEAD
         <h1 style="flex-grow: 8">Reports</h1>
+=======
+        <h1 style="flex-grow: 8">Reoprts</h1>
+>>>>>>> main
         <?php require_once('inc/header.php') ?>
     </header>
 
@@ -74,7 +75,7 @@ $Inventory = new Inventory();
             </a>
             <a href="pos.php" class="col-md-4 m-3 bg-success dashboard-item">
                 <div style="padding: 35px">
-                    POS
+                    Sales
                 </div>
             </a>
         </div>

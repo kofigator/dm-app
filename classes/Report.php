@@ -8,4 +8,9 @@ class Report
     {
         $this->db = new DatabaseMethods();
     }
+
+    public function getReport($report)
+    {
+        return $this->db->getData($report["query"]);
+    }
 }
