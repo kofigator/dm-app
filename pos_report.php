@@ -2,9 +2,7 @@
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
 require_once('classes/Inventory.php');
-require_once('classes/Customer.php');
 $Inventory = new Inventory();
-$Customer = new Customer();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +11,7 @@ $Customer = new Customer();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>customers Reports</title>
+    <title>Reports</title>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
@@ -43,20 +41,9 @@ $Customer = new Customer();
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="reportType" class="form-label">Report Type</label>
-                        <select name="customer-list" id="customer-list">
-                                <option value="" hidden>Choose a customer</option>
-                                <?php
-                                $customers = $Customer->getAllCustomers($_SESSION["user"]);
-                                if (!empty($customers)) {
-                                    foreach ($customers as $customer) {
-                                ?>
-                                        <option value="<?= $customer["cust_id"] ?>"><?= $customer["name"] . " - " . $customer["address"] ?></option>
-                                <?php
-                                    }
-                                }
-                                ?>
-                                <option value="non">Non customer</option>
-                            </select>
+                        <select class="form-select" id="reportType" name="reportType">
+                            <option value="inventory">Inventory</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-3">

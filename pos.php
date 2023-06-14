@@ -232,7 +232,7 @@ $Customer = new Customer();
                             </select>
                         </div>
                         <div class="mb-4 row">
-                            <label class="form-label" for="customer-deposit">How much is customer paying? (GHc)</label>
+                            <label class="form-label" for="customer-deposit">How much is customer paying? (GH¢)</label>
                             <input type="text" id="customer-deposit" name="customer-deposit" class="form-control" />
                         </div>
                         <!-- Submit button -->

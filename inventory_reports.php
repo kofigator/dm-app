@@ -2,7 +2,9 @@
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
 require_once('classes/Inventory.php');
+require_once('classes/Customer.php');
 $Inventory = new Inventory();
+$Customer = new Customer();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,9 +43,19 @@ $Inventory = new Inventory();
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="reportType" class="form-label">Report Type</label>
-                        <select class="form-select" id="reportType" name="reportType">
-                            <option value="inventory">Inventory</option>
-                        </select>
+                        <select name="customer-list" id="customer-list">
+                                <option value="" hidden>Choose an item</option>
+                                <?php
+                                $inventory = $Inventory->getAllItems($_SESSION["user"]);
+                                if (!empty($inventory)) {
+                                    foreach ($inventory as $inventory) {
+                                ?>
+                                        <option value="<?= $inventory["item_id"] ?>"><?= $inventory["item_name"] . " - " . $inventory["description"] ?></option>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            </select>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -72,18 +84,18 @@ $Inventory = new Inventory();
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Report Type</th>
+                        <th>Item Name</th>
+                        <th>Description</th>
                         <th>Date</th>
-                        <th>Amount</th>
+                        <th>Amount Sold</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Table rows with report data will be generated dynamically -->
                     <tr>
                         <td>1</td>
-                        <td>John Doe</td>
-                        <td>Inventory</td>
+                        <td></td>
+                        <td></td>
                         <td>2023-05-01</td>
                         <td>$500</td>
                     </tr>

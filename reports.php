@@ -55,7 +55,7 @@ $Inventory = new Inventory();
 
     <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
         <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
-        <h1 style="flex-grow: 8">Inventory</h1>
+        <h1 style="flex-grow: 8">Reports</h1>
         <?php require_once('inc/header.php') ?>
     </header>
 
