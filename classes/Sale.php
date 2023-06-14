@@ -5,6 +5,7 @@ require_once('Customer.php');
 class Sale
 {
     private $db;
+
     public function __construct()
     {
         $this->db = new DatabaseMethods();
@@ -13,19 +14,25 @@ class Sale
     public function getListOfItemsByTextInput($data, $user_id)
     {
         $query = "SELECT `item_id`, `item_name`, `unit_price` 
-                    FROM items WHERE u_id = :ui AND item_name LIKE '%{$data}%'";
-        return $this->db->getData($query, array(":ui" => $user_id));
+                  FROM items WHERE u_id = :ui AND item_name LIKE :data";
+        $params = array(":ui" => $user_id, ":data" => "%{$data}%");
+        return $this->db->getData($query, $params);
     }
 
     public function getListOfItemsByID($itemID, $user_id)
     {
         $query = "SELECT `item_id`, `item_name`, `unit_price` 
-                    FROM items WHERE u_id = :ui AND item_id = :it";
-        return $this->db->getData($query, array("it" => $itemID, ":ui" => $user_id));
+                  FROM items WHERE u_id = :ui AND item_id = :it";
+        $params = array(":ui" => $user_id, ":it" => $itemID);
+        return $this->db->getData($query, $params);
     }
 
     private function savePurchaseItems($data, $user_id)
     {
+        /*
+        INSERT INTO `customers`(`cust_id`, `u_id`, `name`, `number`, `gender`, `address`) 
+VALUES (1, 1, 'Non customer', '0123456789', 'none', 'none')
+        */
         $totalAdded = 0;
         $items = $data["items"];
         $itemsArray = json_decode($items, true);
@@ -40,6 +47,7 @@ class Sale
                 ":up" => $item["unit_price"]
             ));
         }
+
         return $totalAdded;
     }
 

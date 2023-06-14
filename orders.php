@@ -8,7 +8,7 @@ if (isset($_SESSION["user"])) header("Location: dashboard.php");
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration Form</title>
+    <title>Orders Form</title>
     <!--<link rel="stylesheet" href="../CSS/regStyle.css" />-->
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -42,65 +42,44 @@ if (isset($_SESSION["user"])) header("Location: dashboard.php");
 
 <body class="fluid-container">
 
-    <form id="register-form" method="post">
+    <form id="order-form" method="post">
         <fieldset>
-            <legend>Register</legend>
+            <legend>Orders Form</legend>
             <div class="form-outline mb-4">
                 <input type="text" id="first-name" name="first-name" class="form-control" />
-                <label class="form-label" for="first-name">First Name</label>
+                <label class="form-label" for="first-name">Item Name</label>
             </div>
 
             <div class="form-outline mb-4">
                 <input type="text" id="last-name" name="last-name" class="form-control" />
-                <label class="form-label" for="last-name">Last Name</label>
+                <label class="form-label" for="last-name">Description</label>
             </div>
 
-            <div class="mb-4">
-                <label class="me-2">Sex</label>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="female" value="F" />
-                    <label class="form-check-label" for="female">Female</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="male" value="M" />
-                    <label class="form-check-label" for="male">Male</label>
-                </div>
+            <div class="form-outline mb-4">
+                <input type="text" id="last-name" name="last-name" class="form-control" />
+                <label class="form-label" for="last-name">Quantity</label>
             </div>
 
             <div class="form-outline mb-4">
                 <input type="text" id="phone" name="phone" class="form-control" />
-                <label class="form-label" for="phone">Phone Number</label>
+                <label class="form-label" for="phone">Budgetted Price</label>
             </div>
 
             <div class="form-outline mb-4">
-                <input type="email" id="email-addr" name="email-addr" class="form-control" />
-                <label class="form-label" for="email-addr">Email Address</label>
+                <input type="date" id="email-addr" name="email-addr" class="form-control" />
             </div>
 
             <div class="form-outline mb-4">
-                <input type="password" id="password" name="password" class="form-control" />
-                <label class="form-label" for="password">Password</label>
+                <input type="text" id="password" name="password" class="form-control" />
+                <label class="form-label" for="password">Phone Number</label>
             </div>
 
             <div class="form-outline flex-fill mb-4">
-                <input type="password" id="repeat-password" name="repeat-password" class="form-control" />
-                <label class="form-label" for="repeat-password">Repeat password</label>
+                <input type="text" id="repeat-password" name="repeat-password" class="form-control" />
+                <label class="form-label" for="repeat-password">Address[Town]</label>
             </div>
 
-            <div class="form-check d-flex justify-content-center mb-5">
-                <input class="form-check-input me-2" type="checkbox" value="" id="agree-tnc" />
-                <label class="form-check-label" for="agree-tnc">
-                    I agree all statements in <a href="term_of_service.html">Terms of service</a>
-                </label>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
-
-            <!-- Register buttons -->
-            <div class="text-center">
-                <p>Already a member? <a href="index.php">Login</a></p>
-            </div>
+            <button type="submit" class="btn btn-primary btn-block mb-4">Save</button>
 
         </fieldset>
     </form>
@@ -111,12 +90,12 @@ if (isset($_SESSION["user"])) header("Location: dashboard.php");
     <script>
         $(document).ready(function() {
 
-            $("#register-form").on("submit", function(e) {
+            $("#order-form").on("submit", function(e) {
                 e.preventDefault();
 
                 $.ajax({
                     type: "POST",
-                    url: "api/register",
+                    url: "api/orders",
                     data: new FormData(this),
                     contentType: false,
                     cache: false,

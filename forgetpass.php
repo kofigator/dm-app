@@ -5,15 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="forgetp.css">
-    <title>Document</title>
+    <title>Forget Password</title>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
 </head>
-<body>
+<body class="fluid-container">
     <div class="password-container">
         <h1>Forgot Password</h1>
         <form>
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
-          <button type="submit">Submit</button>
+              <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="reportType" class="form-label">Report Type</label>
+                        <input type="text" class="form-control" id="endDate" name="endDate">
+                        <input type="submit" value="Submit">
+                  </div>
+              </div>
         </form>
       </div>
       
