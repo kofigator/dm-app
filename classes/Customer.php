@@ -72,4 +72,16 @@ class Customer
         $query = "SELECT * FROM customers WHERE u_id = :ui ORDER BY added_at DESC";
         return $this->db->getData($query, array(":ui" => $userID));
     }
+
+    /**
+     * @param int $customerID
+     * @param int $userID
+     * @return mixed
+     */
+    public function getCustomerByPhoneNumber($phoneNumber, $userID)
+    {
+        $query = "SELECT * FROM `customers` WHERE `number` = :pn AND `u_id` = :ui";
+        $param = array(":pn" => $phoneNumber, ":ui" => $userID);
+        return $this->db->getData($query, $param);
+    }
 }

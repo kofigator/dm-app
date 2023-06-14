@@ -11,15 +11,16 @@ class Inventory
 
     public function addItem($itemData, $userID)
     {
-        $query = "INSERT INTO items (item_name, description, unit_price, quantity, u_id) VALUES (:nm, :nb, :gd, :ad, :ui)";
+        $query = "INSERT INTO items (item_name, description, cost_price, unit_price, quantity, u_id) 
+                VALUES (:nm, :nb, :cp, :gd, :ad, :ui)";
         $param = array(
             ":nm" => $itemData["item_name"], ":nb" => $itemData["description"],
-            ":gd" => $itemData["unit_price"], ":ad" => $itemData["quantity"],
-            ":ui" => $userID
+            ":cp" => $itemData["cost_price"], ":gd" => $itemData["unit_price"],
+            ":ad" => $itemData["quantity"], ":ui" => $userID
         );
         return $this->db->inputData($query, $param);
     }
-    
+
     /**
      * @param int $itemID
      * @param int $userID
@@ -27,12 +28,12 @@ class Inventory
      */
     public function updateItem($itemData, $userID)
     {
-        $query = "UPDATE items SET `item_name` = :nm, `description` = :nb, unit_price = :gd, `quantity` = :ad 
+        $query = "UPDATE items SET `item_name` = :nm, `description` = :nb, cost_price = :cp, unit_price = :gd, `quantity` = :ad 
                 WHERE item_id = :ci AND u_id = :ui";
         $param = array(
             ":nm" => $itemData["itm-name"], ":nb" => $itemData["itm-description"],
-            ":gd" => $itemData["itm-unitprice"], ":ad" => $itemData["itm-quantity"],
-            ":ci" => $itemData["itm-id"], ":ui" => $userID
+            ":cp" => $itemData["itm-costprice"], ":gd" => $itemData["itm-unitprice"],
+            ":ad" => $itemData["itm-quantity"], ":ci" => $itemData["itm-id"], ":ui" => $userID
         );
         return $this->db->inputData($query, $param);
     }
@@ -56,7 +57,7 @@ class Inventory
      */
     public function getOneItem($itemID, $userID)
     {
-        $query = "SELECT `item_id`, `item_name`, `description`, `unit_price`, `quantity` 
+        $query = "SELECT `item_id`, `item_name`, `description`, `cost_price`, `unit_price`, `quantity` 
                     FROM items WHERE item_id = :ci AND u_id = :ui";
         $param = array(":ci" => $itemID, ":ui" => $userID);
         return $this->db->getData($query, $param);

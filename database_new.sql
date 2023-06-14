@@ -37,6 +37,8 @@ CREATE TABLE `customers` (
   `added_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+ALTER TABLE customers 
+ADD CONSTRAINT `uniq_cust_user` UNIQUE (`number`);
 
 --
 -- Dumping data for table `customers`
@@ -79,6 +81,9 @@ CREATE TABLE `items` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+ALTER TABLE `items` 
+ADD COLUMN `cost_price` DECIMAL(10, 2) DEFAULT 0.00 AFTER `description`, 
+ADD COLUMN `profit` DECIMAL(10, 2) DEFAULT 0.00 GENERATED ALWAYS AS (`unit_price` - `cost_price`) STORED;
 --
 -- Dumping data for table `items`
 --
@@ -157,6 +162,8 @@ CREATE TABLE `payments` (
   `mode` varchar(20) NOT NULL,
   `added_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+ALTER TABLE payments ADD COLUMN user_id VARCHAR(20) NOT NULL AFTER pay_id,
+ADD CONSTRAINT fk_payments_user FOREIGN KEY (user_id) REFERENCES users(phone_number);
 
 -- --------------------------------------------------------
 

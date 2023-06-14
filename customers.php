@@ -201,7 +201,7 @@ $customer = new Customer();
         ?>
     </div>
 
-    <span class="bi bi-plus-circle-fill add-new-element" data-mdb-toggle="modal" data-mdb-target="#addCustomer"></span>
+    <span class="bi bi-plus-circle-fill add-new-element" data-mdb-toggle="modal" data-mdb-target="#addCustomer" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Add a new customer"></span>
 
     <!-- Add customer Modal -->
     <div class="modal fade" id="addCustomer" data-mdb-backdrop="static" data-mdb-keyboard="false" tabindex="-1" aria-labelledby="addCustomerLabel" aria-hidden="true">
