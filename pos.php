@@ -28,81 +28,6 @@ $Customer = new Customer();
     <title>Items Page</title>
 
     <style>
-        .body>form {
-            height: 100% !important;
-            width: 100% !important;
-        }
-
-        form {
-            max-width: 500px;
-        }
-
-        #tableBody td {
-            padding-right: 40px;
-            padding-bottom: 20px;
-        }
-
-        .act_btn td {
-            padding: 20px;
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
-        }
-
-        li {
-            float: left;
-        }
-
-        li a,
-        .dropbtn {
-            display: inline-block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        li a:hover,
-        .dropdown:hover .dropbtn {
-            background-color: rgb(236, 195, 195);
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        #item_header {
-            margin: 15px 50px;
-            color: #fff;
-
-        }
-
         header {
             background-color: #333;
             color: #fff;
@@ -121,20 +46,6 @@ $Customer = new Customer();
         }
 
         .back {
-            cursor: pointer;
-        }
-
-        .add-new-element {
-            cursor: pointer;
-            position: absolute;
-            right: 15px;
-            font-size: 50px;
-            border-radius: 50px;
-            color: green;
-            bottom: 0px;
-        }
-
-        .search-list .list-item {
             cursor: pointer;
         }
     </style>

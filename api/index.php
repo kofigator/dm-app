@@ -79,12 +79,14 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (!isset($_POST["cust-name"]) || empty($_POST["cust-name"])) die(json_encode(array("success" => false, "message" => "Invalid customer name!")));
         if (!isset($_POST["cust-phone"]) || empty($_POST["cust-phone"])) die(json_encode(array("success" => false, "message" => "Invalid customer phone number!")));
         if (!isset($_POST["cust-gender"]) || empty($_POST["cust-gender"])) die(json_encode(array("success" => false, "message" => "Invalid customer gender!")));
+        if (!isset($_POST["cust-city"]) || empty($_POST["cust-city"])) die(json_encode(array("success" => false, "message" => "Invalid customer city!")));
         if (!isset($_POST["cust-address"]) || empty($_POST["cust-address"])) die(json_encode(array("success" => false, "message" => "Invalid customer address!")));
 
         $customerData = array(
             "name" => $_POST["cust-name"],
             "number" => $_POST["cust-phone"],
             "gender" => $_POST["cust-gender"],
+            "city" => $_POST["cust-city"],
             "address" => $_POST["cust-address"]
         );
 
@@ -107,6 +109,9 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         if (!isset($_POST["customer-gender"])) die(json_encode(array("success" => false, "message" => "Invalid customer gender!")));
         if (empty($_POST["customer-gender"])) die(json_encode(array("success" => false, "message" => "Customer gender required!")));
+
+        if (!isset($_POST["customer-city"])) die(json_encode(array("success" => false, "message" => "Invalid customer city!")));
+        if (empty($_POST["customer-city"])) die(json_encode(array("success" => false, "message" => "Customer city required!")));
 
         if (!isset($_POST["customer-address"])) die(json_encode(array("success" => false, "message" => "Invalid customer address!")));
         if (empty($_POST["customer-address"])) die(json_encode(array("success" => false, "message" => "Customer address required!")));
@@ -136,7 +141,6 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
     if ($_GET["url"] == "add-item") {
-
         if (!isset($_POST["item-name"]) || empty($_POST["item-name"])) die(json_encode(array("success" => false, "message" => "Invalid item-name!")));
         if (!isset($_POST["item-description"]) || empty($_POST["item-description"])) die(json_encode(array("success" => false, "message" => "Invalid description!")));
         if (!isset($_POST["item-unitprice"]) || empty($_POST["item-unitprice"])) die(json_encode(array("success" => false, "message" => "Invalid item unit price!")));
@@ -245,6 +249,22 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         die(json_encode($data));
         if ($data) die(json_encode(array("success" => true, "message" => "Completed!")));
         die(json_encode(array("success" => false, "message" => "Failed to sell to customer!")));
+    }
+
+    //Customers reports
+
+    if ($_GET["url"] == "customers-reports") {
+        if (!isset($_POST["reportCity"]))
+            die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
+        if (!isset($_POST["reportGender"]))
+            die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
+        if (!isset($_POST["startDate"]))
+            die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
+        if (!isset($_POST["endDate"]))
+            die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
+        $data = $Customer->getCustomerReports($_POST, $_SESSION["user"]);
+        if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
+        die(json_encode(array("success" => false, "message" => "Empty result")));
     }
 }
 

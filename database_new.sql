@@ -63,7 +63,7 @@ INSERT INTO `customers` (`cust_id`, `u_id`, `name`, `number`, `gender`, `address
 (30, '0541236547', 'Abigail Osei', '0576767621', 'F', 'Madina', '2023-06-03 19:36:51', NULL),
 (31, '0000000000', 'kaklo shi', '0212325241', 'F', 'Yah', '2023-06-08 09:50:53', NULL),
 (32, '0541236547', 'Francis Arthur', '0214521452', 'M', 'mamprobi', '2023-06-12 22:16:08', NULL);
-ALTER TABLE customers ADD COLUMN city VARCHAR(50) NOT NULL AFTER gender; 
+ALTER TABLE customers ADD COLUMN city VARCHAR(50) AFTER gender; 
 -- --------------------------------------------------------
 
 --
@@ -356,3 +356,5 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+SELECT city FROM customers WHERE u_id = '0555555555' GROUP BY city;

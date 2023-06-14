@@ -153,6 +153,7 @@ $customer = new Customer();
                     <tr>
                         <th>SN.</th>
                         <th>Name</th>
+                        <th>City/Location</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -175,6 +176,7 @@ $customer = new Customer();
                                     </div>
                                 </div>
                             </td>
+                            <td><?= $customer["city"] ?></td>
                             <td>
                                 <button type="button" id="<?= $customer["cust_id"] ?>" class="edit-customer btn btn-link btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark" data-mdb-toggle="modal" data-mdb-target="#editCustomer">
                                     <span class="bi bi-pencil-fill" style="font-size: 18px !important;"></span>
@@ -225,7 +227,7 @@ $customer = new Customer();
                             <label class="form-label" for="cust-phone">Phone Number</label>
                         </div>
                         <div class="mb-4">
-                            <label class="me-2">Gender</label>
+                            <label class="me-2">Sex</label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="cust-gender" id="female" value="F" />
                                 <label class="form-check-label" for="female">Female</label>
@@ -235,6 +237,11 @@ $customer = new Customer();
                                 <input class="form-check-input" type="radio" name="cust-gender" id="male" value="M" />
                                 <label class="form-check-label" for="male">Male</label>
                             </div>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="text" id="cust-city" name="cust-city" class="form-control" />
+                            <label class="form-label" for="cust-city">City/Location</label>
                         </div>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
@@ -282,6 +289,10 @@ $customer = new Customer();
                                 <input class="form-check-input" type="radio" name="customer-gender" id="male" value="M" />
                                 <label class="form-check-label" for="male">Male</label>
                             </div>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" id="customer-city" name="customer-city" class="form-control" />
+                            <label class="form-label" for="customer-city">City/Location</label>
                         </div>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
@@ -346,6 +357,7 @@ $customer = new Customer();
                         if (data["message"][0]["gender"] == "M")
                             $("#male").attr("checked", true);
 
+                        $("#customer-city").val(data["message"][0]["city"]);
                         $("#customer-address").val(data["message"][0]["address"]);
                         $("#customer-id").val(data["message"][0]["cust_id"]);
                     }
@@ -367,6 +379,7 @@ $customer = new Customer();
                 }).done(function(data) {
                     console.log(data);
                     alert(data["message"]);
+                    if (data["success"]) window.location.reload();
                 }).fail(function(error) {
                     console.log(error);
                 })
@@ -385,7 +398,7 @@ $customer = new Customer();
                     }).done(function(data) {
                         console.log(data);
                         alert(data["message"]);
-                        window.location.reload();
+                        if (data["success"]) window.location.reload();
                     }).fail(function(error) {
                         console.log(error);
                     })
