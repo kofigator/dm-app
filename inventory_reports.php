@@ -1,10 +1,13 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) header("Location: index.php");
+if (isset($_GET["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+}
 require_once('classes/Inventory.php');
-require_once('classes/Customer.php');
 $Inventory = new Inventory();
-$Customer = new Customer();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,92 +18,168 @@ $Customer = new Customer();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Reports</title>
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
-   <style>
-    #butt{
-        margin: 33px 0px;
-    }
-   </style>
+
+    <style>
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        header>h1 {
+            text-align: center !important;
+        }
+
+        .dashboard-item {
+            border-radius: 15px;
+            text-align: center;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            padding: 15px 15px;
+        }
+
+        .back {
+            cursor: pointer;
+        }
+
+        #butt {
+            margin: 33px 0px;
+        }
+    </style>
 </head>
 
 <body class="fluid-container">
 
-    <div class="container mt-4">
-    <header style="position: relative !important; width: 100% !important; height: 60px !important;">
-        <h1>Reports</h1>
-        <a href="logout.php" style="position: absolute; top: 10px; right: 10px; color: #fff; text-decoration: none;">
-            Logout
-        </a>
+    <header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
+        <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
+        <h1 style="flex-grow: 8">Reports - Inventory</h1>
+        <?php require_once('inc/header.php') ?>
     </header>
 
+    <div style="position: relative !important; margin-top: 0px !important">
         <!-- Filter Form -->
-        <form id="reports-form" method="post">     
+        <form id="items-reports-form" method="post">
             <div class="row mb-3">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="reportType" class="form-label">Report Type</label>
-                        <select name="customer-list" id="customer-list">
-                                <option value="" hidden>Choose an item</option>
-                                <?php
-                                $inventory = $Inventory->getAllItems($_SESSION["user"]);
-                                if (!empty($inventory)) {
-                                    foreach ($inventory as $inventory) {
-                                ?>
-                                        <option value="<?= $inventory["item_id"] ?>"><?= $inventory["item_name"] . " - " . $inventory["description"] ?></option>
-                                <?php
-                                    }
-                                }
-                                ?>
-                            </select>
+                        <label for="reportType" class="form-label">Filter By Sales Performance</label>
+                        <select class="form-select" id="reportSale" name="reportSale">
+                            <option value="">Choose</option>
+                            <option value="">Most bought</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="startDate" class="form-label">Start Date</label>
+                        <label for="reportType" class="form-label">Filter By Description</label>
+                        <select class="form-select" id="reportdescription" name="reportdescription">
+                        <?php
+                            $descriptions = $Inventory->getInventoryDescription($_SESSION["user"]);
+                            $totalCount = 0;
+                            foreach ($descriptions as $description) {
+                            ?>
+                                <option value="<?= $description["description"] ?>"><?= $description["description"] ?></option>
+                            <?php
+                                $totalCount += 1;
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="startDate" class="form-label">Added at (Start Date)</label>
                         <input type="date" class="form-control" id="startDate" name="startDate">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label for="endDate" class="form-label">End Date</label>
+                        <label for="endDate" class="form-label">(End Date)</label>
                         <input type="date" class="form-control" id="endDate" name="endDate">
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button type="submit" id="butt" class="btn btn-primary">Generate</button>
+                    <button type="submit" id="butt" class="btn btn-primary" style="width: 100%">Generate</button>
                 </div>
             </div>
         </form>
 
         <!-- Report Results Table -->
-        <div class="mt-4">
-            <h2>Report Results</h2>
+        <div class="mt-4" style="margin: 0 15px;">
+            <div style="display: flex; justify-content: space-between">
+                <h3>Report Results</h3>
+                <h3 style="display: none;" id="totalRecordsHead">Total records:
+                    <span id="totalRecords"></span>
+                    <a href="inventory_print_reports.php" class="btn btn-link"> Print</a>
+                </h3>
+            </div>
 
             <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Item Name</th>
-                        <th>Description</th>
-                        <th>Date</th>
-                        <th>Amount Sold</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Table rows with report data will be generated dynamically -->
-                    <tr>
-                        <td>1</td>
-                        <td></td>
-                        <td></td>
-                        <td>2023-05-01</td>
-                        <td>$500</td>
-                    </tr>
-                    
-                </tbody>
+                <!-- Table rows with report data will be generated dynamically -->
+                <?php
+                $user_inventory = $Inventory->getAllItems($_SESSION["user"]);
+
+                if (!empty($user_inventory)) {
+                ?>
+                    <table class="table align-middle mb-0 bg-white">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>SN.</th>
+                                <th>Item Name</th>
+                                <th>Description</th>
+                                <th>Cost</th>
+                                <th>Unit Price</th>
+                                <th>Profit on Each Item</th>
+                                <th>Added at</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-reports-tb">
+                            <?php
+                            $i = 1;
+                            foreach ($user_inventory as $Inventory) {
+                            ?>
+                                <tr>
+                                    <td>
+                                        <?= $i ?>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="assets/images/icons8-open-box-50.png" class="rounded-circle" alt="" style="width: 45px; height: 45px" />
+                                            <div class="ms-3">
+                                                <p class="fw-bold mb-1"><?= $Inventory["item_name"] ?></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><?= $Inventory["description"] ?></td>
+                                    <td><?= $Inventory["cost_price"] ?></td>
+                                    <td><?= $Inventory["unit_price"] ?></td>
+                                    <td><?= $Inventory["profit"] ?></td>
+                                    <td><?= $Inventory["added_at"] ?></td>
+                                </tr>
+                            <?php
+                                $i++;
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                <?php
+                } else {
+                ?>
+                    <div>No customers</div>
+                <?php
+                }
+                ?>
             </table>
         </div>
     </div>
@@ -111,29 +190,55 @@ $Customer = new Customer();
     <script>
         $(document).ready(function() {
 
-            $("#reports-form").on("submit", function(e) {
-                e.preventDefault();
+            $(".back").click(function() {
+                window.location.href = "reports.php";
+            });
 
+            $("#items-reports-form").on("submit", function(e) {
+                e.preventDefault();
+                console.log(new FormData(this))
                 $.ajax({
                     type: "POST",
-                    url: "api/generate-report",
+                    url: "api/items-reports",
                     data: new FormData(this),
                     contentType: false,
                     cache: false,
                     processData: false,
                 }).done(function(data) {
                     console.log(data);
-                    if (data.success) {
-                        window.location.href = "reports.php";
+                    if (data["success"]) {
+                        $("#inventory-reports-tb").html('');
+                        var totalCount = 0;
+                        $.each(data.message, function(index, value) {
+                            $("#inventory-reports-tb").append(
+                                '<tr>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                '<img src="assets/images/icons8-user-96.png" class="rounded-circle" alt="" style="width: 45px; height: 45px" />' +
+                                '<div class="ms-3">' +
+                                '<p class="fw-bold mb-1">' + value["item_name"] + '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + value["description"] + ' </td>' +
+                                '<td>' + value["cost_price"] + ' </td>' +
+                                '<td>' + value["unit_price"] + ' </td>' +
+                                '<td>' + value["profit"] + ' </td>' +
+                                '<td>' + value["added_at"] + ' </td>' +
+                                '</tr>'
+                            );
+                            totalCount += 1;
+                        });
+                        $("#totalRecordsHead").show();
+                        $("#totalRecords").text(totalCount);
                     }
-                    alert(data.message);
-                    return;
+
                 }).fail(function(error) {
                     console.log(error);
-                })
-            });
-
-        });
+                });
+            })
+        })
     </script>
 </body>
 

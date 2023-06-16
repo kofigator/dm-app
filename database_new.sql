@@ -358,3 +358,23 @@ COMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 SELECT city FROM customers WHERE u_id = '0555555555' GROUP BY city;
+
+UPDATE `customers` SET `city` = 'Tema' WHERE `customers`.`cust_id` = 22; 
+UPDATE `customers` SET `city` = 'Kumasi', `address` = 'knust' WHERE `customers`.`cust_id` = 25; 
+UPDATE `customers` SET `city` = 'Kumasi', `address` = 'kings palace' WHERE `customers`.`cust_id` = 27;
+UPDATE `customers` SET `city` = 'Nungua', `address` = 'RMU' WHERE `customers`.`cust_id` = 28; 
+UPDATE `customers` SET `city` = 'Kasoa', `address` = 'GA-20224' WHERE `customers`.`cust_id` = 29; 
+UPDATE `customers` SET `city` = 'Kasoa', `address` = 'Total filling station' WHERE `customers`.`cust_id` = 30; 
+UPDATE `customers` SET `city` = 'Takoradi', `address` = 'Anaji' WHERE `customers`.`cust_id` = 32; 
+UPDATE `customers` SET `city` = 'Nungua', `address` = 'nautical' WHERE `customers`.`cust_id` = 33; 
+
+
+
+CREATE TABLE `transactions` (
+  `t_id` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `trans_id` varchar(200) UNIQUE NOT NULL,
+  `added_at` datetime DEFAULT current_timestamp()
+)
+
+ALTER TABLE `sales` ADD `trans_id` VARCHAR(200) NULL AFTER `cust_id`; 
+ALTER TABLE `sales` ADD CONSTRAINT `fk_trans_user` FOREIGN KEY (`trans_id`) REFERENCES `transactions`(`trans_id`) ON DELETE CASCADE; 

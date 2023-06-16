@@ -72,4 +72,22 @@ class Inventory
         $query = "SELECT * FROM items WHERE u_id = :ui ORDER BY added_at DESC";
         return $this->db->getData($query, array(":ui" => $userID));
     }
+
+    public function getInventoryDescription($userID)
+    {
+        $query = "SELECT description FROM items WHERE u_id = :ui GROUP BY description";
+        $param = array(":ui" => $userID);
+        return $this->db->getData($query, $param);
+    }
+
+    public function getItemsReports($data, $userID)
+    {
+        $query_join = "";
+        if (!empty($data["reportSale"])) $query_join .= " AND city = '{$data["reportSale"]}'";
+        if (!empty($data["reportdescription"])) $query_join .= " AND description = '{$data["reportdescription"]}'";
+        if (!empty($data["startDate"]) && !empty($data["endDate"])) $query_join .= " AND DATE(added_at) BETWEEN '{$data["startDate"]}' AND '{$data["endDate"]}'";
+        $query = "SELECT * FROM items WHERE u_id = '{$userID}' $query_join ORDER BY added_at DESC";
+        $_SESSION["print_reports"] = array("name" => "items", "query" => $query);
+        return $this->db->getData($query);
+    }
 }

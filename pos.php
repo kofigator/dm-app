@@ -66,6 +66,7 @@ $Customer = new Customer();
                     <th>SN</th>
                     <th>Item</th>
                     <th>Unit Price</th>
+                    <th>In-Stock</th>
                     <th>Quantity</th>
                     <th></th>
                 </tr>
@@ -82,6 +83,7 @@ $Customer = new Customer();
                             <td><?= $index ?></td>
                             <td><?= $item["item_name"] ?></td>
                             <td class="unit-price" id="up<?= $item["item_id"] ?>"><?= $item["unit_price"] ?></td>
+                            <td><?= $item["quantity"] ?></td>
                             <td><input type="number" id="qty<?= $item["item_id"] ?>" class="form-control item-qty" style="width: 80px" pattern="[0-9]+" value="0"></td>
                             <td>
                                 <input type="checkbox" name="item[]" id="<?= $item["item_id"] ?>" class="item">
@@ -202,16 +204,10 @@ $Customer = new Customer();
                                 <option value="CASH">CASH</option>
                             </select>
                         </div>
-<<<<<<< HEAD
-                        <div class="mb-4 row">
-                            <label class="form-label" for="customer-deposit">How much is customer paying? (GH¢)</label>
-                            <input type="text" id="customer-deposit" name="customer-deposit" class="form-control" />
-=======
 
                         <div class="mb-4">
                             <label class="form-label" for="customer-deposit">Amount paid? (GHS)</label>
                             <input type="text" id="customer-deposit" required name="customer-deposit" class="form-control" />
->>>>>>> main
                         </div>
 
                         <div class="mb-4" style="border: 1px solid #eee; background-color: #eee">
@@ -278,6 +274,7 @@ $Customer = new Customer();
                 }
                 productTotalPrice();
             });
+
 
             $("#sell-product-form").on("submit", function(e) {
                 e.preventDefault();

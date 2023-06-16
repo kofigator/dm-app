@@ -37,7 +37,7 @@ VALUES (1, 1, 'Non customer', '0123456789', 'none', 'none')
         $items = $data["items"];
         $itemsArray = json_decode($items, true);
         foreach ($itemsArray as $item) {
-            $query = "INSERT INTO `sales`(`item_id`, `cust_id`, `user_id`, `quantity`, `unit_price`) 
+            $query = "INSERT INTO `sales`(`item_id`, `trans_id`, `cust_id`, `user_id`, `quantity`, `unit_price`) 
                     VALUES(:ii, :ci, :ui, :qt, :up)";
             $totalAdded += $this->db->inputData($query, array(
                 ":ii" => $item["id"],
@@ -62,8 +62,44 @@ VALUES (1, 1, 'Non customer', '0123456789', 'none', 'none')
         ));
     }
 
+    private function generateRandomStrings($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+        
+        $charactersLength = strlen($characters);
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        
+        return $randomString;
+    }
+
+    private function transIdExists($randomString)
+    {
+        $query = "SELECT COUNT(*) FROM transactions WHERE trans_num = :transId";
+        return $this->db->getData($query, array(':transId' => $randomString));
+    }
+
+    public function checkAndInsertTransaction()
+    {
+        $randomString = $this->generateRandomStrings();
+
+        while (true) {
+            if (empty($this->transIdExists($randomString))) {
+                $query = "INSERT INTO transactions (trans_id) VALUES (:transId)";
+                return $this->db->inputData($query);
+            } else {
+                $randomString = $this->generateRandomStrings();
+            }
+        }
+    }
+
+    
+
     private function savePurchase($data, $user_id)
     {
+        $this->generateRandomStrings();
+        $this->checkAndInsertTransaction();
         if ($this->savePurchaseItems($data, $user_id)) {
             if ($this->savePurchasePayment($data, $user_id)) {
                 return array("success" => true, "message" => "Purchase successfull!");
