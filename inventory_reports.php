@@ -80,23 +80,7 @@ $Inventory = new Inventory();
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="reportType" class="form-label">Filter By Description</label>
-                        <select class="form-select" id="reportdescription" name="reportdescription">
-                        <?php
-                            $descriptions = $Inventory->getInventoryDescription($_SESSION["user"]);
-                            $totalCount = 0;
-                            foreach ($descriptions as $description) {
-                            ?>
-                                <option value="<?= $description["description"] ?>"><?= $description["description"] ?></option>
-                            <?php
-                                $totalCount += 1;
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
+                
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="startDate" class="form-label">Added at (Start Date)</label>
@@ -137,10 +121,11 @@ $Inventory = new Inventory();
                             <tr>
                                 <th>SN.</th>
                                 <th>Item Name</th>
-                                <th>Description</th>
                                 <th>Cost</th>
                                 <th>Unit Price</th>
+                                <th>Quantity</th>
                                 <th>Profit on Each Item</th>
+                                <th>Total Profit</th>
                                 <th>Added at</th>
                             </tr>
                         </thead>
@@ -161,14 +146,18 @@ $Inventory = new Inventory();
                                             </div>
                                         </div>
                                     </td>
-                                    <td><?= $Inventory["description"] ?></td>
+                                    <?php $total = $Inventory["profit"] * $Inventory["quantity"]?>
                                     <td><?= $Inventory["cost_price"] ?></td>
                                     <td><?= $Inventory["unit_price"] ?></td>
+                                    <td><?= $Inventory["quantity"] ?></td>
                                     <td><?= $Inventory["profit"] ?></td>
+                                    <td>GH¢ <?= $total ?></td>
                                     <td><?= $Inventory["added_at"] ?></td>
                                 </tr>
                             <?php
+                                $tt = $i;
                                 $i++;
+                               
                             }
                             ?>
                         </tbody>

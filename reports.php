@@ -73,7 +73,7 @@ $Inventory = new Inventory();
                 </div>
             </a>
            
-            <a href="_reports.php" class="col-md-4 m-3 bg-success  dashboard-item">
+            <a href="pos_report.php" class="col-md-4 m-3 bg-success  dashboard-item">
                 <div style="padding: 35px">
                     Sales
                 </div>

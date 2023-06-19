@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2023 at 07:45 AM
+-- Generation Time: Jun 20, 2023 at 01:45 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -33,37 +33,25 @@ CREATE TABLE `customers` (
   `name` varchar(150) NOT NULL,
   `number` varchar(20) NOT NULL,
   `gender` char(1) NOT NULL,
+  `city` varchar(50) DEFAULT NULL,
   `address` varchar(200) DEFAULT NULL,
   `added_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-ALTER TABLE customers 
-ADD CONSTRAINT `uniq_cust_user` UNIQUE (`number`);
 
 --
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`cust_id`, `u_id`, `name`, `number`, `gender`, `address`, `added_at`, `updated_at`) VALUES
-(2, '0258741036', 'Collins Obeng', '0114477852', 'F', 'away bus', '2023-05-25 11:23:28', NULL),
-(4, '0987766554', 'Grace Davis Mafia', '0558997744', 'F', 'RMU', '2023-05-25 12:22:29', NULL),
-(6, '0123456789', 'Church Bell', '6635222531', 'F', 'church girl', '2023-05-25 12:22:29', NULL),
-(10, '0249985632', 'Debbie  Tsekpo', '0557841236', 'M', 'Trasaco Estate', '2023-05-25 18:29:33', NULL),
-(11, '0258741036', 'Deborah Frema Ababio', '2245778432', 'F', 'Devtracco Estate', '2023-05-25 18:29:33', NULL),
-(17, '3322114455', 'Benjamin Ansu', '4125307896', 'M', 'Carpenter', '2023-05-26 12:37:48', NULL),
-(19, '3322114455', 'Aunty Bee', '6320147898', 'F', 'enkasa', '2023-05-26 12:59:19', NULL),
-(20, '3322114455', 'Joshua Salifu Ali', '0241597536', 'M', 'Teshie Estate', '2023-05-31 17:12:17', NULL),
-(21, '3322114455', 'Nii Bodu ', '0547418523', 'M', 'mantse avenue', '2023-05-31 17:19:36', NULL),
-(22, '0541236547', 'Kofi Gator', '0241000000', 'M', 'Dubai', '2023-06-01 09:48:56', NULL),
-(23, '3322114455', 'Prince David Akoto', '0547240625', 'M', 'gx00545', '2023-05-31 20:05:07', NULL),
-(25, '0541236547', 'Stephanie Asare', '0201598741', 'F', 'Kumasi', '2023-06-01 09:48:56', NULL),
-(27, '0541236547', 'Delphin Opare', '0125463333', 'F', 'Osu', '2023-06-02 09:30:51', NULL),
-(28, '0541236547', 'Amelia Darko', '0578965413', 'F', 'rmue', '2023-06-02 14:06:22', NULL),
-(29, '0541236547', 'Kofi Chen', '025479632', 'M', '2 wee Lane Crescent', '2023-06-02 14:25:47', NULL),
-(30, '0541236547', 'Abigail Osei', '0576767621', 'F', 'Madina', '2023-06-03 19:36:51', NULL),
-(31, '0000000000', 'kaklo shi', '0212325241', 'F', 'Yah', '2023-06-08 09:50:53', NULL),
-(32, '0541236547', 'Francis Arthur', '0214521452', 'M', 'mamprobi', '2023-06-12 22:16:08', NULL);
-ALTER TABLE customers ADD COLUMN city VARCHAR(50) AFTER gender; 
+INSERT INTO `customers` (`cust_id`, `u_id`, `name`, `number`, `gender`, `city`, `address`, `added_at`, `updated_at`) VALUES
+(3, '0555555555', 'Prince', '0214521451', 'F', 'Accra', 'Spintex', '2023-05-31 20:10:12', NULL),
+(4, '0555555555', 'Ratty', '0124563214', 'M', 'Nungua', 'RMU', '2023-06-14 02:33:05', NULL),
+(7, '0555555555', 'Ratty', '0124563215', 'M', 'Nungua', 'RMU', '2023-06-14 02:53:24', NULL),
+(8, '0555555555', 'Ratty', '0124563216', 'M', 'Osu', 'RMU', '2023-06-14 02:53:45', NULL),
+(9, '0555555555', 'asba', '0124563217', 'M', 'Osu', 'Osu Police Station', '2023-06-14 02:57:22', NULL),
+(10, '0555555555', 'Sulley', '0125632123', 'M', 'Lapaz', 'Hannah Road 209 Jn', '2023-06-14 03:47:42', NULL),
+(11, '0541236547', 'Collins Obeng', '0247856932', 'M', 'Kumasi', 'Hse No. 9', '2023-06-19 20:01:47', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -75,34 +63,25 @@ CREATE TABLE `items` (
   `u_id` varchar(20) DEFAULT NULL,
   `item_name` varchar(150) NOT NULL,
   `description` varchar(300) DEFAULT NULL,
-  `unit_price` decimal(10,2) NOT NULL,
+  `cost_price` decimal(10,2) DEFAULT NULL,
+  `unit_price` decimal(6,2) NOT NULL,
   `quantity` int(11) NOT NULL,
   `added_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL
+  `updated_at` datetime DEFAULT NULL,
+  `profit` decimal(10,2) GENERATED ALWAYS AS (`unit_price` - `cost_price`) STORED
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-ALTER TABLE `items` 
-ADD COLUMN `cost_price` DECIMAL(10, 2) DEFAULT 0.00 AFTER `description`, 
-ADD COLUMN `profit` DECIMAL(10, 2) DEFAULT 0.00 GENERATED ALWAYS AS (`unit_price` - `cost_price`) STORED;
 --
 -- Dumping data for table `items`
 --
 
-INSERT INTO `items` (`item_id`, `u_id`, `item_name`, `description`, `unit_price`, `quantity`, `added_at`, `updated_at`) VALUES
-(2, '3322114455', 'Don Simon', 'Large', '22.95', 24, '2023-05-26 18:36:24', NULL),
-(3, '3322114455', 'Dell laptop', 'x540', '12000.00', 6, '2023-05-31 16:41:49', NULL),
-(4, '3322114455', 'PS5', 'UK model', '15000.00', 5, '2023-05-31 16:43:39', NULL),
-(5, '3322114455', 'Ceres', 'Large', '20.52', 7, '2023-05-31 16:47:54', NULL),
-(7, '3322114455', 'Projector', 'Epson', '2400.16', 3, '2023-05-31 16:54:57', NULL),
-(8, '3322114455', 'Fan', 'Table top', '135.40', 5, '2023-06-01 10:18:57', NULL),
-(10, '0541236547', 'Pepsi', 'large', '7.80', 50, '2023-06-02 11:41:48', NULL),
-(12, '0541236547', 'Nokia', 'x2310', '62.30', 20, '2023-06-02 15:10:10', NULL),
-(13, '0541236547', 'Xingher Singlets', 'Men Singlets', '20.00', 15, '2023-06-02 15:38:30', NULL),
-(14, '0541236547', 'jkghsaiu diusa ', 'kljhihsbdfioahio', '90.00', 9798, '2023-06-02 19:17:56', NULL),
-(15, '0541236547', 'oiahod a', 'ljkhbkandskl', '67.00', 45, '2023-06-02 19:18:10', NULL),
-(16, '0541236547', 'key-soap', 'detergent', '27.08', 15, '2023-06-02 19:18:24', NULL),
-(18, '0000000000', 'voltic', 'bottle water', '20.12', 5, '2023-06-08 09:52:45', NULL),
-(19, '0541236547', 'Phone cover', 'iphone ', '1500.00', 10, '2023-06-12 22:17:23', NULL);
+INSERT INTO `items` (`item_id`, `u_id`, `item_name`, `description`, `cost_price`, `unit_price`, `quantity`, `added_at`, `updated_at`) VALUES
+(2, '0555555555', 'Shirt', 'Short sleeve', '40.00', '52.00', 10, '2023-06-07 19:28:52', NULL),
+(3, '0555555555', 'Spectacles', 'Blue shades specs', '98.00', '150.00', 3, '2023-06-07 19:31:07', NULL),
+(7, '0555555555', 'adfasdas', 'asdada', '8.00', '17.00', 4, '2023-06-13 21:07:34', NULL),
+(8, '0555555555', 'Gun powder', 'Gun powder for original guns', '254.00', '350.00', 5, '2023-06-13 21:20:13', NULL),
+(9, '0541236547', 'Digestive Biscuit', 'small', '2.50', '4.00', 10, '2023-06-19 20:12:04', NULL),
+(10, '0541236547', 'Bel-cola', 'large', '2.20', '5.20', 15, '2023-06-19 22:04:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -114,7 +93,7 @@ CREATE TABLE `logins` (
   `log_id` int(11) NOT NULL,
   `u_id` varchar(20) DEFAULT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(256) NOT NULL
+  `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -122,16 +101,20 @@ CREATE TABLE `logins` (
 --
 
 INSERT INTO `logins` (`log_id`, `u_id`, `username`, `password`) VALUES
-(1, '0547240625', 'jeongprince@yahoo.com', '$2y$10$NihPuQvgGaQjcTTYDWYQtuwi5Z0y7HsCfIAWAt1qDoa'),
-(2, '0987766554', 'collinobeng@gmail.com', '$2y$10$3LrAzNv1NWuKK7iuG0a7MOMsKbZAn1DvAM7Id/MZSnk'),
-(3, '0123456789', 'roro@y.com', '$2y$10$IXMkyLBb3XP6Taq3/NyuNelnlz6M.kIIi6sPf6lc9lY'),
-(4, '0258741036', 'philipo@gmail.com', '$2y$10$yhKDBsOPbmQQYPFZ3xCvGusWHu19dT1iCyIjX22dGR3'),
-(5, '3322114455', 'nuto@123.com', '$2y$10$YEmgLzcktEI3Hxdsy1dBueRppBoaKnjVyIq6siXSsIQ'),
-(6, '0145632014', 'francisratty@gmail.com', '$2y$10$Myo7I.sqxz93irrYuYmLeudVNpdy7Zj7f1s7jTAxdBo'),
-(7, '0247896541', 'church@gh.com', '$2y$10$xMFM.ziqL3pWYCaHUD.dVeWWEfP1ZVDfasNZ.sfilGu'),
-(8, '0249985632', 'derrickco@gmail.com', '$2y$10$Q/TuYuusxjpIlIaFOTr3eu4F5hCMes4dSuTp.uvb9BI'),
-(9, '0541236547', 'p@gmail.com', '$2y$10$aucSDvsyfjLTgbWG7Y3Ii.pDRRMe4u9HWpmHEKMsSEhcKxEYRiMXy'),
-(10, '0000000000', 'daza@gmail.com', '$2y$10$22lwza3IDwVCGcMIwx0VoOKKI4nozkZtScOXACEaUYNbdQZvQ8l1.');
+(1, '0555351061', 'y@gmail.com', '$2y$10$AdF5zioMRy/cWWoLmNERI.sWtTUIgeBLI1ru7G9qarA'),
+(2, '0554545452', 'd@gmail.com', '$2y$10$i5gd/myXShhX61G0n8PtuuGORt.jn5oyQ.qbq3witil'),
+(3, '0244123123', 'd@gmail.com', '$2y$10$N5tVyq1.STjiqouPx15qrOwPAqFVbeKc51kKxkKSV3k'),
+(4, '0555555555', 'f@gmail.com', '$2y$10$GwBF974VzWCld8C4hNngY.slbP8tQh5d8olg008.ST3LM9czEjJmi'),
+(5, '0547240625', 'jeongprince@yahoo.com', '$2y$10$NihPuQvgGaQjcTTYDWYQtuwi5Z0y7HsCfIAWAt1qDoa'),
+(6, '0987766554', 'collinobeng@gmail.com', '$2y$10$3LrAzNv1NWuKK7iuG0a7MOMsKbZAn1DvAM7Id/MZSnk'),
+(7, '0123456789', 'roro@y.com', '$2y$10$IXMkyLBb3XP6Taq3/NyuNelnlz6M.kIIi6sPf6lc9lY'),
+(8, '0258741036', 'philipo@gmail.com', '$2y$10$yhKDBsOPbmQQYPFZ3xCvGusWHu19dT1iCyIjX22dGR3'),
+(9, '3322114455', 'nuto@123.com', '$2y$10$YEmgLzcktEI3Hxdsy1dBueRppBoaKnjVyIq6siXSsIQ'),
+(10, '0145632014', 'francisratty@gmail.com', '$2y$10$Myo7I.sqxz93irrYuYmLeudVNpdy7Zj7f1s7jTAxdBo'),
+(11, '0247896541', 'church@gh.com', '$2y$10$xMFM.ziqL3pWYCaHUD.dVeWWEfP1ZVDfasNZ.sfilGu'),
+(12, '0249985632', 'derrickco@gmail.com', '$2y$10$Q/TuYuusxjpIlIaFOTr3eu4F5hCMes4dSuTp.uvb9BI'),
+(13, '0541236547', 'p@gmail.com', '$2y$10$aucSDvsyfjLTgbWG7Y3Ii.pDRRMe4u9HWpmHEKMsSEhcKxEYRiMXy'),
+(14, '0000000000', 'daza@gmail.com', '$2y$10$22lwza3IDwVCGcMIwx0VoOKKI4nozkZtScOXACEaUYNbdQZvQ8l1.');
 
 -- --------------------------------------------------------
 
@@ -157,13 +140,25 @@ CREATE TABLE `ordered_items` (
 
 CREATE TABLE `payments` (
   `pay_id` int(11) NOT NULL,
+  `user_id` varchar(20) NOT NULL,
   `cust_id` int(11) NOT NULL,
   `amount` decimal(6,2) NOT NULL,
   `mode` varchar(20) NOT NULL,
   `added_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-ALTER TABLE payments ADD COLUMN user_id VARCHAR(20) NOT NULL AFTER pay_id,
-ADD CONSTRAINT fk_payments_user FOREIGN KEY (user_id) REFERENCES users(phone_number);
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`pay_id`, `user_id`, `cust_id`, `amount`, `mode`, `added_at`) VALUES
+(11, '0541236547', 11, '20.00', 'MOMO', '2023-06-19 21:57:08'),
+(12, '0541236547', 11, '20.00', 'MOMO', '2023-06-19 21:58:41'),
+(13, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:07:24'),
+(14, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:08:08'),
+(15, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:10:45'),
+(16, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:11:12'),
+(17, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:12:42');
 
 -- --------------------------------------------------------
 
@@ -175,13 +170,69 @@ CREATE TABLE `sales` (
   `sales_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `cust_id` int(11) NOT NULL,
+  `trans_id` varchar(20) DEFAULT NULL,
+  `user_id` varchar(20) NOT NULL,
   `quantity` int(20) NOT NULL,
   `unit_price` decimal(6,2) NOT NULL,
   `total` decimal(6,2) GENERATED ALWAYS AS (`quantity` * `unit_price`) STORED,
   `added_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-ALTER TABLE sales ADD COLUMN user_id VARCHAR(20) NOT NULL AFTER cust_id,
-ADD CONSTRAINT fk_sales_user FOREIGN KEY (user_id) REFERENCES users(phone_number);
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`sales_id`, `item_id`, `cust_id`, `trans_id`, `user_id`, `quantity`, `unit_price`, `added_at`) VALUES
+(29, 9, 11, 'ra29Ydc8Ec', '0541236547', 7, '4.00', '2023-06-19 21:57:08'),
+(30, 9, 11, 'S1YY9ldUEB', '0541236547', 7, '4.00', '2023-06-19 21:58:41'),
+(31, 9, 11, 'qWkiOEWNnP', '0541236547', 2, '4.00', '2023-06-19 22:07:24'),
+(32, 10, 11, 'qWkiOEWNnP', '0541236547', 2, '5.20', '2023-06-19 22:07:24'),
+(33, 9, 11, '2hkLn9Adsj', '0541236547', 2, '4.00', '2023-06-19 22:08:08'),
+(34, 10, 11, '2hkLn9Adsj', '0541236547', 2, '5.20', '2023-06-19 22:08:08'),
+(35, 9, 11, 'bhmmZOY6ef', '0541236547', 2, '4.00', '2023-06-19 22:10:45'),
+(36, 10, 11, 'bhmmZOY6ef', '0541236547', 2, '5.20', '2023-06-19 22:10:45'),
+(37, 9, 11, 'XUqd4wnJ61', '0541236547', 2, '4.00', '2023-06-19 22:11:12'),
+(38, 10, 11, 'XUqd4wnJ61', '0541236547', 2, '5.20', '2023-06-19 22:11:12'),
+(39, 9, 11, '4VyyLCuQZg', '0541236547', 2, '4.00', '2023-06-19 22:12:42'),
+(40, 10, 11, '4VyyLCuQZg', '0541236547', 2, '5.20', '2023-06-19 22:12:42');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `t_id` int(11) NOT NULL,
+  `user_id` varchar(20) NOT NULL,
+  `trans_num` varchar(200) NOT NULL,
+  `added_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`t_id`, `user_id`, `trans_num`, `added_at`) VALUES
+(1, '541236547', 'w5F4K9o1C3', '2023-06-19 20:14:50'),
+(2, '541236547', 'IG22NEBNCT', '2023-06-19 20:19:55'),
+(3, '541236547', 'vvQJcFKoi9', '2023-06-19 21:13:39'),
+(4, '541236547', 'E9l5skR2jT', '2023-06-19 21:14:30'),
+(5, '541236547', 'vT4adraEMN', '2023-06-19 21:15:24'),
+(6, '0541236547', 'XKTfAAxHsB', '2023-06-19 21:35:40'),
+(7, '0541236547', 'v8Jc00SFVd', '2023-06-19 21:36:17'),
+(8, '0541236547', '7D12cY8jx4', '2023-06-19 21:57:08'),
+(9, '0541236547', 'ra29Ydc8Ec', '2023-06-19 21:57:08'),
+(10, '0541236547', 'UL1lWcQt6k', '2023-06-19 21:58:41'),
+(11, '0541236547', 'S1YY9ldUEB', '2023-06-19 21:58:41'),
+(12, '0541236547', 'DW2VX7BBjJ', '2023-06-19 22:07:24'),
+(13, '0541236547', 'qWkiOEWNnP', '2023-06-19 22:07:24'),
+(14, '0541236547', 'BVgpG47gEM', '2023-06-19 22:08:08'),
+(15, '0541236547', '2hkLn9Adsj', '2023-06-19 22:08:08'),
+(16, '0541236547', 'bhmmZOY6ef', '2023-06-19 22:10:45'),
+(17, '0541236547', 'XUqd4wnJ61', '2023-06-19 22:11:12'),
+(18, '0541236547', '4VyyLCuQZg', '2023-06-19 22:12:42');
+
 -- --------------------------------------------------------
 
 --
@@ -205,16 +256,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`phone_number`, `first_name`, `last_name`, `gender`, `email`, `photo`, `added_at`, `updated_at`) VALUES
-('0000000000', 'da', 'za', 'F', 'daza@gmail.com', NULL, '2023-06-08 09:47:51', NULL),
-('0123456789', 'ro', 'ro', 'F', 'roro@y.com', NULL, '2023-05-18 20:34:04', NULL),
 ('0145632014', 'francis ', 'ratty', 'M', 'francisratty@gmail.com', NULL, '2023-05-25 13:27:11', NULL),
-('0247896541', 'church', 'bell', 'F', 'church@gh.com', NULL, '2023-05-25 13:45:03', NULL),
-('0249985632', 'Derrick Nii', 'Adjetey Adjei', 'M', 'derrickco@gmail.com', NULL, '2023-05-25 18:16:25', NULL),
-('0258741036', 'philip', 'nana', 'M', 'philipo@gmail.com', NULL, '2023-05-24 10:27:14', NULL),
+('0244123123', 'Daniel', 'Amunu', 'M', 'd@gmail.com', NULL, '2023-05-31 19:12:22', NULL),
 ('0541236547', 'prince', 'david', 'M', 'p@gmail.com', NULL, '2023-05-31 19:32:42', NULL),
-('0547240625', 'Prince ', 'David', 'M', 'jeongprince@yahoo.com', NULL, '2023-05-09 08:50:35', NULL),
-('0987766554', 'Collins ', 'Obeng', 'M', 'collinobeng@gmail.com', NULL, '2023-05-09 09:52:56', NULL),
-('3322114455', 'mavis ', 'nutortsi', 'F', 'nuto@123.com', NULL, '2023-05-24 10:30:11', NULL);
+('0555351061', 'Francis', 'Yaw', 'M', 'y@gmail.com', NULL, '2023-05-02 17:18:32', NULL),
+('0555555555', 'Francis', 'Anlimah', 'M', 'f@gmail.com', NULL, '2023-05-31 19:22:33', NULL);
 
 --
 -- Indexes for dumped tables
@@ -225,6 +271,7 @@ INSERT INTO `users` (`phone_number`, `first_name`, `last_name`, `gender`, `email
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`cust_id`),
+  ADD UNIQUE KEY `uniq_cust_user` (`number`),
   ADD KEY `FK_u_id1` (`u_id`);
 
 --
@@ -254,7 +301,8 @@ ALTER TABLE `ordered_items`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`pay_id`),
-  ADD KEY `FK_cust_id` (`cust_id`);
+  ADD KEY `FK_cust_id` (`cust_id`),
+  ADD KEY `fk_payments_user` (`user_id`);
 
 --
 -- Indexes for table `sales`
@@ -262,7 +310,16 @@ ALTER TABLE `payments`
 ALTER TABLE `sales`
   ADD PRIMARY KEY (`sales_id`),
   ADD KEY `FK_item_id1` (`item_id`),
-  ADD KEY `FK_cust_id1` (`cust_id`);
+  ADD KEY `FK_cust_id1` (`cust_id`),
+  ADD KEY `fk_sales_user` (`user_id`),
+  ADD KEY `fk_trans_user` (`trans_id`);
+
+--
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`t_id`),
+  ADD UNIQUE KEY `trans_id` (`trans_num`);
 
 --
 -- Indexes for table `users`
@@ -278,19 +335,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `cust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `cust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `logins`
 --
 ALTER TABLE `logins`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `ordered_items`
@@ -302,13 +359,19 @@ ALTER TABLE `ordered_items`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `t_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
@@ -343,38 +406,19 @@ ALTER TABLE `ordered_items`
 -- Constraints for table `payments`
 --
 ALTER TABLE `payments`
-  ADD CONSTRAINT `FK_cust_id` FOREIGN KEY (`cust_id`) REFERENCES `customers` (`cust_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_cust_id` FOREIGN KEY (`cust_id`) REFERENCES `customers` (`cust_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_payments_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`phone_number`);
 
 --
 -- Constraints for table `sales`
 --
 ALTER TABLE `sales`
   ADD CONSTRAINT `FK_cust_id1` FOREIGN KEY (`cust_id`) REFERENCES `customers` (`cust_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_item_id1` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_item_id1` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_sales_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`phone_number`),
+  ADD CONSTRAINT `fk_trans_user` FOREIGN KEY (`trans_id`) REFERENCES `transactions` (`trans_num`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-SELECT city FROM customers WHERE u_id = '0555555555' GROUP BY city;
-
-UPDATE `customers` SET `city` = 'Tema' WHERE `customers`.`cust_id` = 22; 
-UPDATE `customers` SET `city` = 'Kumasi', `address` = 'knust' WHERE `customers`.`cust_id` = 25; 
-UPDATE `customers` SET `city` = 'Kumasi', `address` = 'kings palace' WHERE `customers`.`cust_id` = 27;
-UPDATE `customers` SET `city` = 'Nungua', `address` = 'RMU' WHERE `customers`.`cust_id` = 28; 
-UPDATE `customers` SET `city` = 'Kasoa', `address` = 'GA-20224' WHERE `customers`.`cust_id` = 29; 
-UPDATE `customers` SET `city` = 'Kasoa', `address` = 'Total filling station' WHERE `customers`.`cust_id` = 30; 
-UPDATE `customers` SET `city` = 'Takoradi', `address` = 'Anaji' WHERE `customers`.`cust_id` = 32; 
-UPDATE `customers` SET `city` = 'Nungua', `address` = 'nautical' WHERE `customers`.`cust_id` = 33; 
-
-
-
-CREATE TABLE `transactions` (
-  `t_id` int(11) AUTO_INCREMENT PRIMARY KEY,
-  `trans_id` varchar(200) UNIQUE NOT NULL,
-  `added_at` datetime DEFAULT current_timestamp()
-)
-
-ALTER TABLE `sales` ADD `trans_id` VARCHAR(200) NULL AFTER `cust_id`; 
-ALTER TABLE `sales` ADD CONSTRAINT `fk_trans_user` FOREIGN KEY (`trans_id`) REFERENCES `transactions`(`trans_id`) ON DELETE CASCADE; 

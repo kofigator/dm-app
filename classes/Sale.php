@@ -29,18 +29,33 @@ class Sale
 
     private function savePurchaseItems($data, $user_id)
     {
-        /*
-        INSERT INTO `customers`(`cust_id`, `u_id`, `name`, `number`, `gender`, `address`) 
-VALUES (1, 1, 'Non customer', '0123456789', 'none', 'none')
-        */
+        $randomString = $this->generateRandomStrings();
+
+        $transaction_exist = $this->transIdExists($randomString);
+
+        if (empty($transaction_exist)) {
+            $query = "INSERT INTO transactions (`trans_num`, `user_id`) VALUES (:transId, :userId)";
+            $this->db->inputData($query, array(
+                ":transId" => $randomString,
+                ":userId" => $user_id
+            ));
+        } else {
+            // Handle the case when the random string already exists
+            // You can generate a new random string or handle it in some other way
+            return;
+        }
+
+        $trans_id = $randomString; // Use the generated random string as trans_id
+
         $totalAdded = 0;
         $items = $data["items"];
         $itemsArray = json_decode($items, true);
         foreach ($itemsArray as $item) {
             $query = "INSERT INTO `sales`(`item_id`, `trans_id`, `cust_id`, `user_id`, `quantity`, `unit_price`) 
-                    VALUES(:ii, :ci, :ui, :qt, :up)";
+                    VALUES(:ii, :ti, :ci, :ui, :qt, :up)";
             $totalAdded += $this->db->inputData($query, array(
                 ":ii" => $item["id"],
+                ":ti" => $trans_id,
                 ":ci" => $data["customer-list"],
                 ":ui" => $user_id,
                 ":qt" => $item["quantity"],
@@ -50,6 +65,7 @@ VALUES (1, 1, 'Non customer', '0123456789', 'none', 'none')
 
         return $totalAdded;
     }
+
 
     private function savePurchasePayment($data, $user_id)
     {
@@ -76,30 +92,15 @@ VALUES (1, 1, 'Non customer', '0123456789', 'none', 'none')
 
     private function transIdExists($randomString)
     {
-        $query = "SELECT COUNT(*) FROM transactions WHERE trans_num = :transId";
+        $query = "SELECT * FROM transactions WHERE trans_num = :transId";
         return $this->db->getData($query, array(':transId' => $randomString));
     }
 
-    public function checkAndInsertTransaction()
-    {
-        $randomString = $this->generateRandomStrings();
-
-        while (true) {
-            if (empty($this->transIdExists($randomString))) {
-                $query = "INSERT INTO transactions (trans_id) VALUES (:transId)";
-                return $this->db->inputData($query);
-            } else {
-                $randomString = $this->generateRandomStrings();
-            }
-        }
-    }
-
+    
     
 
     private function savePurchase($data, $user_id)
     {
-        $this->generateRandomStrings();
-        $this->checkAndInsertTransaction();
         if ($this->savePurchaseItems($data, $user_id)) {
             if ($this->savePurchasePayment($data, $user_id)) {
                 return array("success" => true, "message" => "Purchase successfull!");

@@ -246,9 +246,9 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         $data = $Sale->sellProducts($_POST, $_SESSION["user"]);
-        die(json_encode($data));
-        if ($data) die(json_encode(array("success" => true, "message" => "Completed!")));
-        die(json_encode(array("success" => false, "message" => "Failed to sell to customer!")));
+        
+        // if ($data && $trans_id) die(json_encode(array("success" => true, "message" => "Completed!")));
+        // die(json_encode(array("success" => false, "message" => "Failed to sell to customer!")));
     }
 
     //Customers reports
