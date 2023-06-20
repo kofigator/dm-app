@@ -7,7 +7,9 @@ if (isset($_GET["logout"])) {
     header("Location: index.php");
 }
 require_once('classes/Inventory.php');
+require_once('classes/Customer.php');
 $Inventory = new Inventory();
+$customer = new Customer();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,26 +86,24 @@ $Inventory = new Inventory();
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="reportType" class="form-label">Filter By City / Item</label>
-                        <select class="form-select" id="report-city-item" name="report-city-item">
+                        <label for="reportType" class="form-label">Filter By City</label>
+                        <select class="form-select" id="report-city" name="report-city">
                             <option value="">Choose</option>
-                            <option value="">CITY</option>
-                            <option value="">ITEM</option>
+                            <?php
+                            $cities = $customer->getCustomersCityGrouped($_SESSION["user"]);
+                            $totalCount = 0;
+                            foreach ($cities as $city) {
+                            ?>
+                                <option value="<?= $city["city"] ?>"><?= $city["city"] ?></option>
+                            <?php
+                                $totalCount += 1;
+                            }
+                            ?>
                         </select>
                     </div>
                 </div>
 
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="reportType" class="form-label">Filter By Turnover</label>
-                        <select class="form-select" id="reportTurnover" name="reportTurnover">
-                            <option value="">Choose</option>
-                            <option value="">Daily Turnover</option>
-                            <option value="">Weekly Turnover</option>
-                            <option value="">Monthly Turnover</option>
-                        </select>
-                    </div>
-                </div>
+                
                 
                 <div class="col-md-2">
                     <div class="form-group">
@@ -168,7 +168,7 @@ $Inventory = new Inventory();
                 console.log(new FormData(this))
                 $.ajax({
                     type: "POST",
-                    url: "api/items-reports",
+                    url: "api/sales-reports",
                     data: new FormData(this),
                     contentType: false,
                     cache: false,
