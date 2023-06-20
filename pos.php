@@ -278,7 +278,12 @@ $Customer = new Customer();
             $("#customer-deposit").on("keyup", function() {
                 let deposit = $(this).val();
                 let remainingAmount = (totalPrice - deposit).toFixed(2);
-                $("#amount-owing").val("GHS " + remainingAmount);
+                if(remainingAmount <= 0){
+                    $("#amount-owing").val("GHS " + -1 * remainingAmount);
+                }else{
+                    $("#amount-owing").val("GHS " + "-"+remainingAmount);
+                }
+                
             });
 
 
