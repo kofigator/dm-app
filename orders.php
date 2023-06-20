@@ -1,117 +1,108 @@
 <?php
 session_start();
-if (isset($_SESSION["user"])) header("Location: dashboard.php");
+if (!isset($_SESSION["user"])) {
+    header("Location: index.php");
+    exit;
+}
+
+if (isset($_GET["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+    exit;
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orders Form</title>
-    <!--<link rel="stylesheet" href="../CSS/regStyle.css" />-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item</title>
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
 
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .body>form {
-            height: 100% !important;
-            width: 100% !important;
-        }
-
-        form {
-            max-width: 500px;
-        }
-
-        #bg {
-            background-image: url("assets/images/bg11.jpg");
+        /* Your CSS styles here */
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
         }
     </style>
 </head>
 
 <body class="fluid-container">
+<header style="position: relative !important; width: 100% !important; height: 60px !important; display: flex; justify-content: center; align-items: center">
+        <span style="flex-grow: 1" class="bi bi-arrow-left back" style="color: #fff !important; font-size: 26px !important"></span>
+        <h1 style="flex-grow: 8">Order an Item</h1>
+        <?php require_once('inc/header.php') ?>
+    </header>
 
-    <form id="order-form" method="post">
-        <fieldset>
-            <legend>Orders Form</legend>
+    <div class="mt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <form id="add-item-form" method="post">
+                        
             <div class="form-outline mb-4">
-                <input type="text" id="first-name" name="first-name" class="form-control" />
-                <label class="form-label" for="first-name">Item Name</label>
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="last-name" name="last-name" class="form-control" />
-                <label class="form-label" for="last-name">Description</label>
-            </div>
-
-            <div class="form-outline mb-4">
-                <input type="text" id="last-name" name="last-name" class="form-control" />
-                <label class="form-label" for="last-name">Quantity</label>
+                <input type="text" id="item-name" name="item-name" class="form-control" />
+                <label class="form-label" for="item-name">Item Name</label>
             </div>
 
             <div class="form-outline mb-4">
-                <input type="text" id="phone" name="phone" class="form-control" />
-                <label class="form-label" for="phone">Budgetted Price</label>
+                <textarea id="description" name="description" class="form-control"></textarea>
+                <label class="form-label" for="description">Description</label>
             </div>
 
             <div class="form-outline mb-4">
-                <input type="date" id="email-addr" name="email-addr" class="form-control" />
+                <input type="number" id="quantity" name="quantity" class="form-control" />
+                <label class="form-label" for="quantity">Quantity</label>
             </div>
 
             <div class="form-outline mb-4">
-                <input type="text" id="password" name="password" class="form-control" />
-                <label class="form-label" for="password">Phone Number</label>
+                <input type="text" id="budgetted-price" name="budgetted-price" class="form-control" />
+                <label class="form-label" for="budgetted-price">Budgetted Price</label>
             </div>
 
-            <div class="form-outline flex-fill mb-4">
-                <input type="text" id="repeat-password" name="repeat-password" class="form-control" />
-                <label class="form-label" for="repeat-password">Address[Town]</label>
+            <div class="form-outline mb-4">
+                <input type="email" id="email-addr" name="email-addr" class="form-control" />
+                <label class="form-label" for="email-addr">Email Address</label>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block mb-4">Save</button>
+            <div class="form-outline mb-4">
+                <input type="text" id="phone-number" name="phone-number" class="form-control" />
+                <label class="form-label" for="phone-number">Phone Number</label>
+            </div>
 
-        </fieldset>
-    </form>
+            <div class="form-outline mb-4">
+                <input type="text" id="address" name="address" class="form-control" />
+                <label class="form-label" for="address">Address [Town]</label>
+            </div>
 
-    <script src="js/jquery-3.6.0.min.js"></script>
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MDB -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+    <!-- Your custom scripts here -->
     <script>
         $(document).ready(function() {
-
-            $("#order-form").on("submit", function(e) {
-                e.preventDefault();
-
-                $.ajax({
-                    type: "POST",
-                    url: "api/orders",
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                }).done(function(data) {
-                    console.log(data);
-                    if (data.success) {
-                        window.location.href = "index.php";
-                    }
-                    alert(data.message);
-                    return;
-                }).fail(function(error) {
-                    console.log(error);
-                })
-            });
-
+            $(".back").click(function() {
+                window.location.href = "dashboard.php";
+        })
         });
     </script>
 </body>
