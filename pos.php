@@ -275,6 +275,12 @@ $Customer = new Customer();
                 productTotalPrice();
             });
 
+            $("#customer-deposit").on("keyup", function() {
+                let deposit = $(this).val();
+                let remainingAmount = (totalPrice - deposit).toFixed(2);
+                $("#amount-owing").val("GHS " + remainingAmount);
+            });
+
 
             $("#sell-product-form").on("submit", function(e) {
                 e.preventDefault();
