@@ -107,7 +107,7 @@ $customer = new Customer();
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="endDate" class="form-label">(End Date)</label>
+                        <label for="endDate" class="form-label">End Date</label>
                         <input type="date" class="form-control" id="endDate" name="endDate">
                     </div>
                 </div>

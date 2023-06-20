@@ -270,10 +270,6 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
     //Items reports
 
     if ($_GET["url"] == "items-reports") {
-        if (!isset($_POST["reportSale"]))
-            die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
-        if (!isset($_POST["reportdescription"]))
-            die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
         if (!isset($_POST["startDate"]))
             die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
         if (!isset($_POST["endDate"]))

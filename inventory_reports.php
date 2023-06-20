@@ -73,23 +73,13 @@ $Inventory = new Inventory();
             <div class="row mb-3">
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="reportType" class="form-label">Filter By Sales Performance</label>
-                        <select class="form-select" id="reportSale" name="reportSale">
-                            <option value="">Choose</option>
-                            <option value="">Most bought</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="startDate" class="form-label">Added at (Start Date)</label>
+                        <label for="startDate" class="form-label">Start Date</label>
                         <input type="date" class="form-control" id="startDate" name="startDate">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="endDate" class="form-label">(End Date)</label>
+                        <label for="endDate" class="form-label">End Date</label>
                         <input type="date" class="form-control" id="endDate" name="endDate">
                     </div>
                 </div>
@@ -213,17 +203,23 @@ $Inventory = new Inventory();
                                 '</div>' +
                                 '</div>' +
                                 '</td>' +
-                                '<td>' + value["description"] + ' </td>' +
                                 '<td>' + value["cost_price"] + ' </td>' +
                                 '<td>' + value["unit_price"] + ' </td>' +
+                                '<td>' + value["quantity"] + ' </td>' +
+                                '<td>' + value["hello"] + ' </td>' +
                                 '<td>' + value["profit"] + ' </td>' +
+                                '<td>' + value["unit_price"]*value["quantity"] + ' </td>' +
                                 '<td>' + value["added_at"] + ' </td>' +
                                 '</tr>'
+
+                                
                             );
                             totalCount += 1;
                         });
                         $("#totalRecordsHead").show();
                         $("#totalRecords").text(totalCount);
+                    }else{
+                        alert("Error");
                     }
 
                 }).fail(function(error) {
