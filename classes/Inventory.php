@@ -38,6 +38,16 @@ class Inventory
         return $this->db->inputData($query, $param);
     }
 
+    public function updateQuantity($itemData, $userID)
+    {
+        $query = "UPDATE items SET  `quantity` = :ad 
+                WHERE item_name = :ci AND u_id = :ui";
+        $param = array(
+            ":ad" => $itemData["item-quantity"], ":ci" => $itemData["item-name"], ":ui" => $userID
+        );
+        return $this->db->inputData($query, $param);
+    }
+
     /**
      * @param int $itemID
      * @param int $userID
@@ -70,7 +80,9 @@ class Inventory
     public function getAllItems($userID)
     {
         $query = "SELECT * FROM items WHERE u_id = :ui ORDER BY added_at DESC";
+        $query2 = "SELECT item_id, SUM(quantity) AS total_quantity FROM sales WHERE u_id = :ui GROUP BY item_id";
         return $this->db->getData($query, array(":ui" => $userID));
+        return $this->db->getData($query2, array(":ui" => $userID));
     }
 
     public function getInventoryDescription($userID)

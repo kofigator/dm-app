@@ -245,7 +245,8 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
                 die(json_encode(array("success" => false, "message" => "Customer is required!")));
         }
 
-        $data = $Sale->sellProducts($_POST, $_SESSION["user"]);
+        //$data = $Sale->sellProducts($_POST, $_SESSION["user"]);
+        $Inventory->updateQuantity($itemData["item-name"], $_SESSION["user"]);
         
         // if ($data && $trans_id) die(json_encode(array("success" => true, "message" => "Completed!")));
         // die(json_encode(array("success" => false, "message" => "Failed to sell to customer!")));

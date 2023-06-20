@@ -117,18 +117,20 @@ $Inventory = new Inventory();
                 if (!empty($user_inventory)) {
                 ?>
                     <table class="table align-middle mb-0 bg-white">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>SN.</th>
-                                <th>Item Name</th>
-                                <th>Cost</th>
-                                <th>Unit Price</th>
-                                <th>Quantity</th>
-                                <th>Profit on Each Item</th>
-                                <th>Total Profit</th>
-                                <th>Added at</th>
-                            </tr>
-                        </thead>
+                    <thead class="bg-light">
+                        <tr>
+                            <th>SN.</th>
+                            <th>Item Name</th>
+                            <th>Cost</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Total Quantity Sold</th>
+                            <th>Profit on Each Item</th>
+                            <th>Total Profit</th>
+                            <th>Added at</th>
+                        </tr>
+                    </thead>
+
                         <tbody id="inventory-reports-tb">
                             <?php
                             $i = 1;
@@ -150,6 +152,7 @@ $Inventory = new Inventory();
                                     <td><?= $Inventory["cost_price"] ?></td>
                                     <td><?= $Inventory["unit_price"] ?></td>
                                     <td><?= $Inventory["quantity"] ?></td>
+                                    <td>hello</td>
                                     <td><?= $Inventory["profit"] ?></td>
                                     <td>GH¢ <?= $total ?></td>
                                     <td><?= $Inventory["added_at"] ?></td>
