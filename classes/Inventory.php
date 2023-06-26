@@ -100,4 +100,12 @@ class Inventory
         $_SESSION["print_reports"] = array("name" => "items", "query" => $query);
         return $this->db->getData($query);
     }
+
+    public function getTotalQuantityForEachItemSold($userID, $productID)
+    {
+        $query = "SELECT SUM(quantity) AS totalQuantity FROM sales WHERE product_id = :pid AND u_id = :ui";
+        $param = array(":pid" => $productID, ":ui" => $userID);
+        return $this->db->getData($query, $param);
+    }
+
 }

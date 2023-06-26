@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2023 at 01:45 AM
+-- Generation Time: Jun 26, 2023 at 05:47 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -50,7 +50,10 @@ INSERT INTO `customers` (`cust_id`, `u_id`, `name`, `number`, `gender`, `city`, 
 (8, '0555555555', 'Ratty', '0124563216', 'M', 'Osu', 'RMU', '2023-06-14 02:53:45', NULL),
 (9, '0555555555', 'asba', '0124563217', 'M', 'Osu', 'Osu Police Station', '2023-06-14 02:57:22', NULL),
 (10, '0555555555', 'Sulley', '0125632123', 'M', 'Lapaz', 'Hannah Road 209 Jn', '2023-06-14 03:47:42', NULL),
-(11, '0541236547', 'Collins Obeng', '0247856932', 'M', 'Kumasi', 'Hse No. 9', '2023-06-19 20:01:47', NULL);
+(11, '0541236547', 'Collins Obeng', '0247856932', 'M', 'Kumasi', 'Hse No. 9', '2023-06-19 20:01:47', NULL),
+(12, '0541236547', 'Francisca Deku', '0263512487', 'F', 'Tema', 'new town', '2023-06-20 18:48:11', NULL),
+(13, '0541236547', 'Kobby Halm', '0501478523', 'M', 'Madina', 'lake-side', '2023-06-20 18:49:01', NULL),
+(14, '0541236547', 'Mary Asare', '0249658741', 'F', 'Amasaman', 'blue koisk', '2023-06-20 18:51:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -81,7 +84,9 @@ INSERT INTO `items` (`item_id`, `u_id`, `item_name`, `description`, `cost_price`
 (7, '0555555555', 'adfasdas', 'asdada', '8.00', '17.00', 4, '2023-06-13 21:07:34', NULL),
 (8, '0555555555', 'Gun powder', 'Gun powder for original guns', '254.00', '350.00', 5, '2023-06-13 21:20:13', NULL),
 (9, '0541236547', 'Digestive Biscuit', 'small', '2.50', '4.00', 10, '2023-06-19 20:12:04', NULL),
-(10, '0541236547', 'Bel-cola', 'large', '2.20', '5.20', 15, '2023-06-19 22:04:06', NULL);
+(10, '0541236547', 'Bel-cola', 'large', '2.20', '5.20', 15, '2023-06-19 22:04:06', NULL),
+(11, '0541236547', 'Back Pack', 'leather', '78.00', '110.00', 20, '2023-06-20 18:52:44', NULL),
+(12, '0541236547', 'Voltic Box', 'medium', '9.70', '15.00', 25, '2023-06-20 18:57:11', NULL);
 
 -- --------------------------------------------------------
 
@@ -158,7 +163,12 @@ INSERT INTO `payments` (`pay_id`, `user_id`, `cust_id`, `amount`, `mode`, `added
 (14, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:08:08'),
 (15, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:10:45'),
 (16, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:11:12'),
-(17, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:12:42');
+(17, '0541236547', 11, '16.00', 'CASH', '2023-06-19 22:12:42'),
+(18, '0541236547', 11, '2400.00', 'CASH', '2023-06-20 00:31:25'),
+(19, '0541236547', 11, '430.00', 'MOMO', '2023-06-20 16:52:11'),
+(20, '0541236547', 11, '330.00', 'MOMO', '2023-06-20 17:18:44'),
+(21, '0541236547', 11, '330.00', 'MOMO', '2023-06-20 17:19:53'),
+(22, '0541236547', 11, '66.00', 'CASH', '2023-06-20 17:21:05');
 
 -- --------------------------------------------------------
 
@@ -194,7 +204,16 @@ INSERT INTO `sales` (`sales_id`, `item_id`, `cust_id`, `trans_id`, `user_id`, `q
 (37, 9, 11, 'XUqd4wnJ61', '0541236547', 2, '4.00', '2023-06-19 22:11:12'),
 (38, 10, 11, 'XUqd4wnJ61', '0541236547', 2, '5.20', '2023-06-19 22:11:12'),
 (39, 9, 11, '4VyyLCuQZg', '0541236547', 2, '4.00', '2023-06-19 22:12:42'),
-(40, 10, 11, '4VyyLCuQZg', '0541236547', 2, '5.20', '2023-06-19 22:12:42');
+(40, 10, 11, '4VyyLCuQZg', '0541236547', 2, '5.20', '2023-06-19 22:12:42'),
+(41, 9, 11, 'ZPsnR09VjD', '0541236547', 60, '4.00', '2023-06-20 00:31:25'),
+(42, 9, 11, 'QGhl3yKR7Y', '0541236547', 100, '4.00', '2023-06-20 16:52:11'),
+(43, 10, 11, 'QGhl3yKR7Y', '0541236547', 10, '5.20', '2023-06-20 16:52:11'),
+(44, 9, 11, 'vda3hP1zon', '0541236547', 15, '4.00', '2023-06-20 17:18:44'),
+(45, 10, 11, 'vda3hP1zon', '0541236547', 50, '5.20', '2023-06-20 17:18:44'),
+(46, 9, 11, 'QUEskM7aZY', '0541236547', 15, '4.00', '2023-06-20 17:19:53'),
+(47, 10, 11, 'QUEskM7aZY', '0541236547', 50, '5.20', '2023-06-20 17:19:53'),
+(48, 9, 11, 'DDC4ZW0UjX', '0541236547', 10, '4.00', '2023-06-20 17:21:05'),
+(49, 10, 11, 'DDC4ZW0UjX', '0541236547', 5, '5.20', '2023-06-20 17:21:05');
 
 -- --------------------------------------------------------
 
@@ -231,7 +250,12 @@ INSERT INTO `transactions` (`t_id`, `user_id`, `trans_num`, `added_at`) VALUES
 (15, '0541236547', '2hkLn9Adsj', '2023-06-19 22:08:08'),
 (16, '0541236547', 'bhmmZOY6ef', '2023-06-19 22:10:45'),
 (17, '0541236547', 'XUqd4wnJ61', '2023-06-19 22:11:12'),
-(18, '0541236547', '4VyyLCuQZg', '2023-06-19 22:12:42');
+(18, '0541236547', '4VyyLCuQZg', '2023-06-19 22:12:42'),
+(19, '0541236547', 'ZPsnR09VjD', '2023-06-20 00:31:25'),
+(20, '0541236547', 'QGhl3yKR7Y', '2023-06-20 16:52:11'),
+(21, '0541236547', 'vda3hP1zon', '2023-06-20 17:18:44'),
+(22, '0541236547', 'QUEskM7aZY', '2023-06-20 17:19:53'),
+(23, '0541236547', 'DDC4ZW0UjX', '2023-06-20 17:21:05');
 
 -- --------------------------------------------------------
 
@@ -335,13 +359,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `cust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `cust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `logins`
@@ -359,19 +383,19 @@ ALTER TABLE `ordered_items`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `t_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `t_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
