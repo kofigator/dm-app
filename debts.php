@@ -100,7 +100,6 @@ $sale = new Sale();
                                     <td><?= $d["name"] ?></td>
                                     <td><?= $d["city"] ?></td>
                                     <td><?= $d["amount_owing"] ?></td>
-                                    echo <?= $d["cust_id"] ?>
                                     <td>
                                         <button id="<?= $d["cust_id"] ?>" class="settle-debt btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#settleDebtModal" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Settle debt">Settle Debt</button>
                                     </td>
