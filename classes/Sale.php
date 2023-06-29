@@ -195,7 +195,7 @@ class Sale
         $query = "SELECT c.cust_id, c.name, c.city, (s.total_sum - p.amount_sum) AS amount_owing FROM customers AS c
         JOIN (SELECT cust_id, SUM(total) AS total_sum FROM sales GROUP BY cust_id) AS s ON c.cust_id = s.cust_id
         JOIN (SELECT cust_id, SUM(amount) AS amount_sum FROM payments GROUP BY cust_id) AS p ON c.cust_id = p.cust_id
-        JOIN users AS u ON c.u_id = u.phone_number WHERE u.phone_number = :ui ORDER BY amount_owing DESC";
+        JOIN users AS u ON c.u_id = u.phone_number WHERE u.phone_number = :ui HAVING amount_owing > 0 OR amount_owing < 0 ORDER BY amount_owing DESC";
 
         return $this->db->inputData($query, array(":ui" => $userID));
     }

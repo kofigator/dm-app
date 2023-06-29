@@ -80,6 +80,11 @@ $Inventory = new Inventory();
                     Reports
                 </div>
             </a>
+            <a href="debts.php" class="col-md-4 m-3 bg-success dashboard-item">
+                <div style="padding: 35px">
+                    Debts
+                </div>
+            </a>
         </div>
     </div>
 

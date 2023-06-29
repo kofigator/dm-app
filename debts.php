@@ -172,7 +172,7 @@ $sale = new Sale();
     <script>
         $(document).ready(function() {
             $(".back").click(function() {
-                window.location.href = "reports.php";
+                window.location.href = "dashboard.php";
             });
 
             // Calculate and display the total debt amount
