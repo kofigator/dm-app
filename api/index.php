@@ -246,9 +246,24 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         $data = $Sale->sellProducts($_POST, $_SESSION["user"]);
-        
+
         if ($data) die(json_encode(array("success" => true, "message" => "Completed!")));
         die(json_encode(array("success" => false, "message" => "Failed to sell to customer!")));
+    }
+
+    // settle debt
+    else if ($_GET["url"] == "settle-debts") {
+        if (!isset($_POST["customer-deposit"]) || empty($_POST["customer-deposit"]))
+            die(json_encode(array("success" => false, "message" => "Amount is required!")));
+        if (!isset($_POST["customer-id"]) || empty($_POST["customer-id"]))
+            die(json_encode(array("success" => false, "message" => "Customer is required!")));
+        if (!isset($_POST["payment-method"]) || empty($_POST["payment-method"]))
+            die(json_encode(array("success" => false, "message" => "Payment method is required!")));
+
+        if ($Sale->settleDebts($_SESSION["user"], $_POST)) {
+            die(json_encode(array("success" => true, "message" => "Completed!")));
+        }
+        die(json_encode(array("success" => false, "message" => "Failed!")));
     }
 
     //Customers reports
@@ -289,7 +304,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
             die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
         if (!isset($_POST["endDate"]))
             die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
-        $data = $Customer->getCustomerReports($_POST, $_SESSION["user"]);
+        $data = $Report->generateSaleReports($_POST, $_SESSION["user"]);
         if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
         die(json_encode(array("success" => false, "message" => "Empty result")));
     }

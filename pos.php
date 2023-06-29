@@ -83,7 +83,7 @@ $Customer = new Customer();
                             <td><?= $index ?></td>
                             <td><?= $item["item_name"] ?></td>
                             <td class="unit-price" id="up<?= $item["item_id"] ?>"><?= $item["unit_price"] ?></td>
-                            <td><?= $item["quantity"] ?></td>
+                            <td id="q<?= $item["item_id"] ?>"><?= $item["quantity"] ?></td>
                             <td><input type="number" id="qty<?= $item["item_id"] ?>" class="form-control item-qty" style="width: 80px" pattern="[0-9]+" value="0"></td>
                             <td>
                                 <input type="checkbox" name="item[]" id="<?= $item["item_id"] ?>" class="item">
@@ -251,10 +251,17 @@ $Customer = new Customer();
             $(".item").on("change", function() {
                 var item_id = $(this).attr("id");
                 var qty = parseInt($("#qty" + item_id).val());
+                var q = parseInt($("#q" + item_id).text());
                 var unit_p = parseFloat($("#up" + item_id).text()).toFixed(2);
 
                 if (qty < 1) {
                     alert("Quantity of this product must not be 0");
+                    $(this).prop("checked", "")
+                    return;
+                }
+
+                if (qty > q) {
+                    alert("You have exceeded the total available items!");
                     $(this).prop("checked", "")
                     return;
                 }
@@ -278,14 +285,8 @@ $Customer = new Customer();
             $("#customer-deposit").on("keyup", function() {
                 let deposit = $(this).val();
                 let remainingAmount = (totalPrice - deposit).toFixed(2);
-                if(remainingAmount <= 0){
-                    $("#amount-owing").val("GHS " + -1 * remainingAmount);
-                }else{
-                    $("#amount-owing").val("GHS " + "-"+remainingAmount);
-                }
-                
+                $("#amount-owing").val("GHS " + remainingAmount);
             });
-
 
             $("#sell-product-form").on("submit", function(e) {
                 e.preventDefault();
