@@ -73,7 +73,7 @@ $sale = new Sale();
         <!-- Report Results Table -->
         <div class="mt-4" style="margin: 0 15px;">
             <div style="display: flex; justify-content: space-between">
-                <h3>Total in debt: <span>0.00</span></h3>
+                <h3>Total in debt: <span id="total-debt">0.00</span></h3>
             </div>
 
             <table class="table table-bordered">
@@ -93,10 +93,13 @@ $sale = new Sale();
                     if (!empty($data)) {
                     ?>
                         <tbody id="">
-                            <?php foreach ($data as $d) {
+                            
+                            <?php 
+                                $rowNum = 1;
+                                foreach ($data as $d) {
                             ?>
                                 <tr>
-                                    <th>1</th>
+                                    <th><?= $rowNum ?></th>
                                     <td><?= $d["name"] ?></td>
                                     <td><?= $d["city"] ?></td>
                                     <td><?= $d["amount_owing"] ?></td>
@@ -108,6 +111,7 @@ $sale = new Sale();
                                     </td>
                                 </tr>
                         <?php
+                            $rowNum++;
                             }
                         }
                         ?>
@@ -170,6 +174,18 @@ $sale = new Sale();
             $(".back").click(function() {
                 window.location.href = "reports.php";
             });
+
+            // Calculate and display the total debt amount
+            calculateTotalDebt();
+
+            function calculateTotalDebt() {
+                let totalDebt = 0;
+                $('.table tbody tr').each(function() {
+                    const amountOwing = parseFloat($(this).find('td:eq(2)').text());
+                    totalDebt += amountOwing;
+                });
+                $('#total-debt').text(totalDebt.toFixed(2));
+            }
 
             $(".settle-debt").on("click", function() {
                 $("#customer-id").val($(this).attr("id"));
