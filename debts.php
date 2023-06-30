@@ -10,6 +10,7 @@ if (isset($_GET["logout"])) {
 require_once('classes/Sale.php');
 $sale = new Sale();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -107,7 +108,7 @@ $sale = new Sale();
                                         <button id="<?= $d["cust_id"] ?>" class="settle-debt btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#settleDebtModal" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Settle debt">Settle Debt</button>
                                     </td>
                                     <td>
-                                        <button class="view-history btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#addCustomer" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Settle debt">View History</button>
+                                        <button class="view-history btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#viewHistoryModal" data-mdb-toggle="tooltip" data-mdb-placement="top" title="View history">View History</button>
                                     </td>
                                 </tr>
                         <?php
@@ -121,7 +122,7 @@ $sale = new Sale();
         </div>
     </div>
 
-    <!-- Add Item Modal -->
+    <!-- Settle Debt Modal -->
     <div class="modal fade" id="settleDebtModal" data-mdb-backdrop="static" data-mdb-keyboard="false" tabindex="-1" aria-labelledby="settleDebtModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
@@ -161,6 +162,33 @@ $sale = new Sale();
                         <input type="hidden" id="customer-id" name="customer-id">
                         <button type="submit" class="btn btn-primary btn-block mb-4">Save</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View History Modal -->
+    <div class="modal fade" id="viewHistoryModal" data-mdb-backdrop="static" data-mdb-keyboard="false" tabindex="-1" aria-labelledby="viewHistoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewHistoryModalLabel">View History</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Qty Bought</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body">
+                            <!-- History table rows will be added dynamically using JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -210,7 +238,39 @@ $sale = new Sale();
                 });
             });
 
-        })
+            $(".view-history").on("click", function() {
+                const customerId = $(this).closest("tr").find("th:eq(0)").text();
+                $.ajax({
+                    type: "POST",
+                    url: "api/get-sale-history.php",
+                    data: {
+                        customer_id: customerId
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        const historyTableBody = $("#history-table-body");
+                        historyTableBody.empty();
+                        if (data.length > 0) {
+                            data.forEach(function(item) {
+                                const row = $("<tr></tr>");
+                                $("<td></td>").text(item.item_name).appendTo(row);
+                                $("<td></td>").text(item.qty_bought).appendTo(row);
+                                $("<td></td>").text(item.price).appendTo(row);
+                                $("<td></td>").text(item.date).appendTo(row);
+                                row.appendTo(historyTableBody);
+                            });
+                        } else {
+                            const emptyRow = $("<tr></tr>");
+                            $("<td colspan='4'></td>").text("No history found.").appendTo(emptyRow);
+                            emptyRow.appendTo(historyTableBody);
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 
