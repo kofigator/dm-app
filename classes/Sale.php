@@ -200,7 +200,7 @@ class Sale
         return $this->db->inputData($query, array(":ui" => $userID));
     }
 
-    public function fetchCustomerTransactions()
+    public function fetchCustomerTransactions($userID, $a)
     {
         $query = "SELECT i.item_name, s.quantity, s.unit_price, s.added_at 
         FROM items AS i
@@ -208,12 +208,12 @@ class Sale
         JOIN customers AS c ON c.cust_id = s.cust_id
         JOIN payments AS p
         JOIN users AS u ON u.phone_number = s.user_id
-        WHERE s.cust_id = '15' GROUP BY s.sales_id";
+        WHERE s.cust_id = :ci AND s.user_id = :ui GROUP BY s.sales_id";
 
-        //$param = array(":ui" => $userID, ":ci" => $custID);
+        $param = array(":ui" => $userID);
 
         
-        return $this->db->getData($query);
+        return $this->db->getData($query, array(":ui" => $userID, ":ci" => $a));
     }
 
 }

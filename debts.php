@@ -108,7 +108,7 @@ $sale = new Sale();
                                         <button id="<?= $d["cust_id"] ?>" class="settle-debt btn btn-primary btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#settleDebtModal" data-mdb-toggle="tooltip" data-mdb-placement="top" title="Settle debt">Settle Debt</button>
                                     </td>
                                     <td>
-                                        <button class="view-history btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#viewHistoryModal" data-mdb-toggle="tooltip" data-mdb-placement="top" title="View history">View History</button>
+                                        <button id="<?= $d["cust_id"] ?>" class="view-history btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-toggle="modal" data-mdb-target="#viewHistoryModal" data-mdb-toggle="tooltip" data-mdb-placement="top" title="View history">View History</button>
                                     </td>
                                 </tr>
                         <?php
@@ -176,6 +176,8 @@ $sale = new Sale();
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                
+
                     <table class="table table-bordered">
                         <thead class="bg-light">
                             <tr>
@@ -186,10 +188,33 @@ $sale = new Sale();
                                 <th>Date</th>
                             </tr>
                         </thead>
+                            <?php
+                            $data = $sale->fetchAmountCustomerOwes($_SESSION["user"]);
+                            if (!empty($data)) {
+
+                            
+                            $results = $sale->fetchCustomerTransactions($_SESSION["user"], $d["cust_id"]);
+
+                            if (!empty($results)) {
+                            ?>
                         <tbody id="history-table-body">
-                        <input type="hidden" id="customers-id" name="customers-id">
-                            <!-- History table rows will be added dynamically using JavaScript -->
-                           
+                        <?php 
+                                $i = 1;
+                                foreach ($results as $t) {
+                            ?>
+                                <tr>
+                                    <th><?= $i ?></th>
+                                    <td><?= $t["item_name"] ?></td>
+                                    <td><?= $t["quantity"] ?></td>
+                                    <td><?= $t["unit_price"] ?></td>
+                                    <td><?= $t["added_at"] ?></td>
+                                </tr>
+                        <?php
+                            $i++;
+                                }
+                            }
+                        }
+                        ?>
                         </tbody>
                     </table>
                 </div>
@@ -241,36 +266,9 @@ $sale = new Sale();
                 });
             });
 
-            $(".view-history").on("click", function() {
-                $("#customers-id").val($(this).attr("id"));
-
-                $.ajax({
-                url: "fetch-all-customer-transaction", // Replace with your server-side script URL
-                method: "POST",
-                success: function(message) {
-                    // Parse the JSON response
-                    var data = JSON.parse(message);
-
-                    // Populate the table
-                    var tableBody = $("#data-table tbody");
-                    tableBody.empty(); // Clear any existing rows
-
-                    // Loop through the data and generate table rows
-                    for (var i = 0; i < data.length; i++) {
-                    var row = $("<tr></tr>");
-                    row.append("<td>" + data[i].id + "</td>");
-                    row.append("<td>" + data[i].name + "</td>");
-                    row.append("<td>" + data[i].email + "</td>");
-                    tableBody.append(row);
-                    }
-
-                },
-                error: function() {
-                    console.log();
-                }
-                });
+            
             });
-            });
+
     </script>
 </body>
 
