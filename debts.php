@@ -243,6 +243,28 @@ $sale = new Sale();
                 $('#total-debt').text(totalDebt.toFixed(2));
             }
 
+            // Event listener for "Settle Debt" button clicks
+            document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('settle-debt')) {
+                const customerID = event.target.id;
+
+                // Find the corresponding row in the table
+                const tableRow = event.target.closest('tr');
+
+                // Get the amount owing from the table row
+                const amountOwing = tableRow.querySelector('td:nth-child(4)').textContent;
+
+                // Update the "total-price" input field in the settleDebt modal
+                const totalPriceInput = document.getElementById('total-price');
+                totalPriceInput.value = amountOwing;
+
+                // Set the customer ID in the hidden field
+                const customerIDInput = document.getElementById('customer-id');
+                customerIDInput.value = customerID;
+            }
+            });
+
+
             $(".settle-debt").on("click", function() {
                 $("#customer-id").val($(this).attr("id"));
             });
