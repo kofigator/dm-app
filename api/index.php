@@ -266,6 +266,19 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         die(json_encode(array("success" => false, "message" => "Failed!")));
     }
 
+    //Fetch-Customer Transaction
+    if ($_GET["url"] == "fetch-all-customer-transaction") {
+        $customerID = $_POST["customer-id"];
+    
+        $data = $Sale->fetchCustomerTransactions($_SESSION["user"], $customerID);
+        die("$data");
+        if (!empty($data)) {
+            echo json_encode(array("success" => true, "message" => $data));
+        } else {
+            echo json_encode(array("success" => false, "message" => "Failed to retrieve item data!"));
+        }
+    }
+
     //Customers reports
 
     if ($_GET["url"] == "customers-reports") {

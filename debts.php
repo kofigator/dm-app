@@ -179,6 +179,7 @@ $sale = new Sale();
                     <table class="table table-bordered">
                         <thead class="bg-light">
                             <tr>
+                                <th>SN.</th>
                                 <th>Item Name</th>
                                 <th>Qty Bought</th>
                                 <th>Price</th>
@@ -186,7 +187,9 @@ $sale = new Sale();
                             </tr>
                         </thead>
                         <tbody id="history-table-body">
+                        <input type="hidden" id="customers-id" name="customers-id">
                             <!-- History table rows will be added dynamically using JavaScript -->
+                           
                         </tbody>
                     </table>
                 </div>
@@ -239,38 +242,35 @@ $sale = new Sale();
             });
 
             $(".view-history").on("click", function() {
-                const customerId = $(this).closest("tr").find("th:eq(0)").text();
+                $("#customers-id").val($(this).attr("id"));
+
                 $.ajax({
-                    type: "POST",
-                    url: "api/get-sale-history.php",
-                    data: {
-                        customer_id: customerId
-                    },
-                    dataType: "json",
-                    success: function(data) {
-                        const historyTableBody = $("#history-table-body");
-                        historyTableBody.empty();
-                        if (data.length > 0) {
-                            data.forEach(function(item) {
-                                const row = $("<tr></tr>");
-                                $("<td></td>").text(item.item_name).appendTo(row);
-                                $("<td></td>").text(item.qty_bought).appendTo(row);
-                                $("<td></td>").text(item.price).appendTo(row);
-                                $("<td></td>").text(item.date).appendTo(row);
-                                row.appendTo(historyTableBody);
-                            });
-                        } else {
-                            const emptyRow = $("<tr></tr>");
-                            $("<td colspan='4'></td>").text("No history found.").appendTo(emptyRow);
-                            emptyRow.appendTo(historyTableBody);
-                        }
-                    },
-                    error: function(error) {
-                        console.log(error);
+                url: "fetch-all-customer-transaction", // Replace with your server-side script URL
+                method: "POST",
+                success: function(message) {
+                    // Parse the JSON response
+                    var data = JSON.parse(message);
+
+                    // Populate the table
+                    var tableBody = $("#data-table tbody");
+                    tableBody.empty(); // Clear any existing rows
+
+                    // Loop through the data and generate table rows
+                    for (var i = 0; i < data.length; i++) {
+                    var row = $("<tr></tr>");
+                    row.append("<td>" + data[i].id + "</td>");
+                    row.append("<td>" + data[i].name + "</td>");
+                    row.append("<td>" + data[i].email + "</td>");
+                    tableBody.append(row);
                     }
+
+                },
+                error: function() {
+                    console.log();
+                }
                 });
             });
-        });
+            });
     </script>
 </body>
 

@@ -190,7 +190,7 @@ class Sale
         ));
     }
 
-    function fetchAmountCustomerOwes($userID)
+    public function fetchAmountCustomerOwes($userID)
     {
         $query = "SELECT c.cust_id, c.name, c.city, (s.total_sum - p.amount_sum) AS amount_owing FROM customers AS c
         JOIN (SELECT cust_id, SUM(total) AS total_sum FROM sales GROUP BY cust_id) AS s ON c.cust_id = s.cust_id
@@ -199,4 +199,21 @@ class Sale
 
         return $this->db->inputData($query, array(":ui" => $userID));
     }
+
+    public function fetchCustomerTransactions()
+    {
+        $query = "SELECT i.item_name, s.quantity, s.unit_price, s.added_at 
+        FROM items AS i
+        JOIN sales AS s ON i.item_id = s.item_id
+        JOIN customers AS c ON c.cust_id = s.cust_id
+        JOIN payments AS p
+        JOIN users AS u ON u.phone_number = s.user_id
+        WHERE s.cust_id = '15' GROUP BY s.sales_id";
+
+        //$param = array(":ui" => $userID, ":ci" => $custID);
+
+        
+        return $this->db->getData($query);
+    }
+
 }
