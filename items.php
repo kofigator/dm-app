@@ -148,6 +148,11 @@ $Inventory = new Inventory();
             </li>-->
 
     <div style="position: relative !important; margin-top: 0px !important">
+
+        <div style="display: flex; justify-content: space-between">
+            <h3 style="margin: 15px 5px;">Total Expenditure: <span id="total-expenditure">0.00</span></h3>
+            <h3 style="margin: 15px 5px;">Expected Profit: <span id="total-profit">0.00</span></h3>
+        </div>
         <?php
         $user_items = $Inventory->getAllItems($_SESSION["user"]);
 
@@ -158,6 +163,7 @@ $Inventory = new Inventory();
                     <tr>
                         <th>SN.</th>
                         <th>Item Names and description</th>
+                        <th>Cost Price</th>
                         <th>Selling Price</th>
                         <th>Quantity</th>
                         <th></th>
@@ -180,6 +186,11 @@ $Inventory = new Inventory();
                                         <p class="fw-bold mb-1"><?= $Inventory["item_name"] ?></p>
                                         <p class="text-muted mb-0"><?= $Inventory["description"] ?></p>
                                     </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <p class="fw-bold mb-1"><?= $Inventory["cost_price"] ?></p>
                                 </div>
                             </td>
                             <td>
@@ -248,7 +259,7 @@ $Inventory = new Inventory();
                         </div>
                         <div class="form-outline mb-4">
                             <input required type="text" id="item-unitprice" name="item-unitprice" class="form-control" />
-                            <label class="form-label" for="item-unitprice">Unit Price</label>
+                            <label class="form-label" for="item-unitprice">Selling Price</label>
                         </div>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
@@ -291,7 +302,7 @@ $Inventory = new Inventory();
                         </div>
                         <div class="form-outline mb-4">
                             <input type="text" id="itm-unitprice" name="itm-unitprice" class="form-control" />
-                            <label class="form-label" for="itm-unitprice">Unit Price</label>
+                            <label class="form-label" for="itm-unitprice">Selling Price</label>
                         </div>
                         <div class="mb-4" id="profit-div">
                             <input disabled type="text" id="profit-field" style="border: none !important" class="form-control" />
@@ -320,6 +331,39 @@ $Inventory = new Inventory();
             $(".back").click(function() {
                 window.location.href = "dashboard.php";
             });
+
+            calculateTotalExpenditure();
+
+            function calculateTotalExpenditure() {
+            let totalDebt = 0;
+            $('.table tbody tr').each(function() {
+                const expenses = parseFloat($(this).find('td:eq(2)').text());
+                const quantity = parseFloat($(this).find('td:eq(4)').text());
+                if (!isNaN(expenses) && !isNaN(quantity)) {
+                const totalExpenses = expenses * quantity;
+                totalDebt += totalExpenses; // Accumulate the total expenses for each row
+                }
+            });
+            $('#total-expenditure').text(totalDebt.toFixed(2));
+            }
+
+            calculateTotalProfit();
+
+            function calculateTotalProfit() {
+            let totalProfit = 0;
+            $('.table tbody tr').each(function() {
+                const expenses = parseFloat($(this).find('td:eq(2)').text());
+                const totalSellingPrice = parseFloat($(this).find('td:eq(3)').text());
+                const quantity = parseFloat($(this).find('td:eq(4)').text());
+                if (!isNaN(expenses) && !isNaN(totalSellingPrice) && !isNaN(quantity)) {
+                const profit = (totalSellingPrice - expenses) * quantity;
+                totalProfit += profit; // Accumulate the total profit for each row
+                }
+            });
+            $('#total-profit').text(totalProfit.toFixed(2));
+            }
+
+
 
             $("#itm-unitprice").on("keyup", function() {
                 var cost_p = parseFloat($("#itm-costprice").val());

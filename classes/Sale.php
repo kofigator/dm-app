@@ -210,8 +210,6 @@ class Sale
         JOIN users AS u ON u.phone_number = s.user_id
         WHERE s.cust_id = :ci AND s.user_id = :ui GROUP BY s.sales_id";
 
-        $param = array(":ui" => $userID);
-
         
         return $this->db->getData($query, array(":ui" => $userID, ":ci" => $a));
     }

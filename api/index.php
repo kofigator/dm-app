@@ -269,12 +269,15 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
     //Fetch-Customer Transaction
     if ($_GET["url"] == "fetch-all-customer-transaction") {
         $customerID = $_POST["customer-id"];
-      
-        $data = $sale->fetchCustomerTransactions($_SESSION["user"], $customerID);
-        if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
-        die(json_encode(array("success" => false, "message" => "Failed to retrieve item data!")));
-    }
     
+        $data = $Sale->fetchCustomerTransactions($_SESSION["user"], $customerID);
+        die("$data");
+        if (!empty($data)) {
+            echo json_encode(array("success" => true, "message" => $data));
+        } else {
+            echo json_encode(array("success" => false, "message" => "Failed to retrieve item data!"));
+        }
+    }
 
     //Customers reports
 
