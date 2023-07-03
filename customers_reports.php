@@ -231,6 +231,11 @@ $customer = new Customer();
                         $("#totalRecordsHead").show();
                         $("#totalRecords").text(totalCount);
                     }
+                    else{
+                        $("#totalRecordsHead").hide();
+                        $("#customers-reports-tb").html('<div class="text-center">No results found.</div>');
+
+                    }
 
                 }).fail(function(error) {
                     console.log(error);

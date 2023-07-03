@@ -219,6 +219,7 @@ $Inventory = new Inventory();
                         $("#totalRecordsHead").show();
                         $("#totalRecords").text(totalCount);
                     }else{
+                        $("#totalRecordsHead").hide();
                         $("#inventory-reports-tb").html('<div class="text-center">No results found.</div>');
 
                     }
