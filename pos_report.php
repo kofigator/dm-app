@@ -78,8 +78,8 @@ $customer = new Customer();
                         <label for="reportType" class="form-label">Filter By payment method</label>
                         <select class="form-select" id="reportPaymentMethod" name="reportPaymentMethod">
                             <option value="">Choose</option>
-                            <option value="">CASH</option>
-                            <option value="">MOMO</option>
+                            <option value="CASH">CASH</option>
+                            <option value="MOMO">MOMO</option>
                         </select>
                     </div>
                 </div>
@@ -145,7 +145,7 @@ $customer = new Customer();
                         </tr>
                     </thead>
 
-                        <tbody id="">
+                        <tbody id="inventory-reports-tb">
                             
                         </tbody>
                     </table>
@@ -186,15 +186,13 @@ $customer = new Customer();
                                 '<div class="d-flex align-items-center">' +
                                 '<img src="assets/images/icons8-user-96.png" class="rounded-circle" alt="" style="width: 45px; height: 45px" />' +
                                 '<div class="ms-3">' +
-                                '<p class="fw-bold mb-1">' + value["item_name"] + '</p>' +
+                                '<p class="fw-bold mb-1">' + value["name"] + '</p>' +
                                 '</div>' +
                                 '</div>' +
                                 '</td>' +
-                                '<td>' + value["description"] + ' </td>' +
-                                '<td>' + value["cost_price"] + ' </td>' +
-                                '<td>' + value["unit_price"] + ' </td>' +
-                                '<td>' + value["profit"] + ' </td>' +
-                                '<td>' + value["added_at"] + ' </td>' +
+                                '<td>' + value["city"] + ' </td>' +
+                                '<td>' + value["total"] + ' </td>' +
+                                '<td>' + value["quantity"] + ' </td>' +
                                 '</tr>'
                             );
                             totalCount += 1;

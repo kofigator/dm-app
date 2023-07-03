@@ -317,7 +317,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
             die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
         if (!isset($_POST["endDate"]))
             die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
-        $data = $Report->generateSaleReports($_POST, $_SESSION["user"]);
+        $data = $Sale->generateSaleReports($_POST, $_SESSION["user"]);
         if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
         die(json_encode(array("success" => false, "message" => "Empty result")));
     }

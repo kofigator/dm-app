@@ -214,4 +214,33 @@ class Sale
         return $this->db->getData($query, array(":ui" => $userID, ":ci" => $a));
     }
 
+    /**
+     * Sales reports
+     */
+    public function generateSaleReports($data, $userID)
+{
+    $query_join = "";
+    if (!empty($data["reportPaymentMethod"])) {
+        $query_join .= " JOIN payments AS p ON s.pay_num = p.pay_num";
+        $query_join .= " AND p.mode = '{$data["reportPaymentMethod"]}'";
+    }
+    if (!empty($data["report-city"])) {
+        $query_join .= " JOIN customers AS c ON s.cust_id = c.cust_id";
+        $query_join .= " AND c.city = '{$data["report-city"]}'";
+    }
+    if (!empty($data["startDate"]) && !empty($data["endDate"])) $query_join .= " AND DATE(s.added_at) BETWEEN '{$data["startDate"]}' AND '{$data["endDate"]}'";
+    $query = "SELECT * FROM customers AS c
+              JOIN sales AS s ON s.user_id = c.u_id
+              JOIN items AS i ON s.user_id = i.u_id
+              $query_join
+              WHERE s.user_id = '{$userID}'
+              GROUP BY s.trans_num
+              ORDER BY s.added_at DESC";
+
+    //$_SESSION["print_reports"] = array("name" => "customers", "query" => $query);
+    return $this->db->getData($query);
+}
+
+
+
 }
