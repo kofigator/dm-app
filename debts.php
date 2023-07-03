@@ -252,7 +252,7 @@ $sale = new Sale();
                 const tableRow = event.target.closest('tr');
 
                 // Get the amount owing from the table row
-                const amountOwing = tableRow.querySelector('td:nth-child(4)').textContent;
+                const amountOwing = parseFloat(tableRow.querySelector('td:nth-child(4)').textContent);
 
                 // Update the "total-price" input field in the settleDebt modal
                 const totalPriceInput = document.getElementById('total-price');
@@ -261,6 +261,21 @@ $sale = new Sale();
                 // Set the customer ID in the hidden field
                 const customerIDInput = document.getElementById('customer-id');
                 customerIDInput.value = customerID;
+            }
+            });
+
+            // Event listener for "customer-deposit" input field
+            document.getElementById('customer-deposit').addEventListener('input', function(event) {
+            const depositAmount = parseFloat(event.target.value);
+            const amountOwing = parseFloat(document.getElementById('total-price').value);
+
+            // Check if the input is a valid number
+            if (!isNaN(depositAmount)) {
+                // Calculate the updated amount owing
+                const updatedAmountOwing = Math.max(amountOwing - depositAmount, 0);
+
+                // Update the "amount-owing" input field
+                document.getElementById('amount-owing').value = updatedAmountOwing.toFixed(2);
             }
             });
 
