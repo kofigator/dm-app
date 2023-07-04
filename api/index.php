@@ -270,7 +270,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
     else if ($_GET["url"] == "fetch-all-customer-transaction") {
         $customerID = $_POST["customers-id"];
         $data = $Sale->fetchCustomerTransactions($_SESSION["user"], $customerID);
-        var_dump($data);
+        
         if (!empty($data)) {
             echo json_encode(array("success" => true, "message" => $data));
         } else {
