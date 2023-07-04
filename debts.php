@@ -176,7 +176,7 @@ $sale = new Sale();
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                
+                <input type="hidden" id="customer-id" name="customers-id">
 
                     <table class="table table-bordered">
                         <thead class="bg-light">
@@ -193,7 +193,7 @@ $sale = new Sale();
                             if (!empty($data)) {
 
                             
-                            $results = $sale->fetchCustomerTransactions($_SESSION["user"], $d["cust_id"]);
+                            $results = $sale->fetchCustomerTransactions($_SESSION["user"], '15');
 
                             if (!empty($results)) {
                             ?>
@@ -281,7 +281,7 @@ $sale = new Sale();
 
 
             $(".settle-debt").on("click", function() {
-                $("#customer-id").val($(this).attr("id"));
+                var customerID = $(this).attr("id");
             });
 
             $("#settle-debt-form").on("submit", function(e) {
@@ -303,6 +303,70 @@ $sale = new Sale();
                 });
             });
 
+            $(".view-history").on("click", function() {
+                var customerID = $(this).attr("id");
+                //$("#customer-id").val($(this).attr("id"));
+                //document.getElementById('customers-id').value = customerID;
+
+
+                $(".view-history").on("click", function(e) {
+                e.preventDefault();
+                formData = new FormData();
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/fetch-all-customer-transaction",
+                    data: {
+                        "customers-id": customerID
+                    },
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                }).done(function(data) {
+                    console.log(data);
+                    if (data["success"]) {
+                        $("#inventory-reports-tb").html('');
+                        var totalCount = 0;
+                        $.each(data.message, function(index, value) {
+                            $("#inventory-reports-tb").append(
+                                '<tr>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' +
+                                '<div class="d-flex align-items-center">' +
+                                '<img src="assets/images/icons8-user-96.png" class="rounded-circle" alt="" style="width: 45px; height: 45px" />' +
+                                '<div class="ms-3">' +
+                                '<p class="fw-bold mb-1">' + value["item_name"] + '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + value["cost_price"] + ' </td>' +
+                                '<td>' + value["unit_price"] + ' </td>' +
+                                '<td>' + value["quantity"] + ' </td>' +
+                                '<td>' + value["hello"] + ' </td>' +
+                                '<td>' + value["profit"] + ' </td>' +
+                                '<td>' + value["unit_price"]*value["quantity"] + ' </td>' +
+                                '<td>' + value["added_at"] + ' </td>' +
+                                '</tr>'
+
+                                
+                            );
+                            totalCount += 1;
+                        });
+                        $("#totalRecordsHead").show();
+                        $("#totalRecords").text(totalCount);
+                    }else{
+                        $("#totalRecordsHead").hide();
+                        $("#inventory-reports-tb").html('<div class="text-center">No results found.</div>');
+
+                    }
+
+                }).fail(function(error) {
+                    console.log(error);
+                });
+            })
+            });
+
+            
             
             });
 
