@@ -268,6 +268,9 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     //Fetch-Customer Transaction
     else if ($_GET["url"] == "fetch-all-customer-transaction") {
+        if (!isset($_POST["customers-id"]) || empty($_POST["customers-id"]))
+            die(json_encode(array("success" => false, "message" => "Customer id not specified!")));
+        
         $customerID = $_POST["customers-id"];
         $data = $Sale->fetchCustomerTransactions($_SESSION["user"], $customerID);
         

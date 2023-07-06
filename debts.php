@@ -188,33 +188,7 @@ $sale = new Sale();
                                 <th>Date</th>
                             </tr>
                         </thead>
-                            <?php
-                            $data = $sale->fetchAmountCustomerOwes($_SESSION["user"]);
-                            if (!empty($data)) {
-
-                            
-                            $results = $sale->fetchCustomerTransactions($_SESSION["user"], '15');
-
-                            if (!empty($results)) {
-                            ?>
                         <tbody id="history-table-body">
-                        <?php 
-                                $i = 1;
-                                foreach ($results as $t) {
-                            ?>
-                                <tr>
-                                    <th><?= $i ?></th>
-                                    <td><?= $t["item_name"] ?></td>
-                                    <td><?= $t["quantity"] ?></td>
-                                    <td><?= $t["unit_price"] ?></td>
-                                    <td><?= $t["added_at"] ?></td>
-                                </tr>
-                        <?php
-                            $i++;
-                                }
-                            }
-                        }
-                        ?>
                         </tbody>
                     </table>
                 </div>
@@ -303,15 +277,10 @@ $sale = new Sale();
                 });
             });
 
-            $(".view-history").on("click", function() {
+            $(".view-history").on("click", function(e) {
+                
                 var customerID = $(this).attr("id");
-                //$("#customer-id").val($(this).attr("id"));
-                //document.getElementById('customers-id').value = customerID;
-
-
-                $(".view-history").on("click", function(e) {
                 e.preventDefault();
-                formData = new FormData();
 
                 $.ajax({
                     type: "POST",
@@ -319,16 +288,13 @@ $sale = new Sale();
                     data: {
                         "customers-id": customerID
                     },
-                    contentType: false,
-                    cache: false,
-                    processData: false,
                 }).done(function(data) {
                     console.log(data);
                     if (data["success"]) {
-                        $("#inventory-reports-tb").html('');
+                        $("#history-table-body").html('');
                         var totalCount = 0;
                         $.each(data.message, function(index, value) {
-                            $("#inventory-reports-tb").append(
+                            $("#history-table-body").append(
                                 '<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' +
@@ -339,12 +305,8 @@ $sale = new Sale();
                                 '</div>' +
                                 '</div>' +
                                 '</td>' +
-                                '<td>' + value["cost_price"] + ' </td>' +
-                                '<td>' + value["unit_price"] + ' </td>' +
                                 '<td>' + value["quantity"] + ' </td>' +
-                                '<td>' + value["hello"] + ' </td>' +
-                                '<td>' + value["profit"] + ' </td>' +
-                                '<td>' + value["unit_price"]*value["quantity"] + ' </td>' +
+                                '<td>' + value["unit_price"] + ' </td>' +
                                 '<td>' + value["added_at"] + ' </td>' +
                                 '</tr>'
 
@@ -356,7 +318,7 @@ $sale = new Sale();
                         $("#totalRecords").text(totalCount);
                     }else{
                         $("#totalRecordsHead").hide();
-                        $("#inventory-reports-tb").html('<div class="text-center">No results found.</div>');
+                        $("#history-table-body").html('<div class="text-center">No results found.</div>');
 
                     }
 
@@ -364,7 +326,6 @@ $sale = new Sale();
                     console.log(error);
                 });
             })
-            });
 
             
             
