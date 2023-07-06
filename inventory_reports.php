@@ -197,7 +197,7 @@ $Inventory = new Inventory();
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' +
                                 '<div class="d-flex align-items-center">' +
-                                '<img src="assets/images/icons8-user-96.png" class="rounded-circle" alt="" style="width: 45px; height: 45px" />' +
+                                '<img src="assets/images/icons8-open-box-50.png" class="rounded-circle" alt="" style="width: 45px; height: 45px" />' +
                                 '<div class="ms-3">' +
                                 '<p class="fw-bold mb-1">' + value["item_name"] + '</p>' +
                                 '</div>' +

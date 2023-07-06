@@ -55,13 +55,13 @@ $report = new Report();
                             <td>
                                 <?= $i ?>
                             </td>
-                            <td style="width:200px"><?= $customer["name"] ?>
+                            <td style="width:100px; padding-left: 30px; padding-right: 20px"><?= $customer["name"] ?>
                             </td>
-                            <td style="width:150px"><?= $customer["number"] ?>
+                            <td style="width:100px; padding-right: 20px"><?= $customer["number"] ?>
                             </td>
-                            <td style="width:50px"><?= $customer["gender"] ?></td>
+                            <td style="width:50px; padding-left: 40px; padding-right: 20px"><?= $customer["gender"] ?></td>
                             <td><?= $customer["city"] ?></td>
-                            <td><?= $customer["added_at"] ?></td>
+                            <td style="padding-left: 40px; "><?= $customer["added_at"] ?></td>
                         </tr>
                     <?php
                         $i++;

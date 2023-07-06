@@ -42,7 +42,7 @@ $report = new Report();
                         <th>Item Name</th>
                         <th>Description</th>
                         <th>Cost</th>
-                        <th>Unit Price</th>
+                        <th>Selling Price</th>
                         <th>Profit on Each Item</th>
                         <th>Added at</th>
                     </tr>
@@ -56,14 +56,14 @@ $report = new Report();
                             <td>
                                 <?= $i ?>
                             </td>
-                            <td style="width:200px"><?= $Inventory["item_name"] ?>
+                            <td style="width:100px; padding-left: 30px; padding-right: 20px"><?= $Inventory["item_name"] ?>
                             </td>
-                            <td style="width:150px"><?= $Inventory["description"] ?>
+                            <td style="width:50px; padding-right: 20px"><?= $Inventory["description"] ?>
                             </td>
-                            <td style="width:50px"><?= $Inventory["cost_price"] ?></td>
-                            <td><?= $Inventory["unit_price"] ?></td>
-                            <td><?= $Inventory["profit"] ?></td>
-                            <td><?= $Inventory["added_at"] ?></td>
+                            <td style="width:50px; padding-left: 40px; padding-right: 20px"><?= $Inventory["cost_price"] ?></td>
+                            <td style="width:50px; padding-left: 40px; padding-right: 10px"><?= $Inventory["unit_price"] ?></td>
+                            <td style="width:50px; padding-left: 30px; padding-right: 20px"><?= $Inventory["profit"] ?></td>
+                            <td style="width:50px; padding-left: 25px; "><?= $Inventory["added_at"] ?></td>
                         </tr>
                     <?php
                         $i++;
