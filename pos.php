@@ -48,6 +48,22 @@ $Customer = new Customer();
         .back {
             cursor: pointer;
         }
+
+        .add-new-element {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            font-size: 50px;
+            border-radius: 50px;
+            color: green;
+            bottom: 0px;
+        }
+
+        .modal-content {
+            display: flex;
+            justify-content: center;
+            padding: 5px 350px;
+        }
     </style>
 </head>
 
@@ -120,8 +136,8 @@ $Customer = new Customer();
                     <!--log in fields-->
                     <form method="post" id="sell-product-form">
                         <div class="mb-4" style="border: 1px solid #eee; background-color: #eee">
-                            <label class="form-label" for="total-price" style="color: #000; font-size: larger;">Total Purchase Amount</label>
-                            <input type="text" disabled name="total-price" id="total-price" style="color: #000; width: 100%; font-size: 42px; border: none; background-color: #eee" />
+                            <label class="form-label" for="total-price" style="color: #000; font-size: large;">Total Purchase Amount</label>
+                            <input type="text" disabled name="total-price" id="total-price" style="color: #000; width: 100%; font-size: 35px; border: none; background-color: #eee" />
                         </div>
 
                         <!-- Email input -->

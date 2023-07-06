@@ -131,6 +131,12 @@ $Inventory = new Inventory();
             color: green;
             bottom: 0px;
         }
+
+        .modal-content {
+            display: flex;
+            justify-content: center;
+            padding: 10px 450px;
+        }
     </style>
 </head>
 
@@ -237,7 +243,7 @@ $Inventory = new Inventory();
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addItemLabel">Add new Item</h5>
+                    <h5 class="modal-title" id="addItemLabel">Add New Item</h5>
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

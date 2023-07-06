@@ -125,6 +125,12 @@ $customer = new Customer();
             color: green;
             bottom: 0px;
         }
+
+        .modal-content {
+            display: flex;
+            justify-content: center;
+            padding: 10px 450px;
+        }
     </style>
 </head>
 

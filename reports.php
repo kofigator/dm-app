@@ -43,9 +43,14 @@ $Inventory = new Inventory();
             color: #fff;
         }
        
-
         .back {
             cursor: pointer;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            padding: 100px 0px;
         }
     </style>
 </head>
