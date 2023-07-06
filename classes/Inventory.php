@@ -55,7 +55,7 @@ class Inventory
      */
     public function deleteItem($itemID, $userID)
     {
-        $query = "DELETE FROM items WHERE item_id = :ci AND u_id = :ui";
+        $query = "UPDATE items SET  `archive` = 1  WHERE item_id = :ci AND u_id = :ui";
         $param = array(":ci" => $itemID, ":ui" => $userID);
         return $this->db->inputData($query, $param);
     }
@@ -79,7 +79,7 @@ class Inventory
      */
     public function getAllItems($userID)
     {
-        $query = "SELECT * FROM items WHERE u_id = :ui ORDER BY added_at DESC";
+        $query = "SELECT * FROM items WHERE u_id = :ui AND `archive` = 0 ORDER BY added_at DESC";
         $query2 = "SELECT item_id, SUM(quantity) AS total_quantity FROM sales WHERE u_id = :ui GROUP BY item_id";
         return $this->db->getData($query, array(":ui" => $userID));
         return $this->db->getData($query2, array(":ui" => $userID));

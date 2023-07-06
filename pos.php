@@ -94,6 +94,7 @@ $Customer = new Customer();
                 if (!empty($items)) {
                     $index = 1;
                     foreach ($items as $item) {
+                        if($item["quantity"] > 0){
                 ?>
                         <tr>
                             <td><?= $index ?></td>
@@ -108,6 +109,7 @@ $Customer = new Customer();
                 <?php
                         $index++;
                     }
+                }
                 }
                 ?>
             </tbody>

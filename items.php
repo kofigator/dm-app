@@ -156,8 +156,8 @@ $Inventory = new Inventory();
     <div style="position: relative !important; margin-top: 0px !important">
 
         <div style="display: flex; justify-content: space-between">
-            <h3 style="margin: 15px 5px;">Total Expenditure: <span id="total-expenditure">0.00</span></h3>
-            <h3 style="margin: 15px 5px;">Expected Profit: <span id="total-profit">0.00</span></h3>
+            <h3 style="margin: 15px 5px;">Total Expenditure: GH¢ <span id="total-expenditure">0.00</span></h3>
+            <h3 style="margin: 15px 5px;">Expected Profit: GH¢ <span id="total-profit" style="color: blue;">0.00</span></h3>
         </div>
         <?php
         $user_items = $Inventory->getAllItems($_SESSION["user"]);

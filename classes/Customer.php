@@ -46,7 +46,7 @@ class Customer
      */
     public function deleteCustomer($customerID, $userID)
     {
-        $query = "DELETE FROM customers WHERE cust_id = :ci AND u_id = :ui";
+        $query = "UPDATE customers SET `archive` = 1 WHERE cust_id = :ci AND u_id = :ui";
         $param = array(":ci" => $customerID, ":ui" => $userID);
         return $this->db->inputData($query, $param);
     }
@@ -70,7 +70,7 @@ class Customer
      */
     public function getAllCustomers($userID)
     {
-        $query = "SELECT * FROM customers WHERE u_id = :ui ORDER BY added_at DESC";
+        $query = "SELECT * FROM customers WHERE u_id = :ui AND `archive` = 0 ORDER BY added_at DESC";
         return $this->db->getData($query, array(":ui" => $userID));
     }
 
