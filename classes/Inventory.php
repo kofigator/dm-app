@@ -96,7 +96,7 @@ class Inventory
     {
         $query_join = "";
         if (!empty($data["startDate"]) && !empty($data["endDate"])) $query_join .= " AND DATE(added_at) BETWEEN '{$data["startDate"]}' AND '{$data["endDate"]}'";
-        $query = "SELECT * FROM items WHERE u_id = '{$userID}' $query_join ORDER BY added_at DESC";
+        $query = "SELECT * FROM items WHERE `archive` = 0 AND u_id = '{$userID}' $query_join ORDER BY added_at DESC";
         $_SESSION["print_reports"] = array("name" => "items", "query" => $query);
         return $this->db->getData($query);
     }

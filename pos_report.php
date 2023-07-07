@@ -18,7 +18,7 @@ $customer = new Customer();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Reports</title>
+    <title>Sales Reports</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
@@ -77,7 +77,7 @@ $customer = new Customer();
                     <div class="form-group">
                         <label for="reportType" class="form-label">Filter By payment method</label>
                         <select class="form-select" id="reportPaymentMethod" name="reportPaymentMethod">
-                            <option value="">Choose</option>
+                            <option value="" hidden>Choose</option>
                             <option value="CASH">CASH</option>
                             <option value="MOMO">MOMO</option>
                         </select>
@@ -87,36 +87,16 @@ $customer = new Customer();
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="reportType" class="form-label">Filter By City</label>
-                        <select class="form-select" id="report-city" name="report-city">
-                            <option value="">Choose</option>
-                            <?php
-                            $cities = $customer->getCustomersCityGrouped($_SESSION["user"]);
-                            $totalCount = 0;
-                            foreach ($cities as $city) {
-                            ?>
-                                <option value="<?= $city["city"] ?>"><?= $city["city"] ?></option>
-                            <?php
-                                $totalCount += 1;
-                            }
-                            ?>
+                        <select class="form-select" id="period" name="period">
+                            <option value="" hidden>Choose</option>
+                            <option value="DAY">Daily</option>
+                            <option value="WEEK">Weekly</option>
+                            <option value="MONTH">Monthly</option>
+                            <option value="YEAR">Yearly</option>
                         </select>
                     </div>
                 </div>
 
-                
-                
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="startDate" class="form-label">Start Date</label>
-                        <input type="date" class="form-control" id="startDate" name="startDate">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="endDate" class="form-label">End Date</label>
-                        <input type="date" class="form-control" id="endDate" name="endDate">
-                    </div>
-                </div>
                 <div class="col-md-3">
                     <button type="submit" id="butt" class="btn btn-primary" style="width: 100%">Generate</button>
                 </div>
@@ -129,7 +109,7 @@ $customer = new Customer();
                 <h3>Report Results</h3>
                 <h3 style="display: none;" id="totalRecordsHead">Total records:
                     <span id="totalRecords"></span>
-                    <a href="inventory_print_reports.php" class="btn btn-link"> Print</a>
+                    <a href="#" class="btn btn-link"> Print</a>
                 </h3>
             </div>
 
@@ -138,10 +118,11 @@ $customer = new Customer();
                     <thead class="bg-light">
                         <tr>
                             <th>SN.</th>
-                            <th>Customer Name</th>
-                            <th>Customer City</th>
-                            <th>Amount paid</th>
-                            <th>Amount owed</th>
+                            <th>Item Name</th>
+                            <th>Bought by</th>
+                            <th>Quantity Bought</th>
+                            <th>Sellling Price</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
 
@@ -184,21 +165,27 @@ $customer = new Customer();
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' +
                                 '<div class="d-flex align-items-center">' +
-                                '<img src="assets/images/icons8-user-96.png" class="rounded-circle" alt="" style="width: 45px; height: 45px" />' +
+                                '<img src="assets/images/icons8-open-box-50.png" class="rounded-circle" alt="" style="width: 45px; height: 45px" />' +
                                 '<div class="ms-3">' +
-                                '<p class="fw-bold mb-1">' + value["name"] + '</p>' +
+                                '<p class="fw-bold mb-1">' + value["item_name"] + '</p>' +
                                 '</div>' +
                                 '</div>' +
                                 '</td>' +
-                                '<td>' + value["city"] + ' </td>' +
-                                '<td>' + value["total"] + ' </td>' +
+                                '<td>' + value["name"] + ' </td>' +
                                 '<td>' + value["quantity"] + ' </td>' +
+                                '<td>' + value["unit_price"] + ' </td>' +
+                                '<td>' + value["total"] + ' </td>' +
                                 '</tr>'
                             );
                             totalCount += 1;
                         });
                         $("#totalRecordsHead").show();
                         $("#totalRecords").text(totalCount);
+                    }
+                    else{
+                        $("#totalRecordsHead").hide();
+                        $("#inventory-reports-tb").html('<div class="text-center">No results found.</div>');
+
                     }
 
                 }).fail(function(error) {

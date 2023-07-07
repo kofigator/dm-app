@@ -314,11 +314,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
     if ($_GET["url"] == "sales-reports") {
         if (!isset($_POST["reportPaymentMethod"]))
             die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
-        if (!isset($_POST["report-city"]))
-            die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
-        if (!isset($_POST["startDate"]))
-            die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
-        if (!isset($_POST["endDate"]))
+        if (!isset($_POST["period"]))
             die(json_encode(array("success" => false, "message" => "Invalid data sent!")));
         $data = $Sale->generateSaleReports($_POST, $_SESSION["user"]);
         if (!empty($data)) die(json_encode(array("success" => true, "message" => $data)));
