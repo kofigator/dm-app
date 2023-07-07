@@ -58,6 +58,7 @@ $sale = new Sale();
         #butt {
             margin: 33px 0px;
         }
+        
     </style>
 </head>
 
@@ -126,11 +127,11 @@ $sale = new Sale();
     <div class="modal fade" id="settleDebtModal" data-mdb-backdrop="static" data-mdb-keyboard="false" tabindex="-1" aria-labelledby="settleDebtModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="settleDebtModalLabel">Checkout</h5>
+                <div class="modal-header" style="display: flex; padding-left: 325px;">
+                    <h2 class="modal-title" id="settleDebtModalLabel">Checkout</h2>
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="display: flex; justify-content: center;">
                     <!--log in fields-->
                     <form method="post" id="settle-debt-form">
 
@@ -215,43 +216,52 @@ $sale = new Sale();
                     totalDebt += amountOwing;
                 });
                 $('#total-debt').text(totalDebt.toFixed(2));
-            }
+                }
 
-            // Event listener for "Settle Debt" button clicks
-            document.addEventListener('click', function(event) {
-            if (event.target.classList.contains('settle-debt')) {
-                const customerID = event.target.id;
+                // Event listener for "Settle Debt" button clicks
+                document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('settle-debt')) {
+                    const customerID = event.target.id;
 
-                // Find the corresponding row in the table
-                const tableRow = event.target.closest('tr');
+                    // Find the corresponding row in the table
+                    const tableRow = event.target.closest('tr');
 
-                // Get the amount owing from the table row
-                const amountOwing = parseFloat(tableRow.querySelector('td:nth-child(4)').textContent);
+                    // Get the amount owing from the table row
+                    const amountOwing = parseFloat(tableRow.querySelector('td:nth-child(4)').textContent);
 
-                // Update the "total-price" input field in the settleDebt modal
-                const totalPriceInput = document.getElementById('total-price');
-                totalPriceInput.value = amountOwing;
+                    // Update the "total-price" input field in the settleDebt modal
+                    const totalPriceInput = document.getElementById('total-price');
+                    totalPriceInput.value = amountOwing;
 
-                // Set the customer ID in the hidden field
-                const customerIDInput = document.getElementById('customer-id');
-                customerIDInput.value = customerID;
-            }
-            });
+                    // Set the customer ID in the hidden field
+                    const customerIDInput = document.getElementById('customer-id');
+                    customerIDInput.value = customerID;
+                }
+                });
 
-            // Event listener for "customer-deposit" input field
-            document.getElementById('customer-deposit').addEventListener('input', function(event) {
-            const depositAmount = parseFloat(event.target.value);
-            const amountOwing = parseFloat(document.getElementById('total-price').value);
+                // Event listener for "customer-deposit" input field
+                document.getElementById('customer-deposit').addEventListener('input', function(event) {
+                const depositAmount = parseFloat(event.target.value);
+                const amountOwing = parseFloat(document.getElementById('total-price').value);
 
-            // Check if the input is a valid number
-            if (!isNaN(depositAmount)) {
-                // Calculate the updated amount owing
-                const updatedAmountOwing = Math.max(amountOwing - depositAmount, 0);
+                // Check if the input is a valid number
+                if (!isNaN(depositAmount)) {
+                    // Calculate the updated amount owing
+                    const updatedAmountOwing = Math.max(amountOwing - depositAmount, 0);
 
-                // Update the "amount-owing" input field
-                document.getElementById('amount-owing').value = updatedAmountOwing.toFixed(2);
-            }
-            });
+                    // Update the "amount-owing" input field
+                    const amountOwingInput = document.getElementById('amount-owing');
+
+                    if (updatedAmountOwing === 0) {
+                    // Display the difference if it's greater than 0
+                    amountOwingInput.value = (amountOwing - depositAmount).toFixed(2);
+                    } else {
+                    // Display the updated amount owing
+                    amountOwingInput.value = updatedAmountOwing.toFixed(2);
+                    }
+                }
+                });
+                    
 
 
             $(".settle-debt").on("click", function() {
@@ -329,7 +339,7 @@ $sale = new Sale();
 
             
             
-            });
+        });
 
     </script>
 </body>

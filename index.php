@@ -44,6 +44,9 @@ if (isset($_SESSION["user"])) header("Location: dashboard.php");
 
     <!--log in fields-->
     <form method="post" id="Login-Form">
+        <div>
+            <h>Login Form</h1>
+        </div>
         <!-- Email input -->
         <div class="form-outline mb-4">
             <input type="email" id="email" name="email" class="form-control" />
