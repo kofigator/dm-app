@@ -114,7 +114,6 @@ $Inventory = new Inventory();
                             <th>Cost</th>
                             <th>Unit Price</th>
                             <th>Quantity</th>
-                            <th>Total Quantity Sold</th>
                             <th>Profit on Each Item</th>
                             <th>Total Profit</th>
                             <th>Added at</th>
@@ -142,7 +141,6 @@ $Inventory = new Inventory();
                                     <td><?= $Inventory["cost_price"] ?></td>
                                     <td><?= $Inventory["unit_price"] ?></td>
                                     <td><?= $Inventory["quantity"] ?></td>
-                                    <td>hello</td>
                                     <td><?= $Inventory["profit"] ?></td>
                                     <td>GH¢ <?= $total ?></td>
                                     <td><?= $Inventory["added_at"] ?></td>
@@ -206,7 +204,6 @@ $Inventory = new Inventory();
                                 '<td>' + value["cost_price"] + ' </td>' +
                                 '<td>' + value["unit_price"] + ' </td>' +
                                 '<td>' + value["quantity"] + ' </td>' +
-                                '<td>' + value["hello"] + ' </td>' +
                                 '<td>' + value["profit"] + ' </td>' +
                                 '<td>' + value["unit_price"]*value["quantity"] + ' </td>' +
                                 '<td>' + value["added_at"] + ' </td>' +
