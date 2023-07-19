@@ -109,13 +109,18 @@ $Inventory = new Inventory();
                     <table class="table align-middle mb-0 bg-white">
                     <thead class="bg-light">
                         <tr>
+                            <span colspan="6" style="text-align:left; font-size:x-large;"><strong>Total Profit Made: GHS </strong></span>
+                            <span id="totalSumValue" style="text-align:left; color: red; font-size:xx-large;">0.00</span>
+                        </tr>
+                        <tr>
                             <th>SN.</th>
                             <th>Item Name</th>
-                            <th>Cost</th>
-                            <th>Unit Price</th>
-                            <th>Quantity</th>
+                            <th>Cost Price</th>
+                            <th>Selling Price</th>
+                            <th>Qty Left</th>
+                            <th>Qty Sold</th>
                             <th>Profit on Each Item</th>
-                            <th>Total Profit</th>
+                            <th>Profit Made</th>
                             <th>Added at</th>
                         </tr>
                     </thead>
@@ -123,7 +128,9 @@ $Inventory = new Inventory();
                         <tbody id="inventory-reports-tb">
                             <?php
                             $i = 1;
+                            $total_profit = 0;
                             foreach ($user_inventory as $Inventory) {
+                                $total_profit = $total_profit + ($Inventory["cost_price"] * $Inventory["total_sold"]);
                             ?>
                                 <tr>
                                     <td>
@@ -137,10 +144,11 @@ $Inventory = new Inventory();
                                             </div>
                                         </div>
                                     </td>
-                                    <?php $total = $Inventory["profit"] * $Inventory["quantity"]?>
+                                    <?php $total = $Inventory["profit"] * $Inventory["total_sold"]?>
                                     <td><?= $Inventory["cost_price"] ?></td>
                                     <td><?= $Inventory["unit_price"] ?></td>
                                     <td><?= $Inventory["quantity"] ?></td>
+                                    <td><?= $Inventory["total_sold"] ?></td>
                                     <td><?= $Inventory["profit"] ?></td>
                                     <td>GH¢ <?= $total ?></td>
                                     <td><?= $Inventory["added_at"] ?></td>
@@ -189,7 +197,11 @@ $Inventory = new Inventory();
                     if (data["success"]) {
                         $("#inventory-reports-tb").html('');
                         var totalCount = 0;
+                        let total_sum = 0;
+
                         $.each(data.message, function(index, value) {
+                            total_sum = total_sum + parseFloat(value["total_sold"] * value["unit_price"]);
+
                             $("#inventory-reports-tb").append(
                                 '<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
@@ -204,8 +216,9 @@ $Inventory = new Inventory();
                                 '<td>' + value["cost_price"] + ' </td>' +
                                 '<td>' + value["unit_price"] + ' </td>' +
                                 '<td>' + value["quantity"] + ' </td>' +
+                                '<td>' + value["total_sold"] + ' </td>' +
                                 '<td>' + value["profit"] + ' </td>' +
-                                '<td>' + value["unit_price"]*value["quantity"] + ' </td>' +
+                                '<td>' + value["unit_price"]*value["total_sold"] + ' </td>' +
                                 '<td>' + value["added_at"] + ' </td>' +
                                 '</tr>'
 
@@ -215,6 +228,8 @@ $Inventory = new Inventory();
                         });
                         $("#totalRecordsHead").show();
                         $("#totalRecords").text(totalCount);
+                        // Display total_sum nicely
+                        $("#totalSumValue").text(total_sum.toFixed(2));
                     }else{
                         $("#totalRecordsHead").hide();
                         $("#inventory-reports-tb").html('<div class="text-center">No results found.</div>');

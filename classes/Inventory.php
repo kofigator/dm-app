@@ -79,10 +79,14 @@ class Inventory
      */
     public function getAllItems($userID)
     {
-        $query = "SELECT * FROM items WHERE u_id = :ui AND `archive` = 0 ORDER BY added_at DESC";
-        $query2 = "SELECT item_id, SUM(quantity) AS total_quantity FROM sales WHERE u_id = :ui GROUP BY item_id";
+        $query = "SELECT i.*, SUM(s.quantity) AS total_sold
+        FROM items AS i
+        JOIN sales AS s ON i.item_id = s.item_id
+        JOIN users AS u ON u.phone_number = s.user_id 
+        WHERE u_id = :ui AND `archive` = 0 
+        GROUP BY i.item_id 
+        ORDER BY i.added_at DESC";
         return $this->db->getData($query, array(":ui" => $userID));
-        return $this->db->getData($query2, array(":ui" => $userID));
     }
 
     public function getInventoryDescription($userID)
@@ -95,9 +99,15 @@ class Inventory
     public function getItemsReports($data, $userID)
     {
         $query_join = "";
-        if (!empty($data["startDate"]) && !empty($data["endDate"])) $query_join .= " AND DATE(added_at) BETWEEN '{$data["startDate"]}' AND '{$data["endDate"]}'";
-        $query = "SELECT * FROM items WHERE `archive` = 0 AND u_id = '{$userID}' $query_join ORDER BY added_at DESC";
+        if (!empty($data["startDate"]) && !empty($data["endDate"])) $query_join .= " AND DATE(i.added_at) BETWEEN '{$data["startDate"]}' AND '{$data["endDate"]}'";
+        
+        $query = "SELECT i.*, SUM(s.quantity) AS total_sold 
+        FROM items AS i 
+        JOIN sales AS s ON i.item_id = s.item_id 
+        JOIN users AS u ON u.phone_number = s.user_id 
+        WHERE `archive` = 0 AND u_id = '{$userID}' $query_join GROUP BY i.item_id ORDER BY i.added_at DESC";
         $_SESSION["print_reports"] = array("name" => "items", "query" => $query);
+        
         return $this->db->getData($query);
     }
 

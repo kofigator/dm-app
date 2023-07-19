@@ -119,8 +119,8 @@ $Customer = new Customer();
     <div id="checkout-div" style="display: none;">
         <div style="background-color: #333; color: #fff; position: fixed; z-index: 99; bottom: 0px; height: 60px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 50px 15px">
             <div style=" display: flex; justify-content: space-between; align-items: center;">
-                <h1>GHS </h1>
-                <h1 id="total-price-display"> 0.00</h1>
+                <h1>GHS &nbsp;</h1>
+                <h1 id="total-price-display">0.00</h1>
             </div>
             <button id="checkoutBtn" class="btn btn-success" style="padding: 20px; max-width: 200px; min-width: 150px; font-size: 18px" data-mdb-toggle="modal" data-mdb-target="#checkoutItems">Checkout</button>
         </div>

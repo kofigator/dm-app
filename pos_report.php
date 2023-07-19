@@ -86,7 +86,7 @@ $customer = new Customer();
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="reportType" class="form-label">Filter By City</label>
+                        <label for="reportType" class="form-label">Filter By Period</label>
                         <select class="form-select" id="period" name="period">
                             <option value="" hidden>Choose</option>
                             <option value="DAY">Daily</option>
@@ -117,18 +117,24 @@ $customer = new Customer();
                     <table class="table align-middle mb-0 bg-white">
                     <thead class="bg-light">
                         <tr>
+                            <span colspan="6" style="text-align:left; font-size:x-large;"><strong>TOTAL SUM: GHS </strong></span>
+                            <span id="totalSumValue" style="text-align:left; color: red; font-size:xx-large;">0.00</span>
+                        </tr>
+                        <tr>
                             <th>SN.</th>
                             <th>Item Name</th>
                             <th>Bought by</th>
                             <th>Quantity Bought</th>
                             <th>Sellling Price</th>
                             <th>Total</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
 
                         <tbody id="inventory-reports-tb">
                             
                         </tbody>
+                        
                     </table>
             </table>
         </div>
@@ -159,7 +165,10 @@ $customer = new Customer();
                     if (data["success"]) {
                         $("#inventory-reports-tb").html('');
                         var totalCount = 0;
+                        let total_sum = 0;
                         $.each(data.message, function(index, value) {
+                            
+                            total_sum = total_sum + parseFloat(value["total"]);
                             $("#inventory-reports-tb").append(
                                 '<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
@@ -175,17 +184,23 @@ $customer = new Customer();
                                 '<td>' + value["quantity"] + ' </td>' +
                                 '<td>' + value["unit_price"] + ' </td>' +
                                 '<td>' + value["total"] + ' </td>' +
+                                '<td>' + value["added_at"] + ' </td>' +
                                 '</tr>'
                             );
                             totalCount += 1;
                         });
                         $("#totalRecordsHead").show();
                         $("#totalRecords").text(totalCount);
+
+                        // Display total_sum nicely
+                        $("#totalSumValue").text(total_sum.toFixed(2)); 
+
                     }
                     else{
                         $("#totalRecordsHead").hide();
+                        $("#totalSumValue").text("0.00");
                         $("#inventory-reports-tb").html('<div class="text-center">No results found.</div>');
-
+                        
                     }
 
                 }).fail(function(error) {

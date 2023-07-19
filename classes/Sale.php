@@ -218,30 +218,28 @@ class Sale
      * Sales reports
      */
     public function generateSaleReports($data, $userID)
-{
-    $query_join = "";
-if (!empty($data["reportPaymentMethod"])) {
-    $query_join .= " JOIN payments AS p ON sales.pay_num = p.pay_num";
-    $query_join .= " AND p.mode = '{$data["reportPaymentMethod"]}'";
-}
-if (!empty($data["period"])) {
-    $query_join .= " JOIN customers AS c ON sales.cust_id = c.cust_id";
-}
+    {
+        $query_join = "";
+        if (!empty($data["reportPaymentMethod"])) {
+            $query_join .= " JOIN payments AS p ON sales.pay_num = p.pay_num";
+            $query_join .= " AND p.mode = '{$data["reportPaymentMethod"]}'";
+        }
+        if (!empty($data["period"])) {
+            $query_join .= " JOIN customers AS c ON sales.cust_id = c.cust_id";
+        }
 
-$query = "SELECT sales.*, customers.*, items.*, sales.quantity
-    FROM sales
-    JOIN customers ON sales.cust_id = customers.cust_id
-    JOIN items ON sales.item_id = items.item_id
-    $query_join
-    WHERE DATE(sales.added_at) >= CURDATE() - INTERVAL 1 {$data["period"]}
-    ORDER BY sales.added_at DESC;
-";
+        $query = "SELECT sales.*, customers.*, items.*, sales.quantity
+            FROM sales
+            JOIN customers ON sales.cust_id = customers.cust_id
+            JOIN items ON sales.item_id = items.item_id
+            $query_join
+            WHERE DATE(sales.added_at) >= CURDATE() - INTERVAL 1 {$data["period"]}
+            ORDER BY sales.added_at DESC;
+        ";
 
-// $_SESSION["print_reports"] = array("name" => "customers", "query" => $query);
-return $this->db->getData($query);
+        // $_SESSION["print_reports"] = array("name" => "customers", "query" => $query);
+        return $this->db->getData($query);
 
-}
-
-
+    }
 
 }
